@@ -1,0 +1,8 @@
+﻿user_id,date,sleep_hours,sleep_quality_1_to_5,stress_level_1_to_5,energy_level_1_to_5,planned_tasks,completed_tasks,completion_rate,incomplete_reason,is_synthetic
+demo_001,2026-08-25,7.5,4,2,4,5,5,1.0,none,True
+demo_001,2026-08-26,6.5,3,3,3,5,4,0.8,insufficient_sleep,True
+demo_001,2026-08-27,5.0,2,4,2,5,3,0.6,fatigue,True
+demo_001,2026-08-28,6.0,3,4,3,4,3,0.75,too_many_tasks,True
+demo_001,2026-08-29,8.0,4,2,4,4,4,1.0,none,True
+demo_001,2026-08-30,7.0,4,2,4,3,3,1.0,none,True
+demo_001,2026-08-31,6.0,3,3,3,5,4,0.8,unexpected_event,True
