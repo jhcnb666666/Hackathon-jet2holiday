@@ -1,0 +1,615 @@
+﻿record_id,current_gpa,sleep_duration,bedtime,wake_time,gpa_quality_flag
+1,3.4,10 or more hours,Between 10pm and 12am,Between 10am and 12pm,valid
+2,3.2,10 or more hours,After 2am,After 12pm,valid
+3,3.1,10 or more hours,After 2am,Between 10am and 12pm,valid
+4,2.6,10 or more hours,Between 12am and 2am,Between 8am and 10am,valid
+5,3.75,10 or more hours,Between 10pm and 12am,Between 8am and 10am,valid
+6,3.45,4 hours or less,After 2am,Between 10am and 12pm,valid
+7,3.7,4 hours or less,After 2am,Between 8am and 10am,valid
+8,2.5,4 hours or less,Between 10pm and 12am,Before 6am,valid
+9,2.9,4 hours or less,After 2am,Between 6am and 8am,valid
+10,2.28,4 hours or less,Between 12am and 2am,Between 6am and 8am,valid
+11,2.9,4 hours or less,Between 8pm and 10pm,Before 6am,valid
+12,3.2,4 hours or less,Between 12am and 2am,Between 6am and 8am,valid
+13,3.5,4 hours or less,After 2am,Between 6am and 8am,valid
+14,2.9,4 hours or less,Between 10pm and 12am,Before 6am,valid
+15,3.06,4 hours or less,After 2am,Between 10am and 12pm,valid
+16,4,4 hours or less,Between 12am and 2am,Between 6am and 8am,valid
+17,3.4,4 hours or less,After 2am,Between 10am and 12pm,valid
+18,2.48,4 hours or less,Between 10pm and 12am,Between 8am and 10am,valid
+19,2.9,4 hours or less,After 2am,Between 8am and 10am,valid
+20,2.48,4 hours or less,Between 10pm and 12am,Between 8am and 10am,valid
+21,3.235,4 hours or less,Between 12am and 2am,Between 6am and 8am,valid
+22,3.6,4 hours or less,Between 12am and 2am,Between 6am and 8am,valid
+23,3.2,4 hours or less,Between 10pm and 12am,Between 6am and 8am,valid
+24,3.1,4 hours or less,After 2am,Between 6am and 8am,valid
+25,3.8,4 hours or less,After 2am,Between 8am and 10am,valid
+26,2.9,4 hours or less,Between 12am and 2am,Between 6am and 8am,valid
+27,2.7,4 hours or less,After 2am,Between 8am and 10am,valid
+28,3.13,5 hours,Between 12am and 2am,Between 8am and 10am,valid
+29,3.3,5 hours,Between 12am and 2am,Between 8am and 10am,valid
+30,3.2,5 hours,Between 10pm and 12am,Between 8am and 10am,valid
+31,3.45,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+32,1.65,5 hours,After 2am,Between 8am and 10am,valid
+33,4,5 hours,Between 10pm and 12am,Between 6am and 8am,valid
+34,3.9,5 hours,Between 10pm and 12am,Between 6am and 8am,valid
+35,3.85,5 hours,Between 10pm and 12am,Before 6am,valid
+36,3.8,5 hours,Between 12am and 2am,Between 8am and 10am,valid
+37,3.2,5 hours,After 2am,Between 8am and 10am,valid
+38,3.94,5 hours,After 2am,Between 10am and 12pm,valid
+39,2.7,5 hours,Between 12am and 2am,Between 8am and 10am,valid
+40,3,5 hours,Between 10pm and 12am,Before 6am,valid
+41,3,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+42,3.8,5 hours,After 2am,Between 6am and 8am,valid
+43,3,5 hours,Between 12am and 2am,Between 8am and 10am,valid
+44,3.8,5 hours,Between 10pm and 12am,Between 6am and 8am,valid
+45,3.8,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+46,0.57,5 hours,Between 12am and 2am,Between 8am and 10am,valid
+47,0.57,5 hours,After 2am,Between 8am and 10am,valid
+48,4,5 hours,Between 12am and 2am,Between 8am and 10am,valid
+49,3.5,5 hours,Between 10pm and 12am,Before 6am,valid
+50,4,5 hours,After 2am,Between 8am and 10am,valid
+51,3.2,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+52,3.6,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+53,4,5 hours,Between 12am and 2am,Before 6am,valid
+54,2.5,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+55,3.5,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+56,4,5 hours,Between 12am and 2am,Between 8am and 10am,valid
+57,3.2,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+58,3,5 hours,Between 12am and 2am,Between 8am and 10am,valid
+59,2.24,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+60,2.5,5 hours,Between 12am and 2am,Between 8am and 10am,valid
+61,3.5,5 hours,Between 12am and 2am,Between 8am and 10am,valid
+62,3.51,5 hours,Between 12am and 2am,Between 8am and 10am,valid
+63,3.5,5 hours,Between 10pm and 12am,Before 6am,valid
+64,3.75,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+65,3.78,5 hours,After 2am,Between 8am and 10am,valid
+66,3.85,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+67,3.22,5 hours,Between 10pm and 12am,Between 6am and 8am,valid
+68,3.45,5 hours,Between 8pm and 10pm,Between 6am and 8am,valid
+69,3.56,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+70,3.1,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+71,3.8,5 hours,Between 12am and 2am,Before 6am,valid
+72,3.33,5 hours,After 2am,Between 10am and 12pm,valid
+73,3.04,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+74,3.44,5 hours,Between 10pm and 12am,Before 6am,valid
+75,3,5 hours,Between 10pm and 12am,Between 6am and 8am,valid
+76,3.23,5 hours,Between 10pm and 12am,Between 6am and 8am,valid
+77,3.87,5 hours,Between 10pm and 12am,Between 6am and 8am,valid
+78,3.7,5 hours,Between 12am and 2am,Between 8am and 10am,valid
+79,3.9,5 hours,After 2am,Between 8am and 10am,valid
+80,3.01,5 hours,Between 12am and 2am,Between 8am and 10am,valid
+81,3.45,5 hours,After 2am,Between 8am and 10am,valid
+82,3.84,5 hours,Between 12am and 2am,Before 6am,valid
+83,3.4,5 hours,After 2am,Between 6am and 8am,valid
+84,3.6,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+85,4,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+86,3.86,5 hours,Between 10pm and 12am,Before 6am,valid
+87,3.5,5 hours,Between 12am and 2am,Between 8am and 10am,valid
+88,3.1,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+89,3.67,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+90,3.2,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+91,3.8,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+92,3.4,5 hours,Between 10pm and 12am,Between 6am and 8am,valid
+93,3.3,5 hours,Between 12am and 2am,Between 8am and 10am,valid
+94,2.7,5 hours,Between 10pm and 12am,Between 6am and 8am,valid
+95,3.7,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+96,3.5,5 hours,Between 10pm and 12am,Before 6am,valid
+97,3.5,5 hours,Between 12am and 2am,Between 8am and 10am,valid
+98,3.7,5 hours,Between 10pm and 12am,Between 6am and 8am,valid
+99,3.3,5 hours,Between 10pm and 12am,Between 6am and 8am,valid
+100,3.8,5 hours,Between 10pm and 12am,Between 6am and 8am,valid
+101,1.9,5 hours,After 2am,Between 8am and 10am,valid
+102,3.7,5 hours,After 2am,Between 10am and 12pm,valid
+103,3,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+104,2.05,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+105,3.1,5 hours,Between 10pm and 12am,Between 6am and 8am,valid
+106,3.8,5 hours,After 2am,Between 10am and 12pm,valid
+107,3.4,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+108,3.3,5 hours,Between 12am and 2am,Before 6am,valid
+109,2.8,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+110,3.6,5 hours,Between 12am and 2am,Between 10am and 12pm,valid
+111,3.94,5 hours,After 2am,Between 10am and 12pm,valid
+112,3.94,5 hours,Between 10pm and 12am,Between 6am and 8am,valid
+113,3.72,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+114,3,5 hours,Between 10pm and 12am,Before 6am,valid
+115,3.5,5 hours,Between 10pm and 12am,Before 6am,valid
+116,3.49,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+117,3,5 hours,After 2am,Between 8am and 10am,valid
+118,2.91,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+119,2.54,5 hours,Between 12am and 2am,Between 8am and 10am,valid
+120,3.05,5 hours,After 2am,Between 6am and 8am,valid
+121,2.7,5 hours,After 2am,Between 10am and 12pm,valid
+122,2.68,5 hours,After 2am,Between 6am and 8am,valid
+123,3.9,5 hours,After 2am,Between 8am and 10am,valid
+124,2.45,5 hours,After 2am,Between 8am and 10am,valid
+125,3.23,5 hours,Between 12am and 2am,Between 6am and 8am,valid
+126,3.94,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+127,3.69,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+128,3.8,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+129,3.47,6 hours,Between 10pm and 12am,Between 8am and 10am,valid
+130,3.8,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+131,3.7,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+132,3.266,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+133,1.7,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+134,3.75,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+135,2.1,6 hours,Between 10pm and 12am,Between 8am and 10am,valid
+136,3.4,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+137,3.6,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+138,2.7,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+139,3,6 hours,Between 10pm and 12am,Between 8am and 10am,valid
+140,3.5,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+141,2.6,6 hours,After 2am,Between 10am and 12pm,valid
+142,4.48,6 hours,Between 12am and 2am,Between 8am and 10am,above_expected_range
+143,4,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+144,3.56,6 hours,Between 10pm and 12am,Between 8am and 10am,valid
+145,4,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+146,2.75,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+147,4,6 hours,After 2am,Between 8am and 10am,valid
+148,3.5,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+149,3.8,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+150,4,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+151,3.6,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+152,4,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+153,3.5,6 hours,Between 10pm and 12am,Between 8am and 10am,valid
+154,4,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+155,3.6,6 hours,Between 10pm and 12am,Between 8am and 10am,valid
+156,3.55,6 hours,After 2am,Between 8am and 10am,valid
+157,3.5,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+158,4,6 hours,Between 10pm and 12am,Between 8am and 10am,valid
+159,3.8,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+160,3.6,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+161,4,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+162,3.4,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+163,3.67,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+164,2.9,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+165,2.5,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+166,3.67,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+167,3.5,6 hours,Between 10pm and 12am,Before 6am,valid
+168,0.4,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+169,3.7,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+170,3.5,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+171,4,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+172,3.8,6 hours,Between 8pm and 10pm,Between 6am and 8am,valid
+173,4,6 hours,Between 10pm and 12am,Before 6am,valid
+174,4,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+175,3.76,6 hours,After 2am,Between 8am and 10am,valid
+176,3.1,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+177,3.4,6 hours,Between 10pm and 12am,Between 8am and 10am,valid
+178,3.4,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+179,3.81,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+180,3.64,6 hours,Between 10pm and 12am,Between 8am and 10am,valid
+181,3.4,6 hours,After 2am,Between 10am and 12pm,valid
+182,3.29,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+183,3.83,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+184,3.47,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+185,3.5,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+186,3.6,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+187,3.3,6 hours,Between 8pm and 10pm,Before 6am,valid
+188,3.5,6 hours,Between 10pm and 12am,Before 6am,valid
+189,3.2,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+190,3.6,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+191,3.8,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+192,2.9,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+193,3,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+194,3.72,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+195,3.7,6 hours,Between 10pm and 12am,Before 6am,valid
+196,3.49,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+197,3.8,6 hours,Between 10pm and 12am,Before 6am,valid
+198,3.3,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+199,3.83,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+200,3.46,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+201,3.04,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+202,3.49,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+203,3.49,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+204,3.927,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+205,3.15,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+206,3.7,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+207,3.8,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+208,3.97,6 hours,Between 10pm and 12am,Between 8am and 10am,valid
+209,2.99,6 hours,Between 10pm and 12am,Between 8am and 10am,valid
+210,3.92,6 hours,Between 10pm and 12am,Before 6am,valid
+211,3.61,6 hours,Between 10pm and 12am,Before 6am,valid
+212,3.84,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+213,3.4,6 hours,Between 10pm and 12am,Between 8am and 10am,valid
+214,3.2,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+215,3.3,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+216,4.71,6 hours,Between 12am and 2am,Between 6am and 8am,above_expected_range
+217,3.76,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+218,3.92,6 hours,Between 10pm and 12am,Before 6am,valid
+219,3.34,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+220,2.5,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+221,3.2,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+222,2.69,6 hours,After 2am,Between 6am and 8am,valid
+223,2.7,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+224,3.5,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+225,4,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+226,3.45,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+227,3.6,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+228,3,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+229,2.6,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+230,3.36,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+231,3.78,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+232,3.25,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+233,3.8,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+234,3.3,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+235,3.6,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+236,3.11,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+237,2.52,6 hours,Between 10pm and 12am,Between 10am and 12pm,valid
+238,3.78,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+239,3.2,6 hours,After 2am,Between 8am and 10am,valid
+240,2.8,6 hours,Between 12am and 2am,Between 10am and 12pm,valid
+241,2.89,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+242,2,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+243,3.4,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+244,3.5,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+245,3.24,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+246,3.6,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+247,3.5,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+248,3.85,6 hours,Between 10pm and 12am,Before 6am,valid
+249,2.78,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+250,3.89,6 hours,Between 10pm and 12am,Between 10am and 12pm,valid
+251,3.2,6 hours,Between 10pm and 12am,Before 6am,valid
+252,3.5,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+253,3.7,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+254,3.24,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+255,3.37,6 hours,After 2am,Between 10am and 12pm,valid
+256,3.45,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+257,3.6,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+258,3.9,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+259,4,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+260,3.5,6 hours,Between 12am and 2am,Between 10am and 12pm,valid
+261,3.8,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+262,3.91,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+263,2.7,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+264,3.8,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+265,3.5,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+266,4,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+267,2.76,6 hours,Between 10pm and 12am,Before 6am,valid
+268,3,6 hours,After 2am,After 12pm,valid
+269,3,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+270,3,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+271,3.7,6 hours,After 2am,Between 10am and 12pm,valid
+272,3,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+273,3,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+274,3,6 hours,After 2am,Between 10am and 12pm,valid
+275,4,6 hours,After 2am,Between 10am and 12pm,valid
+276,3.15,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+277,3.23,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+278,3.65,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+279,3,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+280,3,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+281,3,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+282,3.2,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+283,3.3,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+284,3.09,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+285,3.84,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+286,3.26,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+287,3.487,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+288,3.2,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+289,3.46,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+290,3.54,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+291,3.3,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+292,3.1,6 hours,After 2am,Between 8am and 10am,valid
+293,3.82,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+294,3.98,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+295,3.67,6 hours,Between 10pm and 12am,Between 6am and 8am,valid
+296,3.83,6 hours,After 2am,Between 10am and 12pm,valid
+297,3.5,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+298,2.5,6 hours,Between 12am and 2am,Between 10am and 12pm,valid
+299,3,6 hours,Between 12am and 2am,Between 6am and 8am,valid
+300,3.5,6 hours,Between 12am and 2am,Between 8am and 10am,valid
+301,3.75,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+302,3.2,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+303,3.95,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+304,3.45,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+305,3.7,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+306,3.9,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+307,3.9,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+308,3.8,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+309,2.3,7 hours,Between 10pm and 12am,Before 6am,valid
+310,3.75,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+311,3.3,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+312,3.7,7 hours,Between 12am and 2am,Between 6am and 8am,valid
+313,3.83,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+314,3.2,7 hours,Between 8pm and 10pm,Between 6am and 8am,valid
+315,4,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+316,3.8,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+317,3.5,7 hours,Between 10pm and 12am,Before 6am,valid
+318,4,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+319,4,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+320,4,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+321,4,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+322,3.1,7 hours,After 2am,Between 8am and 10am,valid
+323,3.7,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+324,3.75,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+325,3,7 hours,Between 8pm and 10pm,Before 6am,valid
+326,3.5,7 hours,Between 12am and 2am,Between 6am and 8am,valid
+327,4,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+328,4,7 hours,Between 12am and 2am,Between 10am and 12pm,valid
+329,4,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+330,3.3,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+331,3.3,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+332,3.8,7 hours,Between 8pm and 10pm,Before 6am,valid
+333,3.34,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+334,2.8,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+335,3.82,7 hours,Between 8pm and 10pm,Between 6am and 8am,valid
+336,2.8,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+337,3.31,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+338,1.9,7 hours,Between 12am and 2am,Between 10am and 12pm,valid
+339,2,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+340,4,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+341,3.5,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+342,3.9,7 hours,After 2am,Between 10am and 12pm,valid
+343,4,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+344,4,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+345,3.7,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+346,3.36,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+347,2.9,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+348,3,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+349,3.4,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+350,3.97,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+351,3.7,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+352,3.4,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+353,3.4,7 hours,Between 12am and 2am,Between 6am and 8am,valid
+354,3.52,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+355,3.4,7 hours,Between 12am and 2am,Between 10am and 12pm,valid
+356,3.36,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+357,2.9,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+358,3.6,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+359,3.8,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+360,3.75,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+361,3.6,7 hours,Between 12am and 2am,Between 6am and 8am,valid
+362,3.53,7 hours,Between 12am and 2am,Before 6am,valid
+363,3.4,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+364,3.6,7 hours,After 2am,Between 10am and 12pm,valid
+365,3.3,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+366,2.87,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+367,2.75,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+368,3.01,7 hours,Between 8pm and 10pm,Before 6am,valid
+369,3.5,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+370,3.3,7 hours,Between 12am and 2am,Between 10am and 12pm,valid
+371,3.1,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+372,3.26,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+373,3.94,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+374,3.4,7 hours,Between 8pm and 10pm,Before 6am,valid
+375,3.11,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+376,3.2,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+377,2.74,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+378,3.5,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+379,3.81,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+380,3.07,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+381,3.43,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+382,3.5,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+383,3.4,7 hours,Between 8pm and 10pm,Before 6am,valid
+384,2.6,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+385,3.96,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+386,3.95,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+387,3,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+388,3.5,7 hours,Between 8pm and 10pm,Before 6am,valid
+389,3.5,7 hours,Between 8pm and 10pm,Before 6am,valid
+390,3.57,7 hours,Between 8pm and 10pm,Between 6am and 8am,valid
+391,3.8,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+392,3.6,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+393,3.92,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+394,3.8,7 hours,Between 10pm and 12am,Before 6am,valid
+395,3.7,7 hours,Between 10pm and 12am,Before 6am,valid
+396,3.3,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+397,3.45,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+398,2.49,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+399,3.94,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+400,3.86,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+401,3.6,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+402,2.9,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+403,2.7,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+404,4,7 hours,Between 12am and 2am,Between 6am and 8am,valid
+405,3.6,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+406,3.6,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+407,4,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+408,3.6,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+409,3.1,7 hours,Between 12am and 2am,Between 6am and 8am,valid
+410,2.9,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+411,3.721,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+412,3.2,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+413,3.61,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+414,4,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+415,3.41,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+416,3.85,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+417,3.9,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+418,3.5,7 hours,Between 12am and 2am,Between 6am and 8am,valid
+419,3.8,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+420,3.6,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+421,3.2,7 hours,Between 12am and 2am,Between 10am and 12pm,valid
+422,3.78,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+423,3.9,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+424,3.3,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+425,3.9,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+426,3.2,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+427,3.31,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+428,3.47,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+429,3,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+430,3,7 hours,Between 12am and 2am,Between 6am and 8am,valid
+431,3.1,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+432,3.532,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+433,3.1,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+434,3.16,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+435,3.1,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+436,3.56,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+437,3.97,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+438,4,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+439,3.2,7 hours,Between 8pm and 10pm,Between 6am and 8am,valid
+440,3,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+441,3.477,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+442,3.46,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+443,3.77,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+444,3.5,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+445,2.8,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+446,3.78,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+447,3.6,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+448,3.4,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+449,2.9,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+450,3.94,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+451,3,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+452,3.1,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+453,3.7,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+454,4,7 hours,Between 12am and 2am,Between 6am and 8am,valid
+455,4,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+456,3.89,7 hours,Between 12am and 2am,Between 10am and 12pm,valid
+457,3.75,7 hours,Between 10pm and 12am,Before 6am,valid
+458,4,7 hours,Before 8pm,After 12pm,valid
+459,3.5,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+460,3.575,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+461,3.5,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+462,3.67,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+463,3.7,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+464,3.51,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+465,2.8,7 hours,Between 12am and 2am,Between 6am and 8am,valid
+466,3.72,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+467,2.9,7 hours,Between 10pm and 12am,Before 6am,valid
+468,2.92,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+469,2.7,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+470,3.24,7 hours,Between 12am and 2am,Between 6am and 8am,valid
+471,3.9,7 hours,Between 10pm and 12am,Between 8am and 10am,valid
+472,3.56,7 hours,Between 12am and 2am,Between 6am and 8am,valid
+473,3.75,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+474,2.8,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+475,3.82,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+476,3.7,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+477,3.2,7 hours,Between 12am and 2am,Between 6am and 8am,valid
+478,2.4,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+479,3.75,7 hours,Between 12am and 2am,Between 10am and 12pm,valid
+480,2.6,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+481,3.73,7 hours,Between 12am and 2am,Between 6am and 8am,valid
+482,3.668,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+483,2.68,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+484,3.4,7 hours,Between 12am and 2am,Between 6am and 8am,valid
+485,3.5,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+486,2.8,7 hours,Between 12am and 2am,Between 8am and 10am,valid
+487,2.8,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+488,3.09,7 hours,Between 12am and 2am,Between 10am and 12pm,valid
+489,2.8,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+490,3.94,7 hours,Between 10pm and 12am,Between 6am and 8am,valid
+491,2.89,7 hours,Between 10pm and 12am,Between 10am and 12pm,valid
+492,3.75,8 hours,Between 10pm and 12am,Between 6am and 8am,valid
+493,3.3,8 hours,Between 10pm and 12am,Between 8am and 10am,valid
+494,4,8 hours,Between 12am and 2am,Between 8am and 10am,valid
+495,4,8 hours,Between 12am and 2am,Between 8am and 10am,valid
+496,4,8 hours,Between 10pm and 12am,Between 6am and 8am,valid
+497,3.91,8 hours,Between 8pm and 10pm,Between 6am and 8am,valid
+498,3.6,8 hours,Between 12am and 2am,Between 8am and 10am,valid
+499,4,8 hours,Between 10pm and 12am,Between 6am and 8am,valid
+500,4,8 hours,Between 10pm and 12am,Between 6am and 8am,valid
+501,3.75,8 hours,Between 10pm and 12am,Between 8am and 10am,valid
+502,3.6,8 hours,Between 10pm and 12am,Between 6am and 8am,valid
+503,3.5,8 hours,Between 12am and 2am,Between 8am and 10am,valid
+504,3.6,8 hours,After 2am,Between 8am and 10am,valid
+505,3.6,8 hours,Between 10pm and 12am,Between 10am and 12pm,valid
+506,3.8,8 hours,Between 12am and 2am,Between 8am and 10am,valid
+507,4,8 hours,Between 10pm and 12am,Between 6am and 8am,valid
+508,4,8 hours,Between 10pm and 12am,Before 6am,valid
+509,4,8 hours,Between 10pm and 12am,Between 6am and 8am,valid
+510,2.5,8 hours,Between 10pm and 12am,Between 6am and 8am,valid
+511,3.75,8 hours,Between 10pm and 12am,Between 8am and 10am,valid
+512,3.927,8 hours,Between 12am and 2am,Between 8am and 10am,valid
+513,3.902,8 hours,Between 10pm and 12am,Between 8am and 10am,valid
+514,3.44,8 hours,Between 10pm and 12am,Before 6am,valid
+515,3.2,8 hours,Between 10pm and 12am,Between 6am and 8am,valid
+516,3.33,8 hours,Between 8pm and 10pm,Between 6am and 8am,valid
+517,3.5,8 hours,Between 10pm and 12am,Between 8am and 10am,valid
+518,3.95,8 hours,Between 10pm and 12am,Between 8am and 10am,valid
+519,3.5,8 hours,Between 12am and 2am,Between 10am and 12pm,valid
+520,3.12,8 hours,Between 10pm and 12am,Between 8am and 10am,valid
+521,2.9,8 hours,Between 10pm and 12am,Between 6am and 8am,valid
+522,2.974,8 hours,Between 10pm and 12am,Between 6am and 8am,valid
+523,2.7,8 hours,Between 12am and 2am,Between 8am and 10am,valid
+524,3.5,8 hours,Between 12am and 2am,Between 8am and 10am,valid
+525,3.87,8 hours,Between 12am and 2am,Between 8am and 10am,valid
+526,3.1,8 hours,Between 10pm and 12am,Between 8am and 10am,valid
+527,3.5,8 hours,Between 8pm and 10pm,Between 6am and 8am,valid
+528,4,8 hours,Between 10pm and 12am,Between 8am and 10am,valid
+529,3.5,8 hours,Between 12am and 2am,Between 10am and 12pm,valid
+530,3.61,8 hours,Between 10pm and 12am,Between 8am and 10am,valid
+531,4,8 hours,Between 10pm and 12am,Between 8am and 10am,valid
+532,4,8 hours,Between 10pm and 12am,Between 6am and 8am,valid
+533,3.4,8 hours,Between 12am and 2am,Between 8am and 10am,valid
+534,3.9,8 hours,Between 10pm and 12am,Between 6am and 8am,valid
+535,2.75,8 hours,Between 10pm and 12am,Between 6am and 8am,valid
+536,3.5,8 hours,Between 8pm and 10pm,Before 6am,valid
+537,3.56,8 hours,Between 12am and 2am,Between 8am and 10am,valid
+538,3.1,8 hours,Between 12am and 2am,Between 8am and 10am,valid
+539,3.7,8 hours,Between 12am and 2am,Between 8am and 10am,valid
+540,3.4,8 hours,Between 12am and 2am,Between 6am and 8am,valid
+541,3.893,8 hours,Between 10pm and 12am,Between 8am and 10am,valid
+542,3.78,8 hours,Between 10pm and 12am,Between 6am and 8am,valid
+543,4,8 hours,Between 12am and 2am,Between 8am and 10am,valid
+544,3.8,8 hours,Between 8pm and 10pm,Before 6am,valid
+545,3.25,8 hours,Between 10pm and 12am,Between 8am and 10am,valid
+546,2.9,8 hours,Between 10pm and 12am,Between 6am and 8am,valid
+547,4,8 hours,Between 10pm and 12am,Between 8am and 10am,valid
+548,3.11,8 hours,Between 10pm and 12am,Between 6am and 8am,valid
+549,4,8 hours,Between 10pm and 12am,Between 8am and 10am,valid
+550,3,8 hours,Between 10pm and 12am,Between 8am and 10am,valid
+551,3.4,8 hours,Between 12am and 2am,Between 8am and 10am,valid
+552,3.01,8 hours,Between 12am and 2am,Between 10am and 12pm,valid
+553,3.53,8 hours,Between 10pm and 12am,Between 8am and 10am,valid
+554,4,8 hours,Between 10pm and 12am,Between 8am and 10am,valid
+555,2.3,8 hours,Between 12am and 2am,Between 8am and 10am,valid
+556,3.8,8 hours,Between 10pm and 12am,Between 6am and 8am,valid
+557,3.5,8 hours,Between 12am and 2am,Between 8am and 10am,valid
+558,3.8,8 hours,Between 10pm and 12am,Between 8am and 10am,valid
+559,3.75,8 hours,Between 10pm and 12am,Between 6am and 8am,valid
+560,2.8,8 hours,Between 10pm and 12am,Between 8am and 10am,valid
+561,4,8 hours,Between 10pm and 12am,Between 6am and 8am,valid
+562,0.94,8 hours,Between 10pm and 12am,Between 8am and 10am,valid
+563,3.7,8 hours,Between 12am and 2am,Between 8am and 10am,valid
+564,4,8 hours,Between 10pm and 12am,Before 6am,valid
+565,4,8 hours,Between 12am and 2am,Between 8am and 10am,valid
+566,3.3,8 hours,Between 8pm and 10pm,Before 6am,valid
+567,3.4,8 hours,Between 12am and 2am,Between 10am and 12pm,valid
+568,3.9,8 hours,Between 12am and 2am,Between 8am and 10am,valid
+569,3.7,8 hours,Between 10pm and 12am,Between 8am and 10am,valid
+570,3.3,8 hours,Between 12am and 2am,Between 8am and 10am,valid
+571,3.4,8 hours,Between 10pm and 12am,Between 6am and 8am,valid
+572,2.9,8 hours,Between 12am and 2am,Between 8am and 10am,valid
+573,3.12,8 hours,Between 10pm and 12am,Between 6am and 8am,valid
+574,4,8 hours,Between 8pm and 10pm,Before 6am,valid
+575,2.9,8 hours,Between 12am and 2am,Between 8am and 10am,valid
+576,4,8 hours,Between 12am and 2am,Between 8am and 10am,valid
+577,3.5,8 hours,Between 12am and 2am,Between 8am and 10am,valid
+578,3.45,8 hours,Between 10pm and 12am,Between 8am and 10am,valid
+579,4,8 hours,Between 8pm and 10pm,Before 6am,valid
+580,2.7,8 hours,Between 12am and 2am,Between 8am and 10am,valid
+581,3.76,8 hours,Between 12am and 2am,Between 10am and 12pm,valid
+582,2.6,8 hours,Between 10pm and 12am,Between 6am and 8am,valid
+583,3.9,8 hours,Between 10pm and 12am,Between 6am and 8am,valid
+584,3.76,8 hours,Between 10pm and 12am,Between 6am and 8am,valid
+585,3.63,8 hours,Between 10pm and 12am,Before 6am,valid
+586,2.8,9 hours,Between 10pm and 12am,Between 8am and 10am,valid
+587,2.7,9 hours,Between 12am and 2am,Between 8am and 10am,valid
+588,2.5,9 hours,Between 10pm and 12am,Between 8am and 10am,valid
+589,3.7,9 hours,Between 8pm and 10pm,Between 8am and 10am,valid
+590,3.2,9 hours,Between 10pm and 12am,Between 8am and 10am,valid
+591,2.5,9 hours,Between 10pm and 12am,Between 6am and 8am,valid
+592,3.01,9 hours,Between 10pm and 12am,Between 8am and 10am,valid
+593,3,9 hours,Between 12am and 2am,Between 10am and 12pm,valid
+594,3.674,9 hours,Between 12am and 2am,Between 10am and 12pm,valid
+595,3.64,9 hours,Between 10pm and 12am,Between 10am and 12pm,valid
+596,2.9,9 hours,Between 10pm and 12am,Between 6am and 8am,valid
+597,3.5,9 hours,Between 12am and 2am,Between 10am and 12pm,valid
+598,2.4,9 hours,After 2am,Between 10am and 12pm,valid
+599,3.6,9 hours,Between 10pm and 12am,Between 10am and 12pm,valid
+600,2.5,9 hours,Between 10pm and 12am,Between 6am and 8am,valid
+601,3,9 hours,Between 10pm and 12am,Between 8am and 10am,valid
+602,2.5,9 hours,Between 10pm and 12am,Between 8am and 10am,valid
+603,2.51,9 hours,Between 10pm and 12am,Between 6am and 8am,valid
+604,3.83,9 hours,Between 12am and 2am,Between 10am and 12pm,valid
+605,4,9 hours,Between 12am and 2am,Between 8am and 10am,valid
+606,3.55,9 hours,Between 10pm and 12am,Between 6am and 8am,valid
+607,3.6,9 hours,Between 10pm and 12am,Between 8am and 10am,valid
+608,2.9,9 hours,Between 10pm and 12am,Between 8am and 10am,valid
+609,3.47,9 hours,Between 10pm and 12am,Between 6am and 8am,valid
+610,3.4,9 hours,Between 10pm and 12am,Between 8am and 10am,valid
+611,4,9 hours,Between 12am and 2am,Between 10am and 12pm,valid
+612,2.67,9 hours,Between 12am and 2am,Between 10am and 12pm,valid
+613,2.79,9 hours,Between 8pm and 10pm,Before 6am,valid
+614,3.76,9 hours,Between 10pm and 12am,Between 6am and 8am,valid

@@ -1,0 +1,615 @@
+﻿record_id,current_gpa,do_you_work,how_many_hours_work_per_week,gpa_quality_flag
+1,3.94,No,0,valid
+2,3.75,No,0,valid
+3,3.75,No,0,valid
+4,3.2,No,0,valid
+5,3.3,No,0,valid
+6,4,No,0,valid
+7,4,No,0,valid
+8,3.69,No,0,valid
+9,4,No,0,valid
+10,3.8,No,0,valid
+11,3.91,No,0,valid
+12,3.47,No,0,valid
+13,2.8,No,0,valid
+14,3.95,No,0,valid
+15,3.45,No,0,valid
+16,3.7,No,0,valid
+17,3.8,No,0,valid
+18,3.75,No,0,valid
+19,3.8,No,0,valid
+20,3.7,No,0,valid
+21,3.266,No,0,valid
+22,1.7,No,0,valid
+23,2.5,No,0,valid
+24,3.5,No,0,valid
+25,1.65,No,0,valid
+26,3.75,No,0,valid
+27,3.6,No,0,valid
+28,3.3,No,0,valid
+29,3.4,No,0,valid
+30,3.7,No,0,valid
+31,3.83,No,0,valid
+32,3,No,0,valid
+33,3.2,No,0,valid
+34,4,No,0,valid
+35,2.6,No,0,valid
+36,3.9,No,0,valid
+37,4,No,0,valid
+38,3.8,No,0,valid
+39,4,No,0,valid
+40,4,No,0,valid
+41,3.56,No,0,valid
+42,4,No,0,valid
+43,4,No,0,valid
+44,2.75,No,0,valid
+45,4,No,0,valid
+46,4,No,0,valid
+47,3.1,No,0,valid
+48,3.7,No,0,valid
+49,3.5,No,0,valid
+50,4,No,0,valid
+51,4,No,0,valid
+52,3,No,0,valid
+53,3.5,No,0,valid
+54,3.85,No,0,valid
+55,3.45,No,0,valid
+56,4,No,0,valid
+57,3.8,No,0,valid
+58,3.2,No,0,valid
+59,3.6,No,0,valid
+60,2.7,No,0,valid
+61,3.75,No,0,valid
+62,4,No,0,valid
+63,3.5,No,0,valid
+64,4,No,0,valid
+65,3,No,0,valid
+66,3.01,No,0,valid
+67,4,No,0,valid
+68,3.8,No,0,valid
+69,3.6,No,0,valid
+70,3,No,0,valid
+71,3,No,0,valid
+72,3.3,No,0,valid
+73,3.5,No,0,valid
+74,3.8,No,0,valid
+75,4,No,0,valid
+76,3.34,No,0,valid
+77,3.82,No,0,valid
+78,3.8,No,0,valid
+79,3.7,No,0,valid
+80,3.4,No,0,valid
+81,3.67,No,0,valid
+82,2.9,No,0,valid
+83,3.5,No,0,valid
+84,0.4,No,0,valid
+85,4,No,0,valid
+86,1.9,No,0,valid
+87,3.5,No,0,valid
+88,3.5,No,0,valid
+89,4,No,0,valid
+90,4,No,0,valid
+91,3.2,No,0,valid
+92,4,No,0,valid
+93,3.9,No,0,valid
+94,4,No,0,valid
+95,4,No,0,valid
+96,3.7,No,0,valid
+97,3.36,No,0,valid
+98,3.64,No,0,valid
+99,3.902,No,0,valid
+100,3.4,No,0,valid
+101,3.7,No,0,valid
+102,3.81,No,0,valid
+103,3.33,No,0,valid
+104,3.64,No,0,valid
+105,3.52,No,0,valid
+106,3.4,No,0,valid
+107,3.5,No,0,valid
+108,4,No,0,valid
+109,3.2,No,0,valid
+110,3.29,No,0,valid
+111,3.2,No,0,valid
+112,3.47,No,0,valid
+113,3.5,No,0,valid
+114,3.6,No,0,valid
+115,3.5,No,0,valid
+116,3.3,No,0,valid
+117,3.95,No,0,valid
+118,3.78,No,0,valid
+119,3.12,No,0,valid
+120,3.22,No,0,valid
+121,3.45,No,0,valid
+122,3,No,0,valid
+123,3.6,No,0,valid
+124,3.4,No,0,valid
+125,3.7,No,0,valid
+126,3.8,No,0,valid
+127,3.8,No,0,valid
+128,3.01,No,0,valid
+129,3.46,No,0,valid
+130,3.1,No,0,valid
+131,3.23,No,0,valid
+132,3.26,No,0,valid
+133,4,No,0,valid
+134,3.04,No,0,valid
+135,3.94,No,0,valid
+136,3.927,No,0,valid
+137,3.61,No,0,valid
+138,3.84,No,0,valid
+139,3.7,No,0,valid
+140,3.4,No,0,valid
+141,3.9,No,0,valid
+142,3.5,No,0,valid
+143,3.5,No,0,valid
+144,3.92,No,0,valid
+145,3.57,No,0,valid
+146,3.8,No,0,valid
+147,3.84,No,0,valid
+148,3.7,No,0,valid
+149,2.75,No,0,valid
+150,2.49,No,0,valid
+151,4.71,No,0,above_expected_range
+152,3.7,No,0,valid
+153,3.1,No,0,valid
+154,2.9,No,0,valid
+155,3.721,No,0,valid
+156,4,No,0,valid
+157,3.4,No,0,valid
+158,3.85,No,0,valid
+159,3.78,No,0,valid
+160,3.9,No,0,valid
+161,3.8,No,0,valid
+162,3.8,No,0,valid
+163,3.6,No,0,valid
+164,3.78,No,0,valid
+165,3.83,No,0,valid
+166,2.52,No,0,valid
+167,3.78,No,0,valid
+168,3.2,No,0,valid
+169,3.9,No,0,valid
+170,4,No,0,valid
+171,3.31,No,0,valid
+172,4,No,0,valid
+173,3.3,No,0,valid
+174,3.5,No,0,valid
+175,2.9,No,0,valid
+176,3,No,0,valid
+177,3.55,No,0,valid
+178,3.6,No,0,valid
+179,3.5,No,0,valid
+180,3.5,No,0,valid
+181,3.2,No,0,valid
+182,3.5,No,0,valid
+183,3.37,No,0,valid
+184,3.4,No,0,valid
+185,3.6,No,0,valid
+186,3.9,No,0,valid
+187,4,No,0,valid
+188,3.97,No,0,valid
+189,2.48,No,0,valid
+190,3.01,No,0,valid
+191,3.3,No,0,valid
+192,2.9,No,0,valid
+193,2.48,No,0,valid
+194,2.9,No,0,valid
+195,3.91,No,0,valid
+196,4,No,0,valid
+197,2.3,No,0,valid
+198,2.7,No,0,valid
+199,3.75,No,0,valid
+200,3.8,No,0,valid
+201,3.7,No,0,valid
+202,3.46,No,0,valid
+203,3.5,No,0,valid
+204,3.4,No,0,valid
+205,3.94,No,0,valid
+206,3,No,0,valid
+207,0.94,No,0,valid
+208,3.2,No,0,valid
+209,3,No,0,valid
+210,3.4,No,0,valid
+211,3,No,0,valid
+212,4,No,0,valid
+213,4,No,0,valid
+214,3.89,No,0,valid
+215,3,No,0,valid
+216,3.8,No,0,valid
+217,3.7,No,0,valid
+218,3.75,No,0,valid
+219,3,No,0,valid
+220,3.4,No,0,valid
+221,3.3,No,0,valid
+222,3.4,No,0,valid
+223,3,No,0,valid
+224,4,No,0,valid
+225,4,No,0,valid
+226,3.15,No,0,valid
+227,3.23,No,0,valid
+228,3.5,No,0,valid
+229,2.67,No,0,valid
+230,3.575,No,0,valid
+231,3.5,No,0,valid
+232,3.7,No,0,valid
+233,3.1,No,0,valid
+234,3.72,No,0,valid
+235,3,No,0,valid
+236,2.9,No,0,valid
+237,3.12,No,0,valid
+238,4,No,0,valid
+239,3.487,No,0,valid
+240,2.7,No,0,valid
+241,3.46,No,0,valid
+242,3.8,No,0,valid
+243,3.94,No,0,valid
+244,3.9,No,0,valid
+245,3,No,0,valid
+246,3.56,No,0,valid
+247,3.1,No,0,valid
+248,3.75,No,0,valid
+249,2.8,No,0,valid
+250,3.49,No,0,valid
+251,3.2,No,0,valid
+252,4,No,0,valid
+253,2.7,No,0,valid
+254,2.4,No,0,valid
+255,3.76,No,0,valid
+256,3.668,No,0,valid
+257,2.7,No,0,valid
+258,2.54,No,0,valid
+259,3.75,No,0,valid
+260,3.5,No,0,valid
+261,3.9,No,0,valid
+262,3.76,No,0,valid
+263,2.7,No,0,valid
+264,3.5,No,0,valid
+265,3.9,No,0,valid
+266,3.09,No,0,valid
+267,2.5,No,0,valid
+268,3,No,0,valid
+269,3.94,No,0,valid
+270,3.5,No,0,valid
+271,2.89,No,0,valid
+272,3.23,No,0,valid
+273,3.4,Yes,10-20 hours,valid
+274,3.13,Yes,30-40 hours,valid
+275,3.3,Yes,5-10 hours,valid
+276,3.6,Yes,10-20 hours,valid
+277,2.7,Yes,20-30 hours,valid
+278,4,Yes,10-20 hours,valid
+279,4,Yes,30-40 hours,valid
+280,3.2,Yes,20-30 hours,valid
+281,3.9,Yes,5-10 hours,valid
+282,3.9,Yes,10-20 hours,valid
+283,2.3,Yes,Over 40 hours,valid
+284,3.45,Yes,10-20 hours,valid
+285,3.6,Yes,10-20 hours,valid
+286,4,Yes,5-10 hours,valid
+287,3.75,Yes,20-30 hours,valid
+288,3.7,Yes,20-30 hours,valid
+289,2.1,Yes,20-30 hours,valid
+290,3.6,Yes,Under 5 hours,valid
+291,3.2,Yes,5-10 hours,valid
+292,2.7,Yes,5-10 hours,valid
+293,3.6,Yes,Under 5 hours,valid
+294,3.8,Yes,Under 5 hours,valid
+295,3.5,Yes,10-20 hours,valid
+296,3.5,Yes,20-30 hours,valid
+297,4.48,Yes,10-20 hours,above_expected_range
+298,4,Yes,5-10 hours,valid
+299,2.5,Yes,20-30 hours,valid
+300,3.75,Yes,5-10 hours,valid
+301,3.8,Yes,20-30 hours,valid
+302,2.5,Yes,20-30 hours,valid
+303,3.94,Yes,10-20 hours,valid
+304,4,Yes,10-20 hours,valid
+305,3,Yes,10-20 hours,valid
+306,4,Yes,5-10 hours,valid
+307,3.55,Yes,10-20 hours,valid
+308,3.3,Yes,10-20 hours,valid
+309,3.8,Yes,10-20 hours,valid
+310,2.8,Yes,30-40 hours,valid
+311,3.6,Yes,20-30 hours,valid
+312,4,Yes,20-30 hours,valid
+313,3.8,Yes,5-10 hours,valid
+314,2.8,Yes,20-30 hours,valid
+315,0.57,Yes,30-40 hours,valid
+316,0.57,Yes,30-40 hours,valid
+317,2.5,Yes,10-20 hours,valid
+318,3.31,Yes,10-20 hours,valid
+319,3.67,Yes,10-20 hours,valid
+320,3.7,Yes,5-10 hours,valid
+321,2,Yes,20-30 hours,valid
+322,3.6,Yes,10-20 hours,valid
+323,4,Yes,20-30 hours,valid
+324,3.5,Yes,10-20 hours,valid
+325,3.8,Yes,5-10 hours,valid
+326,4,Yes,30-40 hours,valid
+327,4,Yes,10-20 hours,valid
+328,3.674,Yes,20-30 hours,valid
+329,3.76,Yes,5-10 hours,valid
+330,3.927,Yes,Under 5 hours,valid
+331,3.1,Yes,10-20 hours,valid
+332,3.4,Yes,5-10 hours,valid
+333,2.5,Yes,10-20 hours,valid
+334,2.5,Yes,20-30 hours,valid
+335,3.4,Yes,20-30 hours,valid
+336,2.9,Yes,10-20 hours,valid
+337,3,Yes,10-20 hours,valid
+338,3.5,Yes,10-20 hours,valid
+339,2.9,Yes,10-20 hours,valid
+340,3.97,Yes,20-30 hours,valid
+341,3.4,Yes,10-20 hours,valid
+342,3.44,Yes,20-30 hours,valid
+343,2.9,Yes,5-10 hours,valid
+344,3.2,Yes,10-20 hours,valid
+345,3.5,Yes,10-20 hours,valid
+346,3.4,Yes,10-20 hours,valid
+347,3.4,Yes,10-20 hours,valid
+348,3,Yes,10-20 hours,valid
+349,3.36,Yes,10-20 hours,valid
+350,2.4,Yes,5-10 hours,valid
+351,3.83,Yes,10-20 hours,valid
+352,2.9,Yes,10-20 hours,valid
+353,2.24,Yes,20-30 hours,valid
+354,3.8,Yes,10-20 hours,valid
+355,2.5,Yes,30-40 hours,valid
+356,3.75,Yes,20-30 hours,valid
+357,3.6,Yes,5-10 hours,valid
+358,3.6,Yes,20-30 hours,valid
+359,3.51,Yes,10-20 hours,valid
+360,3.5,Yes,10-20 hours,valid
+361,3.5,Yes,10-20 hours,valid
+362,3.2,Yes,10-20 hours,valid
+363,3.75,Yes,5-10 hours,valid
+364,3.53,Yes,20-30 hours,valid
+365,3.6,Yes,10-20 hours,valid
+366,3.8,Yes,5-10 hours,valid
+367,3.5,Yes,10-20 hours,valid
+368,2.9,Yes,10-20 hours,valid
+369,3.85,Yes,10-20 hours,valid
+370,2.9,Yes,10-20 hours,valid
+371,3.6,Yes,10-20 hours,valid
+372,3.72,Yes,10-20 hours,valid
+373,3.56,Yes,20-30 hours,valid
+374,3.3,Yes,10-20 hours,valid
+375,2.974,Yes,10-20 hours,valid
+376,3.49,Yes,5-10 hours,valid
+377,3.1,Yes,10-20 hours,valid
+378,2.7,Yes,10-20 hours,valid
+379,3.3,Yes,20-30 hours,valid
+380,3.33,Yes,5-10 hours,valid
+381,2.87,Yes,10-20 hours,valid
+382,3.83,Yes,20-30 hours,valid
+383,2.28,Yes,Over 40 hours,valid
+384,2.75,Yes,20-30 hours,valid
+385,3.5,Yes,20-30 hours,valid
+386,3.5,Yes,10-20 hours,valid
+387,3.87,Yes,10-20 hours,valid
+388,3.04,Yes,20-30 hours,valid
+389,3.44,Yes,20-30 hours,valid
+390,3,Yes,Over 40 hours,valid
+391,2.5,Yes,10-20 hours,valid
+392,3.1,Yes,10-20 hours,valid
+393,3.3,Yes,5-10 hours,valid
+394,3.87,Yes,20-30 hours,valid
+395,3.5,Yes,10-20 hours,valid
+396,3,Yes,10-20 hours,valid
+397,3.7,Yes,10-20 hours,valid
+398,3.9,Yes,10-20 hours,valid
+399,3.4,Yes,20-30 hours,valid
+400,3.49,Yes,10-20 hours,valid
+401,3.11,Yes,10-20 hours,valid
+402,3.2,Yes,30-40 hours,valid
+403,3.49,Yes,10-20 hours,valid
+404,3.01,Yes,10-20 hours,valid
+405,3.45,Yes,30-40 hours,valid
+406,2.74,Yes,20-30 hours,valid
+407,3.5,Yes,20-30 hours,valid
+408,3.5,Yes,10-20 hours,valid
+409,3.15,Yes,5-10 hours,valid
+410,3.81,Yes,10-20 hours,valid
+411,3.07,Yes,30-40 hours,valid
+412,2.5,Yes,20-30 hours,valid
+413,3.8,Yes,5-10 hours,valid
+414,2.9,Yes,20-30 hours,valid
+415,3.43,Yes,20-30 hours,valid
+416,3.4,Yes,20-30 hours,valid
+417,3.5,Yes,20-30 hours,valid
+418,3.4,Yes,30-40 hours,valid
+419,2.6,Yes,20-30 hours,valid
+420,3.6,Yes,20-30 hours,valid
+421,3.96,Yes,20-30 hours,valid
+422,3.97,Yes,10-20 hours,valid
+423,3.1,Yes,20-30 hours,valid
+424,4,Yes,30-40 hours,valid
+425,3.95,Yes,10-20 hours,valid
+426,4,Yes,10-20 hours,valid
+427,2.99,Yes,20-30 hours,valid
+428,4,Yes,10-20 hours,valid
+429,3,Yes,5-10 hours,valid
+430,2.51,Yes,Over 40 hours,valid
+431,3.2,Yes,20-30 hours,valid
+432,3.6,Yes,10-20 hours,valid
+433,3.61,Yes,30-40 hours,valid
+434,3.86,Yes,10-20 hours,valid
+435,3.5,Yes,20-30 hours,valid
+436,3.92,Yes,10-20 hours,valid
+437,3.8,Yes,20-30 hours,valid
+438,3.3,Yes,10-20 hours,valid
+439,3.4,Yes,20-30 hours,valid
+440,3.2,Yes,20-30 hours,valid
+441,3.45,Yes,5-10 hours,valid
+442,3.3,Yes,10-20 hours,valid
+443,3.5,Yes,10-20 hours,valid
+444,3.76,Yes,20-30 hours,valid
+445,3.94,Yes,10-20 hours,valid
+446,3.92,Yes,10-20 hours,valid
+447,3.86,Yes,20-30 hours,valid
+448,3.6,Yes,20-30 hours,valid
+449,3.34,Yes,20-30 hours,valid
+450,3.56,Yes,10-20 hours,valid
+451,2.9,Yes,10-20 hours,valid
+452,3.5,Yes,20-30 hours,valid
+453,2.7,Yes,10-20 hours,valid
+454,2.9,Yes,10-20 hours,valid
+455,2.5,Yes,20-30 hours,valid
+456,3.1,Yes,Over 40 hours,valid
+457,3.67,Yes,20-30 hours,valid
+458,4,Yes,5-10 hours,valid
+459,3.2,Yes,10-20 hours,valid
+460,3.1,Yes,10-20 hours,valid
+461,2.69,Yes,20-30 hours,valid
+462,3.6,Yes,5-10 hours,valid
+463,3.6,Yes,5-10 hours,valid
+464,2.7,Yes,30-40 hours,valid
+465,4,Yes,10-20 hours,valid
+466,3.5,Yes,10-20 hours,valid
+467,3.6,Yes,20-30 hours,valid
+468,4,Yes,10-20 hours,valid
+469,3.45,Yes,10-20 hours,valid
+470,3.6,Yes,10-20 hours,valid
+471,3.2,Yes,10-20 hours,valid
+472,3,Yes,5-10 hours,valid
+473,3.61,Yes,Under 5 hours,valid
+474,2.6,Yes,30-40 hours,valid
+475,3.36,Yes,10-20 hours,valid
+476,3.41,Yes,20-30 hours,valid
+477,3.2,Yes,10-20 hours,valid
+478,3.25,Yes,30-40 hours,valid
+479,3.5,Yes,10-20 hours,valid
+480,3.3,Yes,10-20 hours,valid
+481,3.6,Yes,10-20 hours,valid
+482,3.2,Yes,30-40 hours,valid
+483,2.6,Yes,5-10 hours,valid
+484,3.8,Yes,20-30 hours,valid
+485,3.9,Yes,20-30 hours,valid
+486,3.11,Yes,20-30 hours,valid
+487,3.4,Yes,10-20 hours,valid
+488,3.06,Yes,20-30 hours,valid
+489,3.893,Yes,5-10 hours,valid
+490,3.3,Yes,10-20 hours,valid
+491,3.2,Yes,10-20 hours,valid
+492,3.78,Yes,10-20 hours,valid
+493,2.8,Yes,20-30 hours,valid
+494,2.89,Yes,10-20 hours,valid
+495,2,Yes,20-30 hours,valid
+496,3.4,Yes,20-30 hours,valid
+497,4,Yes,20-30 hours,valid
+498,2.7,Yes,20-30 hours,valid
+499,3.8,Yes,30-40 hours,valid
+500,3.25,Yes,30-40 hours,valid
+501,3.24,Yes,10-20 hours,valid
+502,3.7,Yes,20-30 hours,valid
+503,3.47,Yes,20-30 hours,valid
+504,3,Yes,20-30 hours,valid
+505,3.1,Yes,10-20 hours,valid
+506,3.532,Yes,20-30 hours,valid
+507,3.5,Yes,10-20 hours,valid
+508,3.85,Yes,5-10 hours,valid
+509,3.6,Yes,Under 5 hours,valid
+510,2.78,Yes,20-30 hours,valid
+511,3.89,Yes,30-40 hours,valid
+512,4,Yes,20-30 hours,valid
+513,3.11,Yes,Over 40 hours,valid
+514,3.7,Yes,20-30 hours,valid
+515,3.1,Yes,10-20 hours,valid
+516,3.16,Yes,10-20 hours,valid
+517,3.24,Yes,10-20 hours,valid
+518,3.7,Yes,20-30 hours,valid
+519,3.45,Yes,20-30 hours,valid
+520,4,Yes,20-30 hours,valid
+521,3,Yes,20-30 hours,valid
+522,3.1,Yes,10-20 hours,valid
+523,3.56,Yes,30-40 hours,valid
+524,4,Yes,10-20 hours,valid
+525,3.2,Yes,10-20 hours,valid
+526,3.4,Yes,10-20 hours,valid
+527,3.53,Yes,10-20 hours,valid
+528,3.5,Yes,5-10 hours,valid
+529,3.8,Yes,20-30 hours,valid
+530,3.8,Yes,10-20 hours,valid
+531,3.5,Yes,10-20 hours,valid
+532,3.8,Yes,10-20 hours,valid
+533,1.9,Yes,5-10 hours,valid
+534,3,Yes,10-20 hours,valid
+535,3.8,Yes,20-30 hours,valid
+536,2.8,Yes,20-30 hours,valid
+537,3,Yes,Under 5 hours,valid
+538,3.477,Yes,20-30 hours,valid
+539,3.77,Yes,10-20 hours,valid
+540,3.5,Yes,10-20 hours,valid
+541,2.8,Yes,5-10 hours,valid
+542,4,Yes,30-40 hours,valid
+543,4,Yes,10-20 hours,valid
+544,3.78,Yes,10-20 hours,valid
+545,2.76,Yes,20-30 hours,valid
+546,3.6,Yes,5-10 hours,valid
+547,2.05,Yes,10-20 hours,valid
+548,3.235,Yes,10-20 hours,valid
+549,3.6,Yes,10-20 hours,valid
+550,2.9,Yes,10-20 hours,valid
+551,3.47,Yes,5-10 hours,valid
+552,3.1,Yes,10-20 hours,valid
+553,3.1,Yes,Over 40 hours,valid
+554,3.7,Yes,5-10 hours,valid
+555,3.7,Yes,20-30 hours,valid
+556,4,Yes,5-10 hours,valid
+557,4,Yes,10-20 hours,valid
+558,3,Yes,10-20 hours,valid
+559,4,Yes,Under 5 hours,valid
+560,3.9,Yes,30-40 hours,valid
+561,3.67,Yes,10-20 hours,valid
+562,3.7,Yes,5-10 hours,valid
+563,3.51,Yes,5-10 hours,valid
+564,2.8,Yes,5-10 hours,valid
+565,3.3,Yes,30-40 hours,valid
+566,3.3,Yes,20-30 hours,valid
+567,2.8,Yes,30-40 hours,valid
+568,3.65,Yes,30-40 hours,valid
+569,3.4,Yes,10-20 hours,valid
+570,2.9,Yes,20-30 hours,valid
+571,3,Yes,10-20 hours,valid
+572,3,Yes,10-20 hours,valid
+573,3.2,Yes,30-40 hours,valid
+574,3.3,Yes,10-20 hours,valid
+575,3.09,Yes,30-40 hours,valid
+576,3.84,Yes,5-10 hours,valid
+577,2.92,Yes,20-30 hours,valid
+578,3.6,Yes,20-30 hours,valid
+579,3.26,Yes,20-30 hours,valid
+580,3.2,Yes,10-20 hours,valid
+581,3.94,Yes,20-30 hours,valid
+582,2.9,Yes,10-20 hours,valid
+583,3.24,Yes,10-20 hours,valid
+584,3.72,Yes,30-40 hours,valid
+585,4,Yes,10-20 hours,valid
+586,3.5,Yes,10-20 hours,valid
+587,3.54,Yes,10-20 hours,valid
+588,2.9,Yes,5-10 hours,valid
+589,3.45,Yes,10-20 hours,valid
+590,3.3,Yes,20-30 hours,valid
+591,3.5,Yes,10-20 hours,valid
+592,3.82,Yes,5-10 hours,valid
+593,3.7,Yes,Over 40 hours,valid
+594,3.82,Yes,5-10 hours,valid
+595,3,Yes,30-40 hours,valid
+596,3.98,Yes,10-20 hours,valid
+597,3.75,Yes,5-10 hours,valid
+598,2.6,Yes,10-20 hours,valid
+599,3.73,Yes,20-30 hours,valid
+600,2.91,Yes,5-10 hours,valid
+601,3.67,Yes,30-40 hours,valid
+602,3.83,Yes,10-20 hours,valid
+603,2.6,Yes,10-20 hours,valid
+604,2.68,Yes,10-20 hours,valid
+605,3.05,Yes,10-20 hours,valid
+606,3.4,Yes,20-30 hours,valid
+607,2.68,Yes,10-20 hours,valid
+608,2.8,Yes,10-20 hours,valid
+609,2.8,Yes,10-20 hours,valid
+610,2.8,Yes,10-20 hours,valid
+611,2.45,Yes,10-20 hours,valid
+612,2.79,Yes,Under 5 hours,valid
+613,3.76,Yes,30-40 hours,valid
+614,3.63,Yes,10-20 hours,valid

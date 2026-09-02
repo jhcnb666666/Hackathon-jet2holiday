@@ -1,0 +1,606 @@
+﻿record_id,current_gpa,number_of_days_physically_active,strength_training,gpa_quality_flag
+1,4,0 days (not at all),0 days (not at all),valid
+2,3.45,0 days (not at all),1 day,valid
+3,3.7,0 days (not at all),0 days (not at all),valid
+4,3.2,0 days (not at all),0 days (not at all),valid
+5,3.8,0 days (not at all),0 days (not at all),valid
+6,3.7,0 days (not at all),0 days (not at all),valid
+7,3.45,0 days (not at all),0 days (not at all),valid
+8,3.75,0 days (not at all),0 days (not at all),valid
+9,3.7,0 days (not at all),0 days (not at all),valid
+10,3.2,0 days (not at all),0 days (not at all),valid
+11,4,0 days (not at all),5 days,valid
+12,3,0 days (not at all),0 days (not at all),valid
+13,3.2,0 days (not at all),0 days (not at all),valid
+14,4,0 days (not at all),0 days (not at all),valid
+15,3.01,0 days (not at all),0 days (not at all),valid
+16,3.34,0 days (not at all),0 days (not at all),valid
+17,3.6,0 days (not at all),0 days (not at all),valid
+18,3.67,0 days (not at all),1 day,valid
+19,2.9,0 days (not at all),0 days (not at all),valid
+20,0.57,0 days (not at all),0 days (not at all),valid
+21,0.57,0 days (not at all),0 days (not at all),valid
+22,2.5,0 days (not at all),0 days (not at all),valid
+23,3.31,0 days (not at all),0 days (not at all),valid
+24,2,0 days (not at all),0 days (not at all),valid
+25,4,0 days (not at all),0 days (not at all),valid
+26,3.674,0 days (not at all),0 days (not at all),valid
+27,3.76,0 days (not at all),0 days (not at all),valid
+28,3.36,0 days (not at all),0 days (not at all),valid
+29,3.64,0 days (not at all),0 days (not at all),valid
+30,3.4,0 days (not at all),0 days (not at all),valid
+31,3.44,0 days (not at all),0 days (not at all),valid
+32,3.5,0 days (not at all),0 days (not at all),valid
+33,3.64,0 days (not at all),0 days (not at all),valid
+34,3.2,0 days (not at all),0 days (not at all),valid
+35,3.29,0 days (not at all),0 days (not at all),valid
+36,3.47,0 days (not at all),0 days (not at all),valid
+37,3.5,0 days (not at all),0 days (not at all),valid
+38,3.6,0 days (not at all),3 days,valid
+39,3.5,0 days (not at all),0 days (not at all),valid
+40,3.95,0 days (not at all),0 days (not at all),valid
+41,3.5,0 days (not at all),0 days (not at all),valid
+42,3.6,0 days (not at all),1 day,valid
+43,3.1,0 days (not at all),0 days (not at all),valid
+44,2.5,0 days (not at all),0 days (not at all),valid
+45,3.3,0 days (not at all),0 days (not at all),valid
+46,3.46,0 days (not at all),0 days (not at all),valid
+47,4,0 days (not at all),7 days,valid
+48,3.04,0 days (not at all),0 days (not at all),valid
+49,3.4,0 days (not at all),0 days (not at all),valid
+50,3.49,0 days (not at all),0 days (not at all),valid
+51,3.2,0 days (not at all),0 days (not at all),valid
+52,3.61,0 days (not at all),1 day,valid
+53,3.7,0 days (not at all),0 days (not at all),valid
+54,3.8,0 days (not at all),0 days (not at all),valid
+55,3.4,0 days (not at all),0 days (not at all),valid
+56,3.4,0 days (not at all),0 days (not at all),valid
+57,3.1,0 days (not at all),0 days (not at all),valid
+58,2.51,0 days (not at all),0 days (not at all),valid
+59,3.45,0 days (not at all),0 days (not at all),valid
+60,3.34,0 days (not at all),0 days (not at all),valid
+61,3.5,0 days (not at all),0 days (not at all),valid
+62,2.9,0 days (not at all),0 days (not at all),valid
+63,3.67,0 days (not at all),0 days (not at all),valid
+64,2.7,0 days (not at all),0 days (not at all),valid
+65,3.5,0 days (not at all),1 day,valid
+66,2.6,0 days (not at all),0 days (not at all),valid
+67,3.893,0 days (not at all),0 days (not at all),valid
+68,3.3,0 days (not at all),0 days (not at all),valid
+69,3.78,0 days (not at all),0 days (not at all),valid
+70,2.8,0 days (not at all),0 days (not at all),valid
+71,4,0 days (not at all),0 days (not at all),valid
+72,3.6,0 days (not at all),0 days (not at all),valid
+73,2.78,0 days (not at all),0 days (not at all),valid
+74,3.16,0 days (not at all),0 days (not at all),valid
+75,3.4,0 days (not at all),0 days (not at all),valid
+76,3.45,0 days (not at all),0 days (not at all),valid
+77,3.4,0 days (not at all),0 days (not at all),valid
+78,2.48,0 days (not at all),0 days (not at all),valid
+79,1.9,0 days (not at all),0 days (not at all),valid
+80,2.05,0 days (not at all),0 days (not at all),valid
+81,0.94,0 days (not at all),0 days (not at all),valid
+82,3,0 days (not at all),0 days (not at all),valid
+83,4,0 days (not at all),0 days (not at all),valid
+84,3.15,0 days (not at all),0 days (not at all),valid
+85,3.1,0 days (not at all),0 days (not at all),valid
+86,3.65,0 days (not at all),0 days (not at all),valid
+87,2.9,0 days (not at all),0 days (not at all),valid
+88,3.12,0 days (not at all),0 days (not at all),valid
+89,3.84,0 days (not at all),4 days,valid
+90,3.24,0 days (not at all),0 days (not at all),valid
+91,3.45,0 days (not at all),0 days (not at all),valid
+92,3.49,0 days (not at all),0 days (not at all),valid
+93,3.82,0 days (not at all),0 days (not at all),valid
+94,3.7,0 days (not at all),0 days (not at all),valid
+95,3.2,0 days (not at all),0 days (not at all),valid
+96,3.98,0 days (not at all),0 days (not at all),valid
+97,3.76,0 days (not at all),0 days (not at all),valid
+98,3.67,0 days (not at all),4 days,valid
+99,3.83,0 days (not at all),0 days (not at all),valid
+100,2.6,0 days (not at all),0 days (not at all),valid
+101,2.54,0 days (not at all),0 days (not at all),valid
+102,3.9,0 days (not at all),0 days (not at all),valid
+103,2.8,0 days (not at all),0 days (not at all),valid
+104,3.75,1 day,0 days (not at all),valid
+105,3.75,1 day,0 days (not at all),valid
+106,3.2,1 day,1 day,valid
+107,3.69,1 day,2 days,valid
+108,3.8,1 day,0 days (not at all),valid
+109,3.8,1 day,1 day,valid
+110,2.5,1 day,0 days (not at all),valid
+111,3.6,1 day,1 day,valid
+112,3.8,1 day,0 days (not at all),valid
+113,4.48,1 day,1 day,above_expected_range
+114,4,1 day,0 days (not at all),valid
+115,3.5,1 day,1 day,valid
+116,4,1 day,1 day,valid
+117,3.5,1 day,0 days (not at all),valid
+118,4,1 day,1 day,valid
+119,3.8,1 day,1 day,valid
+120,3,1 day,0 days (not at all),valid
+121,3.5,1 day,1 day,valid
+122,2.8,1 day,1 day,valid
+123,3.2,1 day,1 day,valid
+124,3.6,1 day,0 days (not at all),valid
+125,4,1 day,0 days (not at all),valid
+126,2.5,1 day,0 days (not at all),valid
+127,3.4,1 day,1 day,valid
+128,2.9,1 day,1 day,valid
+129,3.5,1 day,0 days (not at all),valid
+130,2.4,1 day,0 days (not at all),valid
+131,3.53,1 day,0 days (not at all),valid
+132,3.78,1 day,0 days (not at all),valid
+133,2.974,1 day,0 days (not at all),valid
+134,2.7,1 day,1 day,valid
+135,3.5,1 day,4 days,valid
+136,3.5,1 day,1 day,valid
+137,3.9,1 day,2 days,valid
+138,3.5,1 day,0 days (not at all),valid
+139,3,1 day,0 days (not at all),valid
+140,3.4,1 day,0 days (not at all),valid
+141,3.8,1 day,2 days,valid
+142,3.6,1 day,1 day,valid
+143,4.71,1 day,0 days (not at all),above_expected_range
+144,3.56,1 day,1 day,valid
+145,3.1,1 day,0 days (not at all),valid
+146,3.6,1 day,0 days (not at all),valid
+147,4,1 day,1 day,valid
+148,4,1 day,0 days (not at all),valid
+149,3.721,1 day,1 day,valid
+150,3.36,1 day,2 days,valid
+151,3.3,1 day,1 day,valid
+152,3.6,1 day,1 day,valid
+153,3.8,1 day,1 day,valid
+154,3.11,1 day,0 days (not at all),valid
+155,3.25,1 day,0 days (not at all),valid
+156,2.9,1 day,1 day,valid
+157,3.5,1 day,1 day,valid
+158,3.89,1 day,0 days (not at all),valid
+159,4,1 day,0 days (not at all),valid
+160,3.2,1 day,0 days (not at all),valid
+161,2.3,1 day,1 day,valid
+162,3,1 day,3 days,valid
+163,3.77,1 day,0 days (not at all),valid
+164,2.8,1 day,0 days (not at all),valid
+165,4,1 day,0 days (not at all),valid
+166,3.4,1 day,1 day,valid
+167,3.235,1 day,2 days,valid
+168,3,1 day,0 days (not at all),valid
+169,3.7,1 day,0 days (not at all),valid
+170,3,1 day,0 days (not at all),valid
+171,3.05,1 day,0 days (not at all),valid
+172,3.75,1 day,1 day,valid
+173,3.4,2 days,0 days (not at all),valid
+174,2.8,2 days,2 days,valid
+175,3.3,2 days,0 days (not at all),valid
+176,2.7,2 days,0 days (not at all),valid
+177,3.266,2 days,0 days (not at all),valid
+178,2.3,2 days,2 days,valid
+179,3.6,2 days,0 days (not at all),valid
+180,3,2 days,2 days,valid
+181,3.2,2 days,2 days,valid
+182,3.5,2 days,2 days,valid
+183,3.1,2 days,0 days (not at all),valid
+184,3.8,2 days,2 days,valid
+185,3.94,2 days,1 day,valid
+186,2.7,2 days,1 day,valid
+187,3,2 days,2 days,valid
+188,3.6,2 days,3 days,valid
+189,3.3,2 days,0 days (not at all),valid
+190,3.3,2 days,0 days (not at all),valid
+191,3.5,2 days,0 days (not at all),valid
+192,4,2 days,0 days (not at all),valid
+193,4,2 days,1 day,valid
+194,3.9,2 days,0 days (not at all),valid
+195,3.8,2 days,0 days (not at all),valid
+196,2.5,2 days,3 days,valid
+197,3.33,2 days,0 days (not at all),valid
+198,3.2,2 days,0 days (not at all),valid
+199,3.83,2 days,0 days (not at all),valid
+200,3.51,2 days,3 days,valid
+201,3.8,2 days,0 days (not at all),valid
+202,3.5,2 days,1 day,valid
+203,3.6,2 days,2 days,valid
+204,3.6,2 days,0 days (not at all),valid
+205,3.72,2 days,1 day,valid
+206,3.3,2 days,0 days (not at all),valid
+207,2.87,2 days,0 days (not at all),valid
+208,3.1,2 days,0 days (not at all),valid
+209,3,2 days,0 days (not at all),valid
+210,3.45,2 days,0 days (not at all),valid
+211,3.84,2 days,1 day,valid
+212,3.07,2 days,0 days (not at all),valid
+213,2.9,2 days,0 days (not at all),valid
+214,3.43,2 days,0 days (not at all),valid
+215,3.95,2 days,0 days (not at all),valid
+216,3.5,2 days,0 days (not at all),valid
+217,2.49,2 days,0 days (not at all),valid
+218,2.69,2 days,1 day,valid
+219,3.6,2 days,0 days (not at all),valid
+220,3,2 days,1 day,valid
+221,2.6,2 days,3 days,valid
+222,3.2,2 days,0 days (not at all),valid
+223,3.6,2 days,0 days (not at all),valid
+224,3.78,2 days,3 days,valid
+225,3.9,2 days,0 days (not at all),valid
+226,3.9,2 days,0 days (not at all),valid
+227,4,2 days,0 days (not at all),valid
+228,2.89,2 days,2 days,valid
+229,2,2 days,0 days (not at all),valid
+230,3.3,2 days,2 days,valid
+231,2.7,2 days,2 days,valid
+232,3.24,2 days,2 days,valid
+233,3.7,2 days,1 day,valid
+234,3.532,2 days,0 days (not at all),valid
+235,3.5,2 days,1 day,valid
+236,3.6,2 days,2 days,valid
+237,3.1,2 days,0 days (not at all),valid
+238,3.24,2 days,2 days,valid
+239,3.7,2 days,0 days (not at all),valid
+240,3.6,2 days,0 days (not at all),valid
+241,4,2 days,1 day,valid
+242,4,2 days,0 days (not at all),valid
+243,3.1,2 days,1 day,valid
+244,4,2 days,2 days,valid
+245,3.01,2 days,2 days,valid
+246,2.9,2 days,0 days (not at all),valid
+247,2.7,2 days,2 days,valid
+248,3.5,2 days,1 day,valid
+249,3.477,2 days,2 days,valid
+250,3.47,2 days,0 days (not at all),valid
+251,3.1,2 days,2 days,valid
+252,4,2 days,0 days (not at all),valid
+253,3.4,2 days,0 days (not at all),valid
+254,2.67,2 days,0 days (not at all),valid
+255,3.7,2 days,2 days,valid
+256,3.3,2 days,0 days (not at all),valid
+257,2.8,2 days,2 days,valid
+258,3.46,2 days,4 days,valid
+259,3.94,2 days,1 day,valid
+260,2.9,2 days,1 day,valid
+261,3.1,2 days,0 days (not at all),valid
+262,3.75,2 days,0 days (not at all),valid
+263,2.68,2 days,2 days,valid
+264,2.45,2 days,1 day,valid
+265,3.76,2 days,0 days (not at all),valid
+266,3.94,3 days,1 day,valid
+267,3.6,3 days,1 day,valid
+268,3.95,3 days,2 days,valid
+269,4,3 days,0 days (not at all),valid
+270,3.9,3 days,2 days,valid
+271,3.5,3 days,2 days,valid
+272,1.65,3 days,0 days (not at all),valid
+273,4,3 days,3 days,valid
+274,3.7,3 days,2 days,valid
+275,3.83,3 days,3 days,valid
+276,2.6,3 days,0 days (not at all),valid
+277,4,3 days,2 days,valid
+278,2.5,3 days,0 days (not at all),valid
+279,3.8,3 days,0 days (not at all),valid
+280,4,3 days,0 days (not at all),valid
+281,3.8,3 days,0 days (not at all),valid
+282,3.6,3 days,2 days,valid
+283,4,3 days,3 days,valid
+284,4,3 days,0 days (not at all),valid
+285,3,3 days,0 days (not at all),valid
+286,3,3 days,0 days (not at all),valid
+287,3.55,3 days,0 days (not at all),valid
+288,3.4,3 days,2 days,valid
+289,4,3 days,1 day,valid
+290,1.9,3 days,0 days (not at all),valid
+291,4,3 days,2 days,valid
+292,3.5,3 days,3 days,valid
+293,4,3 days,0 days (not at all),valid
+294,3.927,3 days,0 days (not at all),valid
+295,3.97,3 days,1 day,valid
+296,3.4,3 days,2 days,valid
+297,3.2,3 days,3 days,valid
+298,3.4,3 days,1 day,valid
+299,2.9,3 days,2 days,valid
+300,3.6,3 days,2 days,valid
+301,3.8,3 days,0 days (not at all),valid
+302,2.5,3 days,3 days,valid
+303,3.75,3 days,3 days,valid
+304,3.3,3 days,3 days,valid
+305,3.75,3 days,3 days,valid
+306,3.85,3 days,0 days (not at all),valid
+307,3,3 days,3 days,valid
+308,3.56,3 days,3 days,valid
+309,3.33,3 days,0 days (not at all),valid
+310,3.83,3 days,1 day,valid
+311,3.23,3 days,3 days,valid
+312,3.87,3 days,2 days,valid
+313,3.26,3 days,0 days (not at all),valid
+314,3.927,3 days,0 days (not at all),valid
+315,2.6,3 days,0 days (not at all),valid
+316,3.6,3 days,0 days (not at all),valid
+317,4,3 days,0 days (not at all),valid
+318,3.2,3 days,3 days,valid
+319,3.3,3 days,0 days (not at all),valid
+320,3.2,3 days,1 day,valid
+321,3.3,3 days,5 days,valid
+322,3.76,3 days,0 days (not at all),valid
+323,3.6,3 days,3 days,valid
+324,3.2,3 days,3 days,valid
+325,3.6,3 days,3 days,valid
+326,3.6,3 days,1 day,valid
+327,4,3 days,0 days (not at all),valid
+328,3.83,3 days,0 days (not at all),valid
+329,3.4,3 days,0 days (not at all),valid
+330,2.52,3 days,0 days (not at all),valid
+331,3.2,3 days,2 days,valid
+332,3.4,3 days,3 days,valid
+333,3.8,3 days,0 days (not at all),valid
+334,3.5,3 days,2 days,valid
+335,3.11,3 days,0 days (not at all),valid
+336,3.5,3 days,2 days,valid
+337,3.7,3 days,2 days,valid
+338,4,3 days,3 days,valid
+339,3.8,3 days,0 days (not at all),valid
+340,3.8,3 days,3 days,valid
+341,3.8,3 days,3 days,valid
+342,2.8,3 days,2 days,valid
+343,3.5,3 days,2 days,valid
+344,3.7,3 days,6 days,valid
+345,4,3 days,2 days,valid
+346,3.89,3 days,1 day,valid
+347,3,3 days,0 days (not at all),valid
+348,3,3 days,3 days,valid
+349,4,3 days,0 days (not at all),valid
+350,3.9,3 days,4 days,valid
+351,3.5,3 days,2 days,valid
+352,3.51,3 days,5 days,valid
+353,2.8,3 days,2 days,valid
+354,3.09,3 days,2 days,valid
+355,2.92,3 days,0 days (not at all),valid
+356,3.94,3 days,3 days,valid
+357,4,3 days,0 days (not at all),valid
+358,3.5,3 days,4 days,valid
+359,3.54,3 days,3 days,valid
+360,3.82,3 days,0 days (not at all),valid
+361,2.7,3 days,3 days,valid
+362,2.68,3 days,3 days,valid
+363,3.09,3 days,2 days,valid
+364,3.5,3 days,3 days,valid
+365,4,4 days,4 days,valid
+366,3.6,4 days,0 days (not at all),valid
+367,3.3,4 days,2 days,valid
+368,2.1,4 days,0 days (not at all),valid
+369,4,4 days,3 days,valid
+370,3.7,4 days,3 days,valid
+371,3.45,4 days,4 days,valid
+372,4,4 days,4 days,valid
+373,4,4 days,3 days,valid
+374,3.5,4 days,2 days,valid
+375,3.4,4 days,0 days (not at all),valid
+376,3.36,4 days,2 days,valid
+377,2.24,4 days,0 days (not at all),valid
+378,3.87,4 days,0 days (not at all),valid
+379,3.5,4 days,4 days,valid
+380,3.01,4 days,3 days,valid
+381,3.5,4 days,2 days,valid
+382,3.15,4 days,3 days,valid
+383,2.5,4 days,4 days,valid
+384,2.99,4 days,4 days,valid
+385,3.5,4 days,4 days,valid
+386,3.86,4 days,2 days,valid
+387,3.1,4 days,4 days,valid
+388,4,4 days,0 days (not at all),valid
+389,3.2,4 days,4 days,valid
+390,3.4,4 days,3 days,valid
+391,3.41,4 days,4 days,valid
+392,3.25,4 days,0 days (not at all),valid
+393,3.2,4 days,4 days,valid
+394,3.85,4 days,6 days,valid
+395,3.3,4 days,2 days,valid
+396,3.53,4 days,4 days,valid
+397,3.8,4 days,4 days,valid
+398,2.48,4 days,3 days,valid
+399,3.91,4 days,4 days,valid
+400,3.75,4 days,2 days,valid
+401,3.7,4 days,1 day,valid
+402,3.46,4 days,2 days,valid
+403,3.5,4 days,2 days,valid
+404,3.6,4 days,3 days,valid
+405,3.1,4 days,1 day,valid
+406,4,4 days,4 days,valid
+407,3.23,4 days,3 days,valid
+408,3.9,4 days,4 days,valid
+409,3.72,4 days,0 days (not at all),valid
+410,3.668,4 days,3 days,valid
+411,4,5 days,4 days,valid
+412,4,5 days,5 days,valid
+413,3.47,5 days,6 days,valid
+414,3.9,5 days,5 days,valid
+415,3.4,5 days,4 days,valid
+416,2.7,5 days,0 days (not at all),valid
+417,3.5,5 days,5 days,valid
+418,3.56,5 days,5 days,valid
+419,4,5 days,3 days,valid
+420,4,5 days,4 days,valid
+421,2.75,5 days,5 days,valid
+422,3.5,5 days,3 days,valid
+423,3.75,5 days,5 days,valid
+424,4,5 days,0 days (not at all),valid
+425,2.5,5 days,5 days,valid
+426,4,5 days,5 days,valid
+427,3.8,5 days,0 days (not at all),valid
+428,3.82,5 days,4 days,valid
+429,3.8,5 days,2 days,valid
+430,3.8,5 days,2 days,valid
+431,3.67,5 days,3 days,valid
+432,3.7,5 days,2 days,valid
+433,3.7,5 days,1 day,valid
+434,3.1,5 days,4 days,valid
+435,2.9,5 days,3 days,valid
+436,3,5 days,3 days,valid
+437,3.902,5 days,5 days,valid
+438,4,5 days,3 days,valid
+439,3.4,5 days,5 days,valid
+440,3,5 days,5 days,valid
+441,3.5,5 days,5 days,valid
+442,3.2,5 days,5 days,valid
+443,2.9,5 days,1 day,valid
+444,3.22,5 days,4 days,valid
+445,3.8,5 days,4 days,valid
+446,3.3,5 days,0 days (not at all),valid
+447,2.28,5 days,3 days,valid
+448,3.04,5 days,3 days,valid
+449,3.94,5 days,3 days,valid
+450,3.11,5 days,5 days,valid
+451,2.74,5 days,5 days,valid
+452,4,5 days,3 days,valid
+453,3.61,5 days,2 days,valid
+454,3.92,5 days,3 days,valid
+455,3.8,5 days,2 days,valid
+456,2.75,5 days,0 days (not at all),valid
+457,3.92,5 days,5 days,valid
+458,2.7,5 days,5 days,valid
+459,3.7,5 days,4 days,valid
+460,3.1,5 days,2 days,valid
+461,2.9,5 days,2 days,valid
+462,3.31,5 days,4 days,valid
+463,3.9,5 days,6 days,valid
+464,3,5 days,0 days (not at all),valid
+465,3.97,5 days,5 days,valid
+466,3.5,5 days,5 days,valid
+467,3,5 days,0 days (not at all),valid
+468,4,5 days,5 days,valid
+469,3.94,5 days,3 days,valid
+470,3.2,5 days,4 days,valid
+471,3,5 days,3 days,valid
+472,3.3,5 days,1 day,valid
+473,3,5 days,5 days,valid
+474,4,5 days,5 days,valid
+475,3.575,5 days,5 days,valid
+476,3.4,5 days,2 days,valid
+477,3,5 days,4 days,valid
+478,3,5 days,4 days,valid
+479,3.3,5 days,5 days,valid
+480,3.6,5 days,2 days,valid
+481,3.26,5 days,3 days,valid
+482,3.8,5 days,2 days,valid
+483,3.3,5 days,0 days (not at all),valid
+484,3.5,5 days,5 days,valid
+485,2.8,5 days,1 day,valid
+486,3,5 days,0 days (not at all),valid
+487,4,5 days,2 days,valid
+488,2.7,5 days,5 days,valid
+489,2.4,5 days,0 days (not at all),valid
+490,2.6,5 days,0 days (not at all),valid
+491,3.73,5 days,5 days,valid
+492,2.91,5 days,5 days,valid
+493,2.5,5 days,2 days,valid
+494,3,5 days,2 days,valid
+495,3.94,5 days,5 days,valid
+496,3.23,5 days,4 days,valid
+497,3.91,6 days,6 days,valid
+498,3.75,6 days,4 days,valid
+499,4,6 days,4 days,valid
+500,4,6 days,1 day,valid
+501,3.85,6 days,1 day,valid
+502,2.8,6 days,6 days,valid
+503,3.5,6 days,5 days,valid
+504,3.5,6 days,3 days,valid
+505,2.9,6 days,3 days,valid
+506,3.81,6 days,2 days,valid
+507,3.45,6 days,3 days,valid
+508,3.4,6 days,6 days,valid
+509,3.49,6 days,3 days,valid
+510,3.01,6 days,6 days,valid
+511,3.1,6 days,6 days,valid
+512,3.96,6 days,6 days,valid
+513,3.97,6 days,6 days,valid
+514,3.9,6 days,3 days,valid
+515,3.86,6 days,4 days,valid
+516,3.84,6 days,3 days,valid
+517,3.7,6 days,3 days,valid
+518,3.4,6 days,4 days,valid
+519,3.94,6 days,5 days,valid
+520,3.45,6 days,3 days,valid
+521,3.61,6 days,6 days,valid
+522,3.2,6 days,6 days,valid
+523,3.5,6 days,4 days,valid
+524,3.8,6 days,2 days,valid
+525,3.06,6 days,5 days,valid
+526,3.2,6 days,6 days,valid
+527,3.37,6 days,3 days,valid
+528,3.56,6 days,4 days,valid
+529,2.9,6 days,0 days (not at all),valid
+530,3,6 days,3 days,valid
+531,3.4,6 days,6 days,valid
+532,3.75,6 days,6 days,valid
+533,3.7,6 days,5 days,valid
+534,3,6 days,5 days,valid
+535,3.2,6 days,6 days,valid
+536,2.9,6 days,3 days,valid
+537,4,6 days,4 days,valid
+538,3.75,6 days,6 days,valid
+539,2.7,6 days,6 days,valid
+540,3.5,6 days,2 days,valid
+541,3.9,6 days,4 days,valid
+542,3.3,7 days,7 days,valid
+543,3.13,7 days,1 day,valid
+544,3.75,7 days,2 days,valid
+545,1.7,7 days,0 days (not at all),valid
+546,3.6,7 days,3 days,valid
+547,3.9,7 days,3 days,valid
+548,4,7 days,5 days,valid
+549,4,7 days,3 days,valid
+550,3.75,7 days,7 days,valid
+551,3.8,7 days,7 days,valid
+552,3.7,7 days,0 days (not at all),valid
+553,0.4,7 days,7 days,valid
+554,4,7 days,7 days,valid
+555,3.4,7 days,2 days,valid
+556,3.7,7 days,2 days,valid
+557,3.52,7 days,3 days,valid
+558,3.6,7 days,4 days,valid
+559,3.12,7 days,3 days,valid
+560,2.9,7 days,1 day,valid
+561,3.7,7 days,6 days,valid
+562,3.8,7 days,3 days,valid
+563,2.75,7 days,0 days (not at all),valid
+564,3.44,7 days,3 days,valid
+565,3,7 days,1 day,valid
+566,3.7,7 days,5 days,valid
+567,3.49,7 days,7 days,valid
+568,4,7 days,1 day,valid
+569,3.5,7 days,3 days,valid
+570,3.5,7 days,3 days,valid
+571,3.92,7 days,6 days,valid
+572,3.57,7 days,7 days,valid
+573,3.85,7 days,4 days,valid
+574,3.78,7 days,2 days,valid
+575,3.9,7 days,5 days,valid
+576,3.8,7 days,7 days,valid
+577,3.78,7 days,5 days,valid
+578,4,7 days,0 days (not at all),valid
+579,3.47,7 days,7 days,valid
+580,3,7 days,7 days,valid
+581,3,7 days,1 day,valid
+582,3.55,7 days,5 days,valid
+583,3.1,7 days,3 days,valid
+584,3.5,7 days,7 days,valid
+585,3.8,7 days,3 days,valid
+586,3.78,7 days,7 days,valid
+587,4,7 days,4 days,valid
+588,3.8,7 days,7 days,valid
+589,3.7,7 days,0 days (not at all),valid
+590,3.4,7 days,7 days,valid
+591,3.5,7 days,7 days,valid
+592,3.67,7 days,0 days (not at all),valid
+593,3.3,7 days,0 days (not at all),valid
+594,3.72,7 days,2 days,valid
+595,3.487,7 days,7 days,valid
+596,2.7,7 days,5 days,valid
+597,3.2,7 days,0 days (not at all),valid
+598,3.56,7 days,4 days,valid
+599,3.4,7 days,7 days,valid
+600,3.76,7 days,6 days,valid
+601,3.5,7 days,4 days,valid
+602,2.8,7 days,7 days,valid
+603,2.8,7 days,7 days,valid
+604,2.79,7 days,5 days,valid
+605,3.63,7 days,6 days,valid
