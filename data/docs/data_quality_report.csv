@@ -1,0 +1,7 @@
+﻿file,record_count,source_field_count,missing_cell_count,missing_cell_rate,gpa_flagged_count,limitations
+sleep_cleaned.csv,614,4,0,0.0,2,Public self-report; 2 GPA values above common 4.0 range are flagged
+demographics_cleaned.csv,614,3,0,0.0,2,Public self-report; record_id is file-local only
+work_cleaned.csv,614,3,0,0.0,2,Public self-report; record_id is file-local only
+physical_activity_cleaned.csv,605,3,0,0.0,2,Public self-report; record_id is file-local only
+eating_habits_cleaned.csv,614,13,0,0.0,2,Public self-report; record_id is file-local only
+substance_use_cleaned.csv,614,11,33,0.0049,2,Public self-report; record_id is file-local only

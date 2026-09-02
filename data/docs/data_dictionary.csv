@@ -1,0 +1,40 @@
+﻿file,field,original_field,source,notes
+demographics_cleaned.csv,current_gpa,Current GPA,FGCU public survey,Do not join across files by record_id
+demographics_cleaned.csv,biological_sex,Biological sex,FGCU public survey,Do not join across files by record_id
+demographics_cleaned.csv,student_population,Student population,FGCU public survey,Do not join across files by record_id
+work_cleaned.csv,current_gpa,Current GPA,FGCU public survey,Do not join across files by record_id
+work_cleaned.csv,do_you_work,Do you work?,FGCU public survey,Do not join across files by record_id
+work_cleaned.csv,how_many_hours_work_per_week,How many hours work per week?,FGCU public survey,Do not join across files by record_id
+physical_activity_cleaned.csv,current_gpa,Current GPA,FGCU public survey,Do not join across files by record_id
+physical_activity_cleaned.csv,number_of_days_physically_active,Number of days physically active,FGCU public survey,Do not join across files by record_id
+physical_activity_cleaned.csv,strength_training,Strength training,FGCU public survey,Do not join across files by record_id
+eating_habits_cleaned.csv,current_gpa,Current GPA,FGCU public survey,Do not join across files by record_id
+eating_habits_cleaned.csv,vegetables,Vegetables,FGCU public survey,Do not join across files by record_id
+eating_habits_cleaned.csv,vegetables_2,Vegetables 2,FGCU public survey,Do not join across files by record_id
+eating_habits_cleaned.csv,fruit,Fruit,FGCU public survey,Do not join across files by record_id
+eating_habits_cleaned.csv,fruit_juice,Fruit juice,FGCU public survey,Do not join across files by record_id
+eating_habits_cleaned.csv,green_salad,Green salad,FGCU public survey,Do not join across files by record_id
+eating_habits_cleaned.csv,milk,Milk,FGCU public survey,Do not join across files by record_id
+eating_habits_cleaned.csv,breakfast,Breakfast,FGCU public survey,Do not join across files by record_id
+eating_habits_cleaned.csv,soda,Soda,FGCU public survey,Do not join across files by record_id
+eating_habits_cleaned.csv,diet_soda,Diet Soda,FGCU public survey,Do not join across files by record_id
+eating_habits_cleaned.csv,energy_drinks,Energy drinks,FGCU public survey,Do not join across files by record_id
+eating_habits_cleaned.csv,sports_drinks,Sports drinks,FGCU public survey,Do not join across files by record_id
+eating_habits_cleaned.csv,fast_food,Fast Food,FGCU public survey,Do not join across files by record_id
+substance_use_cleaned.csv,current_gpa,Current GPA,FGCU public survey,Do not join across files by record_id
+substance_use_cleaned.csv,cigarettes,Cigarettes,FGCU public survey,Do not join across files by record_id
+substance_use_cleaned.csv,smoker,Smoker,FGCU public survey,Do not join across files by record_id
+substance_use_cleaned.csv,vaping,Vaping,FGCU public survey,Do not join across files by record_id
+substance_use_cleaned.csv,vaping_frequency,Vaping frequency,FGCU public survey,Do not join across files by record_id
+substance_use_cleaned.csv,alcohol,Alcohol,FGCU public survey,Do not join across files by record_id
+substance_use_cleaned.csv,alcohol_use,Alcohol use,FGCU public survey,Do not join across files by record_id
+substance_use_cleaned.csv,marijuana,Marijuana,FGCU public survey,Do not join across files by record_id
+substance_use_cleaned.csv,marijuana_use,Marijuana use,FGCU public survey,Do not join across files by record_id
+substance_use_cleaned.csv,pain_killer_abuse,Pain killer abuse,FGCU public survey,Do not join across files by record_id
+substance_use_cleaned.csv,other_drugs,Other drugs,FGCU public survey,Do not join across files by record_id
+sleep_cleaned.csv,record_id,generated row number,generated,File-local only
+sleep_cleaned.csv,current_gpa,Current GPA,FGCU public survey,Self-reported
+sleep_cleaned.csv,sleep_duration,Hours of sleep,FGCU public survey,Categorical
+sleep_cleaned.csv,bedtime,Time going to bed,FGCU public survey,Categorical
+sleep_cleaned.csv,wake_time,Wake up time,FGCU public survey,Categorical
+sleep_cleaned.csv,gpa_quality_flag,generated quality flag,generated,Values above 4 are flagged
