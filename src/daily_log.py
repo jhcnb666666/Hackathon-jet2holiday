@@ -490,7 +490,12 @@ def render_suggestions(day, school, ctx, prior: dict, class_spans: list) -> None
 
 def render_daily_log() -> None:
     top = st.columns([1.3, 1.2, 2])
-    day = top[0].date_input("Date", value=date.today(), label_visibility="collapsed")
+    day = top[0].date_input(
+        "Date",
+        value=date.today(),
+        max_value=date.today(),
+        label_visibility="collapsed",
+    )
     school = top[1].selectbox("School", SCHOOLS, label_visibility="collapsed")
     ctx = academic_context(day, school)
     top[2].markdown(
