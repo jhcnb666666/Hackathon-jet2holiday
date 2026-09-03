@@ -34,6 +34,17 @@ CLASS = "#E8A33D"
 SIP = 250
 BOTTLE = 500
 
+SUGGEST_TONE = {"positive": "#2F8F6B", "nudge": "#3E7CB1", "watch": "#C0492F"}
+METRIC_LABELS = {
+    "sleep_hours": "sleep",
+    "sleep_start": "bedtime",
+    "exercise_minutes": "movement",
+    "water_ml": "water",
+    "class_hours": "class hours",
+    "class_start": "class start",
+    "class_end": "class end",
+}
+
 COLUMNS = [
     "date",
     "sleep_hours",
@@ -241,6 +252,149 @@ def save_entry(row: dict) -> None:
     df.sort_values("date").to_csv(LOG_PATH, index=False)
 
 
+# --- suggestion cards (backed by suggestions.py / the agent service) --------
+
+SUGGEST_CSS = f"""
+<style>
+.sg-wrap {{ margin: .1rem 0 .5rem; }}
+.sg-card {{ border: 1px solid #E7ECEF; border-left: 4px solid {MUTED}; border-radius: 8px;
+  padding: .7rem .9rem; margin-bottom: .55rem; background: #FCFDFD; }}
+.sg-top {{ display: flex; justify-content: space-between; align-items: baseline; gap: .6rem; }}
+.sg-head {{ font-size: 1rem; font-weight: 600; color: {INK}; }}
+.sg-agent {{ font-size: .68rem; color: {MUTED}; border: 1px solid #E1E6E9; border-radius: 999px;
+  padding: .05rem .5rem; white-space: nowrap; }}
+.sg-why {{ font-size: .85rem; color: {MUTED}; margin: .25rem 0 .4rem; }}
+.sg-do {{ font-size: .9rem; color: {INK}; }}
+.sg-do b {{ color: {MUTED}; font-weight: 600; font-size: .72rem; text-transform: uppercase;
+  letter-spacing: .04em; margin-right: .4rem; }}
+.sg-metrics {{ margin-top: .5rem; }}
+.sg-metrics span {{ font-size: .72rem; color: {MUTED}; background: {TRACK}; border-radius: 4px;
+  padding: .08rem .4rem; margin-right: .3rem; }}
+.sg-support {{ border: 1px solid #E0B23C; background: #FDF7E7; border-radius: 8px;
+  padding: .7rem .9rem; margin-bottom: .55rem; font-size: .88rem; color: {INK}; }}
+</style>
+"""
+
+
+def _ago(iso: str) -> str:
+    try:
+        then = datetime.fromisoformat(iso)
+    except ValueError:
+        return "recently"
+    secs = (datetime.now(then.tzinfo) - then).total_seconds()
+    if secs < 90:
+        return "just now"
+    if secs < 3600:
+        return f"{int(secs // 60)} min ago"
+    if secs < 86400:
+        return f"{int(secs // 3600)} h ago"
+    return then.strftime("%d %b %H:%M")
+
+
+def _suggestion_card_html(card) -> str:
+    color = SUGGEST_TONE.get(card.tone, MUTED)
+    agent = f'<span class="sg-agent">{escape(card.source_agent)}</span>' if card.source_agent else ""
+    why = f'<div class="sg-why">{escape(card.reasoning)}</div>' if card.reasoning else ""
+    action = (
+        f'<div class="sg-do"><b>Today</b>{escape(card.action)}</div>' if card.action else ""
+    )
+    metrics = ""
+    if card.metrics:
+        chips = "".join(
+            f"<span>{escape(METRIC_LABELS.get(m, m))}</span>" for m in card.metrics
+        )
+        metrics = f'<div class="sg-metrics">{chips}</div>'
+    return (
+        f'<div class="sg-card" style="border-left-color:{color}">'
+        f'<div class="sg-top"><span class="sg-head">{escape(card.headline)}</span>{agent}</div>'
+        f"{why}{action}{metrics}</div>"
+    )
+
+
+def _render_suggestion_set(result) -> None:
+    parts = [SUGGEST_CSS, '<div class="sg-wrap">']
+    if result.support:
+        parts.append(
+            '<div class="sg-support">If you want to talk to someone, '
+            f'<a href="{escape(result.support["url"])}" target="_blank" rel="noopener">'
+            f'{escape(result.support["label"])}</a> is there for students.</div>'
+        )
+    if result.is_sample:
+        parts.append(
+            '<div class="sg-why">Sample guidance — the advice service is not connected.</div>'
+        )
+    for card in result.cards:
+        parts.append(_suggestion_card_html(card))
+    parts.append("</div>")
+    st.html("".join(parts))
+
+    if not result.cards:
+        if result.summary:
+            st.info(result.summary)
+        st.caption(
+            "Couldn't reach the advice service — try Refresh in a moment."
+            if result.error
+            else "No suggestions came back."
+        )
+        return
+    if result.summary:
+        st.caption(result.summary)
+    if result.generated_at:
+        st.caption(f"Updated {_ago(result.generated_at)}")
+
+
+def render_suggestions(day, school, ctx, prior: dict, class_spans: list) -> None:
+    """Top-of-page advice cards. Generation runs only on button press, so it
+    never blocks first paint; the last result is cached per day for the session."""
+    from suggestions import ProgressEvent, SuggestionSet, build_context, stream_suggestions
+
+    key = f"suggest_{day}"
+    cached = st.session_state.get(key)
+
+    head = st.columns([3, 1])
+    head[0].markdown("#### Today's suggestions")
+    clicked = head[1].button(
+        "Refresh" if cached else "Get advice",
+        use_container_width=True,
+        disabled=not prior,
+        key=f"suggest_btn_{day}",
+    )
+
+    if not prior:
+        st.caption("Save today's log to get suggestions.")
+        return
+
+    if clicked:
+        context = build_context(prior, school=school, teaching_week=ctx.week, phase=ctx.phase)
+        if class_spans:
+            context["class_blocks"] = [[_clock(s), _clock(e), n] for s, e, n in class_spans]
+
+        status = st.status("Asking the wellbeing agents…", expanded=True)
+        result = SuggestionSet(error="no response")
+        mark = {"new": "•", "running": "▸", "complete": "✓"}
+        try:
+            for item in stream_suggestions(context):
+                if isinstance(item, ProgressEvent):
+                    status.write(f"{mark.get(item.state, '•')} {item.name}")
+                else:
+                    result = item
+        except Exception as exc:  # noqa: BLE001 - surfaced in the card area below
+            result = SuggestionSet(error=str(exc))
+        status.update(
+            label="Done" if result.cards else "No suggestions",
+            state="complete" if result.cards else "error",
+            expanded=False,
+        )
+        st.session_state[key] = result
+        st.rerun()
+
+    if cached is None:
+        st.caption("Press **Get advice** for today's cards.")
+        return
+
+    _render_suggestion_set(cached)
+
+
 def render_daily_log() -> None:
     top = st.columns([1.3, 1.2, 2])
     day = top[0].date_input("Date", value=date.today(), label_visibility="collapsed")
@@ -262,6 +416,9 @@ def render_daily_log() -> None:
 
     blocks = load_timetable()
     auto_hours, auto_start, auto_end = class_totals(blocks, day, school)
+
+    render_suggestions(day, school, ctx, prior, day_classes(blocks, day, school))
+    st.divider()
 
     st.markdown("#### From your timetable")
     if auto_hours:
