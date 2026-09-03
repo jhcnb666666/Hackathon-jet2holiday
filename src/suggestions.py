@@ -9,7 +9,7 @@ session-state cache, spinner and "refresh" button, so a 20-40 s supervisor run
 never blocks first paint.
 
     ctx = build_context(daily_log_row, school="NTU", teaching_week=4)
-    result = fetch_suggestions(ctx)          # real service, falls back to a sample
+    result = fetch_suggestions(ctx)          # real service; error state if unreachable
     for card in result.cards:
         render(card)
 
@@ -287,12 +287,14 @@ def fetch_suggestions(
     agent: str | None = None,
     base_url: str | None = None,
     timeout: float = 90.0,
-    allow_sample: bool = True,
+    on_error_sample: bool = False,
 ) -> SuggestionSet:
     """Blocking call. Drains stream_suggestions and returns the final set.
 
-    On a transport error (service down, etc.) returns sample_suggestions() with
-    ``error`` set, unless ``allow_sample`` is False, in which case it re-raises.
+    On a transport error (service down, etc.) returns an empty SuggestionSet with
+    ``error`` set -- the UI is expected to show an honest "couldn't reach the
+    advice service" state, not invented advice. Pass ``on_error_sample=True``
+    only for local development / demos to get sample_suggestions() instead.
     """
     try:
         final: SuggestionSet | None = None
@@ -305,13 +307,13 @@ def fetch_suggestions(
             return final
         reason = "agent returned no suggestions payload"
     except SuggestionsUnavailable as exc:
-        if not allow_sample:
-            raise
         reason = str(exc)
 
-    fallback = sample_suggestions(context)
-    fallback.error = reason
-    return fallback
+    if on_error_sample:
+        fallback = sample_suggestions(context)
+        fallback.error = reason
+        return fallback
+    return SuggestionSet(generated_at=_now_iso(), error=reason)
 
 
 # --- response parsing --------------------------------------------------
@@ -512,7 +514,7 @@ if __name__ == "__main__":
     )
     print("context:", demo)
     print("prompt :", build_prompt(demo))
-    result = fetch_suggestions(demo, timeout=5.0)
+    result = fetch_suggestions(demo, timeout=5.0, on_error_sample=True)
     print(f"\nis_sample={result.is_sample}  error={result.error}")
     for card in result.cards:
         print(f"  [{card.tone}] {card.headline} -> {card.action}  ({', '.join(card.metrics)})")
