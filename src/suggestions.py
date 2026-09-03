@@ -148,6 +148,30 @@ class SuggestionSet:
             schema_version=int(payload.get("schema_version", SCHEMA_VERSION)),
         )
 
+    def to_dict(self) -> dict[str, Any]:
+        """Plain dict for JSON persistence (see daily_log's check-in store)."""
+        from dataclasses import asdict
+
+        return asdict(self)
+
+    @classmethod
+    def from_dict(cls, raw: Mapping[str, Any]) -> "SuggestionSet":
+        return cls(
+            cards=[
+                SuggestionCard(**{k: c[k] for k in c if k in SuggestionCard.__annotations__})
+                for c in raw.get("cards", [])
+                if isinstance(c, Mapping)
+            ],
+            summary=raw.get("summary"),
+            support=(dict(raw["support"]) if raw.get("support") else None),
+            generated_at=raw.get("generated_at"),
+            schema_version=int(raw.get("schema_version", SCHEMA_VERSION)),
+            thread_id=raw.get("thread_id"),
+            run_id=raw.get("run_id"),
+            is_sample=bool(raw.get("is_sample", False)),
+            error=raw.get("error"),
+        )
+
 
 @dataclass
 class ProgressEvent:

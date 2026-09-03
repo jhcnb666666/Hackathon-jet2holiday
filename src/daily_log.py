@@ -8,6 +8,7 @@ things left to enter are the three that change day to day.
 
 from __future__ import annotations
 
+import json
 import math
 from datetime import date, datetime, time, timedelta
 from html import escape
@@ -339,60 +340,152 @@ def _render_suggestion_set(result) -> None:
         return
     if result.summary:
         st.caption(result.summary)
-    if result.generated_at:
-        st.caption(f"Updated {_ago(result.generated_at)}")
+
+
+# One check-in per fixed time of day. The frontend fills a slot when someone
+# opens the app after that time; unattended pushes would need a real scheduler.
+CHECK_IN_SLOTS = ("08:00", "12:00", "16:00", "20:00", "22:00")
+SUGGEST_STORE = Path("data/suggestions.json")
+
+
+def _ampm(hhmm: str) -> str:
+    h = int(hhmm[:2])
+    return f"{h % 12 or 12}{'am' if h < 12 else 'pm'}"
+
+
+def _due_slot(now: time) -> str | None:
+    """The latest slot whose time has arrived today, or None before the first."""
+    mins = now.hour * 60 + now.minute
+    passed = [s for s in CHECK_IN_SLOTS if int(s[:2]) * 60 + int(s[3:]) <= mins]
+    return passed[-1] if passed else None
+
+
+def _store_read() -> dict:
+    try:
+        return json.loads(SUGGEST_STORE.read_text("utf-8"))
+    except (FileNotFoundError, ValueError):
+        return {}
+
+
+def _store_write(store: dict) -> None:
+    try:
+        SUGGEST_STORE.parent.mkdir(parents=True, exist_ok=True)
+        SUGGEST_STORE.write_text(json.dumps(store, indent=2), "utf-8")
+    except OSError:
+        pass
+
+
+def _run_stream(context: dict, label: str):
+    """Call the agent, showing sub-agent progress in an st.status. Returns a
+    SuggestionSet (with .error set on any failure)."""
+    from suggestions import ProgressEvent, SuggestionSet, stream_suggestions
+
+    status = st.status(label, expanded=True)
+    result = SuggestionSet(error="no response")
+    mark = {"new": "•", "running": "▸", "complete": "✓"}
+    try:
+        for item in stream_suggestions(context):
+            if isinstance(item, ProgressEvent):
+                status.write(f"{mark.get(item.state, '•')} {item.name}")
+            else:
+                result = item
+    except Exception as exc:  # noqa: BLE001 - surfaced in the card area
+        result = SuggestionSet(error=str(exc))
+    status.update(
+        label="Done" if result.cards else "Couldn't generate",
+        state="complete" if result.cards else "error",
+        expanded=False,
+    )
+    return result
 
 
 def render_suggestions(day, school, ctx, prior: dict, class_spans: list) -> None:
-    """Top-of-page advice cards. Generation runs only on button press, so it
-    never blocks first paint; the last result is cached per day for the session."""
-    from suggestions import ProgressEvent, SuggestionSet, build_context, stream_suggestions
+    """Check-in cards, one per fixed time of day. The due slot generates itself
+    once (rendered last in render_daily_log, so it never blocks first paint);
+    results are cached per day in session and mirrored to data/suggestions.json."""
+    from suggestions import SuggestionSet, build_context
 
-    key = f"suggest_{day}"
-    cached = st.session_state.get(key)
+    st.markdown("#### Today's check-ins")
+    if not prior:
+        st.caption("Save today's log — check-ins start after that.")
+        return
 
-    head = st.columns([3, 1])
-    head[0].markdown("#### Today's suggestions")
-    clicked = head[1].button(
-        "Refresh" if cached else "Get advice",
-        use_container_width=True,
-        disabled=not prior,
-        key=f"suggest_btn_{day}",
+    is_today = day == date.today()
+    day_key = str(day)
+    store = _store_read()
+    disk_slots: dict = dict(store.get(day_key, {}))
+
+    sess_key = f"suggest_{day}"
+    if not isinstance(st.session_state.get(sess_key), dict):
+        st.session_state[sess_key] = {}
+    live: dict = st.session_state[sess_key]
+    for slot, raw in disk_slots.items():
+        live.setdefault(slot, SuggestionSet.from_dict(raw))
+    failed: set = st.session_state.setdefault(f"{sess_key}_failed", set())
+
+    current = _due_slot(datetime.now().time()) if is_today else CHECK_IN_SLOTS[-1]
+
+    def _context() -> dict:
+        c = build_context(prior, school=school, teaching_week=ctx.week, phase=ctx.phase)
+        if class_spans:
+            c["class_blocks"] = [[_clock(s), _clock(e), n] for s, e, n in class_spans]
+        return c
+
+    def _commit(slot: str, result) -> None:
+        live[slot] = result
+        disk_slots[slot] = result.to_dict()
+        store[day_key] = disk_slots
+        _store_write(store)
+
+    # auto-run the current slot once, when it is due and not done yet
+    if is_today and current and current not in live and current not in failed:
+        result = _run_stream(_context(), f"Preparing your {_ampm(current)} check-in…")
+        if result.cards:
+            _commit(current, result)
+            st.rerun()
+        failed.add(current)
+
+    shown = [s for s in CHECK_IN_SLOTS if s in live]
+    if is_today and current and current not in shown:
+        shown.append(current)
+    if not shown:
+        if is_today:
+            st.caption(f"First check-in at {_ampm(current or CHECK_IN_SLOTS[0])}.")
+            return
+        shown = list(CHECK_IN_SLOTS)  # other day: let the user pick any slot to generate
+
+    default = current if current in shown else shown[-1]
+    picked = st.radio(
+        "Check-in",
+        shown,
+        index=shown.index(default),
+        horizontal=True,
+        format_func=lambda s: _ampm(s) + (" · now" if is_today and s == current else ""),
+        label_visibility="collapsed",
+        key=f"slot_pick_{day}",
     )
 
-    if not prior:
-        st.caption("Save today's log to get suggestions.")
+    chosen = live.get(picked)
+    if chosen is None:
+        if st.button(f"Generate {_ampm(picked)} check-in", key=f"gen_{day}_{picked}"):
+            result = _run_stream(_context(), f"Preparing your {_ampm(picked)} check-in…")
+            if result.cards:
+                _commit(picked, result)
+            failed.discard(picked)
+            st.rerun()
+        if picked in failed:
+            st.caption("Couldn't reach the advice service — try again in a moment.")
         return
 
-    if clicked:
-        context = build_context(prior, school=school, teaching_week=ctx.week, phase=ctx.phase)
-        if class_spans:
-            context["class_blocks"] = [[_clock(s), _clock(e), n] for s, e, n in class_spans]
-
-        status = st.status("Asking the wellbeing agents…", expanded=True)
-        result = SuggestionSet(error="no response")
-        mark = {"new": "•", "running": "▸", "complete": "✓"}
-        try:
-            for item in stream_suggestions(context):
-                if isinstance(item, ProgressEvent):
-                    status.write(f"{mark.get(item.state, '•')} {item.name}")
-                else:
-                    result = item
-        except Exception as exc:  # noqa: BLE001 - surfaced in the card area below
-            result = SuggestionSet(error=str(exc))
-        status.update(
-            label="Done" if result.cards else "No suggestions",
-            state="complete" if result.cards else "error",
-            expanded=False,
-        )
-        st.session_state[key] = result
+    _render_suggestion_set(chosen)
+    row = st.columns([3, 1])
+    stamp = _ago(chosen.generated_at) if chosen.generated_at else "earlier"
+    row[0].caption(f"{_ampm(picked)} check-in · generated {stamp}")
+    if row[1].button("Refresh", key=f"refresh_{day}_{picked}", use_container_width=True):
+        result = _run_stream(_context(), "Refreshing…")
+        if result.cards:
+            _commit(picked, result)
         st.rerun()
-
-    if cached is None:
-        st.caption("Press **Get advice** for today's cards.")
-        return
-
-    _render_suggestion_set(cached)
 
 
 def render_daily_log() -> None:
@@ -417,7 +510,9 @@ def render_daily_log() -> None:
     blocks = load_timetable()
     auto_hours, auto_start, auto_end = class_totals(blocks, day, school)
 
-    render_suggestions(day, school, ctx, prior, day_classes(blocks, day, school))
+    # Rendered at the top of the page, but filled last (see end of function) so
+    # a slow check-in generation never blocks the rest of the page painting.
+    check_in_slot = st.container()
     st.divider()
 
     st.markdown("#### From your timetable")
@@ -530,6 +625,9 @@ def render_daily_log() -> None:
     if not existing.empty:
         with st.expander(f"Past entries ({len(existing)})"):
             st.dataframe(existing.sort_values("date", ascending=False), hide_index=True)
+
+    with check_in_slot:
+        render_suggestions(day, school, ctx, prior, day_classes(blocks, day, school))
 
 
 if __name__ == "__main__":
