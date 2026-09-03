@@ -17,6 +17,15 @@ import altair as alt
 import pandas as pd
 import streamlit as st
 
+from academic_calendar import SCHOOLS
+from daily_log import (
+    class_totals,
+    day_classes,
+    load_timetable,
+    merge_movement,
+    parse_movement,
+)
+
 INK = "#16202A"
 MUTED = "#6B7A87"
 TRACK = "#F1F4F6"
@@ -26,7 +35,7 @@ MOVE = "#2F8F6B"
 WATER = "#3E9BC4"
 CLASS = "#E8A33D"
 
-DAY_START = 18  # rows run 18:00 to 18:00 so a night's sleep stays in one piece
+DAY_START = 22  # rows run 22:00 to 22:00 so a night's sleep stays in one piece
 
 
 @dataclass(frozen=True)
@@ -47,25 +56,28 @@ METRICS: list[Metric] = [
     Metric("class_hours", "Class time", "h", CLASS, 0, 6, 1),
 ]
 
-# weekday -> class_start, class_end, class_hours, sleep_start, sleep_hours, exercise, water
+# weekday -> sleep_start, sleep_hours, exercise_minutes, water_ml
 WEEKDAY_PATTERN = {
-    0: ("08:30", "16:30", 5.5, "00:40", 6.3, 0, 1350),
-    1: ("10:30", "13:30", 3.0, "01:20", 7.8, 45, 2100),
-    2: ("08:30", "17:30", 6.0, "00:50", 6.1, 0, 1250),
-    3: ("11:30", "13:30", 2.0, "01:40", 7.9, 35, 2400),
-    4: ("13:30", "15:30", 2.0, "01:10", 8.2, 55, 2500),
-    5: ("", "", 0.0, "02:20", 9.2, 20, 1900),
-    6: ("", "", 0.0, "02:00", 8.8, 0, 1650),
+    0: ("00:40", 6.3, 0, 1350),
+    1: ("01:20", 7.8, 45, 2100),
+    2: ("00:50", 6.1, 0, 1250),
+    3: ("01:40", 7.9, 35, 2400),
+    4: ("01:10", 8.2, 55, 2500),
+    5: ("02:20", 9.2, 20, 1900),
+    6: ("02:00", 8.8, 0, 1650),
 }
 
 
-def load_data() -> pd.DataFrame:
-    """Fake data, used only when no real log exists yet."""
+def _placeholder_data() -> pd.DataFrame:
+    """Sample sleep / water / movement so the page is not blank before real
+    entries exist. Class columns are left empty on purpose: real class times are
+    filled in from the saved timetable by _overlay_timetable()."""
+    today = date.today()
     days = [today - timedelta(days=13 - i) for i in range(14)]
 
     rows = []
     for i, d in enumerate(days):
-        c_start, c_end, c_hours, s_start, s_hours, ex, water = WEEKDAY_PATTERN[d.weekday()]
+        s_start, s_hours, ex, water = WEEKDAY_PATTERN[d.weekday()]
         drift = 0.3 if i < 7 else -0.2
         rows.append(
             {
@@ -73,10 +85,11 @@ def load_data() -> pd.DataFrame:
                 "sleep_hours": round(s_hours + drift, 1),
                 "sleep_start": s_start,
                 "exercise_minutes": max(0, ex + (10 if i >= 7 else -5)),
+                "exercise_blocks": "",
                 "water_ml": water + (150 if i >= 7 else -100),
-                "class_hours": c_hours,
-                "class_start": c_start,
-                "class_end": c_end,
+                "class_hours": 0.0,
+                "class_start": "",
+                "class_end": "",
             }
         )
     return pd.DataFrame(rows)
@@ -84,12 +97,45 @@ def load_data() -> pd.DataFrame:
 LOG_PATH = Path("data/daily_log.csv")
 
 
+def _timetable_school(blocks: pd.DataFrame) -> str:
+    if "school" in blocks.columns:
+        for s in blocks["school"].astype(str):
+            if s.strip():
+                return s.strip()
+    return SCHOOLS[0]
+
+
+def _overlay_timetable(df: pd.DataFrame, logged: set) -> pd.DataFrame:
+    """Fill class_hours/start/end from the saved timetable for any day without a
+    real daily-log entry. The class schedule is deterministic, so it can be shown
+    truthfully even before the student has logged anything."""
+    blocks = load_timetable()
+    if blocks.empty:
+        return df
+    school = _timetable_school(blocks)
+    df = df.copy()
+    for i, r in df.iterrows():
+        day = r["date"]
+        day = day.date() if hasattr(day, "date") else day
+        if day in logged:
+            continue
+        hours, start, end = class_totals(blocks, day, school)
+        df.at[i, "class_hours"] = hours
+        df.at[i, "class_start"] = start
+        df.at[i, "class_end"] = end
+    return df
+
+
 def load_data() -> pd.DataFrame:
-    if not LOG_PATH.exists():
-        return _placeholder_data()
-    df = pd.read_csv(LOG_PATH).fillna("")
-    df["date"] = pd.to_datetime(df["date"])
-    return df.sort_values("date").reset_index(drop=True)
+    if LOG_PATH.exists():
+        df = pd.read_csv(LOG_PATH).fillna("")
+        df["date"] = pd.to_datetime(df["date"])
+        df = df.sort_values("date").reset_index(drop=True)
+        logged = set(df["date"].dt.date)
+    else:
+        df = _placeholder_data()
+        logged = set()
+    return _overlay_timetable(df, logged)
 
 
 def _hours(hhmm: str) -> float | None:
@@ -100,8 +146,16 @@ def _hours(hhmm: str) -> float | None:
 
 
 def _offset(hour: float) -> float:
-    """Position on the 18:00-anchored track, in hours from the left edge."""
+    """Position on the DAY_START-anchored track, in hours from the left edge."""
     return (hour - DAY_START) % 24
+
+
+def _blk(start: float, end: float, color: str) -> str:
+    """One positioned bar on a 24-hour, DAY_START-anchored track."""
+    return (
+        f'<span class="wk-blk" style="left:{_offset(start) / 24 * 100:.3f}%;'
+        f'width:{(end - start) / 24 * 100:.3f}%;background:{color}"></span>'
+    )
 
 
 def _fmt(value: float, m: Metric) -> str:
@@ -139,7 +193,7 @@ def render_today(df: pd.DataFrame) -> None:
     latest = df.iloc[-1]
     week = df.tail(7)
 
-    st.markdown("#### Today")
+    st.title("Today")
     for col, m in zip(st.columns(len(METRICS)), METRICS):
         value = float(latest[m.key])
         avg = float(week[m.key].mean())
@@ -155,24 +209,31 @@ def render_today(df: pd.DataFrame) -> None:
 
 def render_week_rhythm(df: pd.DataFrame) -> None:
     st.markdown("#### When the day is spent")
-    st.caption("Each row runs from 6pm to 6pm, so a night's sleep stays in one piece.")
+    st.caption("Each row runs from 10pm to 10pm, so a night's sleep stays in one piece.")
+
+    timetable = load_timetable()
+    school = _timetable_school(timetable) if not timetable.empty else SCHOOLS[0]
 
     rows = []
     for _, r in df.tail(7).iterrows():
         blocks = ""
         s_start = _hours(r["sleep_start"])
         if s_start is not None:
-            left = _offset(s_start)
-            blocks += (
-                f'<span class="wk-blk" style="left:{left / 24 * 100:.3f}%;'
-                f'width:{float(r["sleep_hours"]) / 24 * 100:.3f}%;background:{SLEEP}"></span>'
-            )
-        c_start, c_end = _hours(r["class_start"]), _hours(r["class_end"])
-        if c_start is not None and c_end is not None:
-            blocks += (
-                f'<span class="wk-blk" style="left:{_offset(c_start) / 24 * 100:.3f}%;'
-                f'width:{(c_end - c_start) / 24 * 100:.3f}%;background:{CLASS}"></span>'
-            )
+            blocks += _blk(s_start, s_start + float(r["sleep_hours"]), SLEEP)
+
+        day = r["date"]
+        day = day.date() if hasattr(day, "date") else day
+        spans = day_classes(timetable, day, school) if not timetable.empty else []
+        if spans:
+            for c_start, c_end, _name in spans:
+                blocks += _blk(c_start, c_end, CLASS)
+        else:
+            c_start, c_end = _hours(r["class_start"]), _hours(r["class_end"])
+            if c_start is not None and c_end is not None:
+                blocks += _blk(c_start, c_end, CLASS)
+
+        for m_start, m_end in merge_movement(parse_movement(r.get("exercise_blocks", ""))):
+            blocks += _blk(m_start, m_end, MOVE)
         rows.append(
             f'<div class="wk-row"><div class="wk-day">{r["date"]:%a}</div>'
             f'<div class="wk-track">{blocks}</div>'
@@ -187,12 +248,13 @@ def render_week_rhythm(df: pd.DataFrame) -> None:
         + '<div class="wk-key">'
         + f'<span class="wk-swatch" style="background:{SLEEP}"></span>Sleep'
         + f'<span class="wk-swatch" style="background:{CLASS};margin-left:1rem"></span>Class'
+        + f'<span class="wk-swatch" style="background:{MOVE};margin-left:1rem"></span>Movement'
         + "</div></div>"
     )
 
 
 def render_trend(df: pd.DataFrame) -> None:
-    st.markdown("#### Trend")
+    st.markdown("#### Your two weeks trend")
     label = st.selectbox("Metric", [m.label for m in METRICS], label_visibility="collapsed")
     m = next(x for x in METRICS if x.label == label)
 
@@ -225,7 +287,13 @@ def render_dashboard(df: pd.DataFrame | None = None) -> None:
     if df is None:
         df = load_data()
     render_today(df)
+    if not LOG_PATH.exists():
+        st.caption(
+            "No daily entries yet — sleep, water and movement are sample values; "
+            "class times come from your saved timetable."
+        )
     st.divider()
+    st.header("Your two weeks")
     render_week_rhythm(df)
     st.divider()
     render_trend(df)
@@ -233,6 +301,4 @@ def render_dashboard(df: pd.DataFrame | None = None) -> None:
 
 if __name__ == "__main__":
     st.set_page_config(page_title="Wellbeing dashboard", layout="wide", menu_items={})
-    st.title("Your two weeks")
-    st.caption("Placeholder data — swap load_data() when the real dataset arrives.")
     render_dashboard()

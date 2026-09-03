@@ -31,7 +31,6 @@ def timetable_page() -> None:
 def trends_page() -> None:
     from health_dashboard import render_dashboard
 
-    st.title("Your two weeks")
     render_dashboard()
 
 

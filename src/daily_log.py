@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import math
 from datetime import date, datetime, time, timedelta
+from html import escape
 from pathlib import Path
 
 import pandas as pd
@@ -24,6 +25,7 @@ DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
 INK = "#16202A"
 MUTED = "#6B7A87"
+TRACK = "#F1F4F6"
 WATER = "#3E9BC4"
 SLEEP = "#3D4E9E"
 MOVE = "#2F8F6B"
@@ -37,6 +39,7 @@ COLUMNS = [
     "sleep_hours",
     "sleep_start",
     "exercise_minutes",
+    "exercise_blocks",
     "water_ml",
     "class_hours",
     "class_start",
@@ -52,6 +55,37 @@ def _hours(hhmm: str) -> float:
 def _clock(hour: float) -> str:
     h, m = int(hour) % 24, int(round((hour % 1) * 60))
     return f"{h:02d}:{m:02d}"
+
+
+def parse_movement(text: str) -> list[tuple[str, str]]:
+    """"07:00-07:30;18:00-18:45" -> [("07:00", "07:30"), ("18:00", "18:45")]."""
+    out = []
+    for part in str(text).split(";"):
+        a, _, b = part.strip().partition("-")
+        if a.strip() and b.strip():
+            out.append((a.strip(), b.strip()))
+    return out
+
+
+def _join_movement(blocks: list[tuple[str, str]]) -> str:
+    return ";".join(f"{a}-{b}" for a, b in blocks)
+
+
+def merge_movement(blocks: list[tuple[str, str]]) -> list[tuple[float, float]]:
+    """Overlapping or touching stretches collapsed into their union, as sorted
+    (start_hour, end_hour) pairs, so time covered by two stretches is counted once."""
+    spans = sorted((_hours(a), _hours(b)) for a, b in blocks if _hours(b) > _hours(a))
+    merged: list[list[float]] = []
+    for start, end in spans:
+        if merged and start <= merged[-1][1]:
+            merged[-1][1] = max(merged[-1][1], end)
+        else:
+            merged.append([start, end])
+    return [(s, e) for s, e in merged]
+
+
+def _movement_minutes(blocks: list[tuple[str, str]]) -> int:
+    return int(round(sum(e - s for s, e in merge_movement(blocks)) * 60))
 
 
 def load_timetable() -> pd.DataFrame:
@@ -77,6 +111,81 @@ def class_totals(blocks: pd.DataFrame, day: date, school: str) -> tuple[float, s
     return total, _clock(min(s for s, _ in spans)), _clock(max(e for _, e in spans))
 
 
+def day_classes(blocks: pd.DataFrame, day: date, school: str) -> list[tuple[float, float, str]]:
+    """Individual classes that run on `day`, each as (start_hour, end_hour, name)."""
+    ctx = academic_context(day, school)
+    if not ctx.classes_expected or day.weekday() > 5 or blocks.empty:
+        return []
+    rows = blocks[blocks["day"] == DAYS[day.weekday()]]
+    spans = []
+    for _, r in rows.iterrows():
+        weeks = parse_weeks(str(r.get("weeks", "")))
+        if weeks is None or ctx.week in weeks:
+            spans.append(
+                (_hours(r["start"]), _hours(r["end"]), str(r.get("name", "") or "Class"))
+            )
+    return sorted(spans)
+
+
+TIMELINE_CSS = f"""
+<style>
+.ct-wrap {{ max-width: 640px; margin: .5rem 0 .2rem; padding: 0 14px; }}
+.ct {{ position: relative; height: 56px; }}
+.ct-base {{ position: absolute; top: 10px; left: 0; right: 0; height: 3px;
+  border-radius: 2px; background: {TRACK}; }}
+.ct-seg {{ position: absolute; top: 10px; height: 3px; border-radius: 2px; }}
+.ct-dot {{ position: absolute; top: 5px; width: 11px; height: 11px; margin-left: -6px;
+  border-radius: 50%; background: #fff; border: 2px solid; box-sizing: border-box; }}
+.ct-lab {{ position: absolute; top: 22px; transform: translateX(-50%);
+  text-align: center; white-space: nowrap; line-height: 1.25; }}
+.ct-code {{ font-size: .72rem; font-weight: 600; color: {INK}; }}
+.ct-time {{ font-size: .66rem; color: {MUTED}; }}
+</style>
+"""
+
+
+def _timeline(spans: list[tuple[float, float, str, str]], color: str) -> str:
+    """One row: an open circle at each start and end, joined by a bar, with a
+    headline and a sub-label under it. `spans` is (start_hour, end_hour, top, bottom)."""
+    if not spans:
+        return ""
+    lo = min(s for s, *_ in spans)
+    hi = max(e for _, e, *_ in spans)
+    width = hi - lo or 1.0
+
+    rows = []
+    for start, end, top, bottom in spans:
+        left = (start - lo) / width * 100
+        run = (end - start) / width * 100
+        rows.append(
+            f'<div class="ct-seg" style="left:{left:.2f}%;width:{run:.2f}%;background:{color}"></div>'
+            f'<div class="ct-dot" style="left:{left:.2f}%;border-color:{color}"></div>'
+            f'<div class="ct-dot" style="left:{left + run:.2f}%;border-color:{color}"></div>'
+            f'<div class="ct-lab" style="left:{left + run / 2:.2f}%">'
+            f'<span class="ct-code">{escape(top)}</span><br>'
+            f'<span class="ct-time">{escape(bottom)}</span></div>'
+        )
+    return (
+        TIMELINE_CSS
+        + '<div class="ct-wrap"><div class="ct"><div class="ct-base"></div>'
+        + "".join(rows)
+        + "</div></div>"
+    )
+
+
+def class_timeline(spans: list[tuple[float, float, str]]) -> str:
+    """Timeline of the day's classes: (start_hour, end_hour, course_name)."""
+    return _timeline(
+        [(s, e, name, f"{_clock(s)}–{_clock(e)}") for s, e, name in spans], CLASS
+    )
+
+
+def movement_timeline(spans: list[tuple[float, float]]) -> str:
+    """Timeline of movement coverage (merged), each stretch labelled with its minutes."""
+    rows = [(s, e, f"{round((e - s) * 60)} min", f"{_clock(s)}–{_clock(e)}") for s, e in spans]
+    return _timeline(rows, MOVE)
+
+
 def sleep_length(bed: time, wake: time) -> float:
     delta = (
         datetime.combine(date.today() + timedelta(days=1), wake)
@@ -86,28 +195,34 @@ def sleep_length(bed: time, wake: time) -> float:
     return round(hours % 24 or 24, 1)
 
 
-def bottles_svg(total_ml: int) -> str:
-    """One bottle per 500 ml, part-filled bottles shown at their real level."""
+WATER_CSS = f"""
+<style>
+.bt-row {{ display: flex; gap: .5rem; align-items: flex-end; flex-wrap: wrap; margin: .2rem 0 .4rem; }}
+.bt {{ position: relative; width: 34px; height: 90px; }}
+.bt-neck {{ position: absolute; top: 0; left: 50%; width: 12px; height: 8px; margin-left: -6px;
+  border: 1.5px solid {MUTED}; border-bottom: none; border-radius: 3px 3px 0 0; box-sizing: border-box; }}
+.bt-body {{ position: absolute; top: 8px; left: 0; right: 0; bottom: 0; box-sizing: border-box;
+  border: 1.5px solid {MUTED}; border-radius: 4px 4px 8px 8px; overflow: hidden; }}
+.bt-fill {{ position: absolute; left: 0; right: 0; bottom: 0; background: {WATER}; }}
+.bt-ghost .bt-body, .bt-ghost .bt-neck {{ border-style: dashed; opacity: .55; }}
+</style>
+"""
+
+
+def water_bottles(total_ml: int) -> str:
+    """One bottle per 500 ml, part-filled bottles shown at their real level.
+    A dashed outline hints at the next bottle."""
     count = max(1, math.ceil(total_ml / BOTTLE))
-    parts = []
-    for i in range(count + 1):  # trailing outline hints at the next bottle
+    bottles = []
+    for i in range(count + 1):
         fill = min(max(total_ml - i * BOTTLE, 0), BOTTLE) / BOTTLE
-        ghost = i == count
-        body_top, body_bottom = 18, 106
-        y = body_bottom - fill * (body_bottom - body_top)
-        parts.append(
-            f'<svg viewBox="0 0 44 112" width="40" height="102" role="img">'
-            f'<defs><clipPath id="c{i}">'
-            f'<path d="M18 8h8v9h1a6 6 0 0 1 5 6v79a4 4 0 0 1-4 4H16a4 4 0 0 1-4-4V23a6 6 0 0 1 5-6h1z"/>'
-            f"</clipPath></defs>"
-            f'<rect x="16" y="1" width="12" height="7" rx="2" fill="{MUTED}" opacity="{0.2 if ghost else 0.5}"/>'
-            f'<rect x="0" y="{y:.1f}" width="44" height="{body_bottom - y:.1f}" '
-            f'fill="{WATER}" clip-path="url(#c{i})"/>'
-            f'<path d="M18 8h8v9h1a6 6 0 0 1 5 6v79a4 4 0 0 1-4 4H16a4 4 0 0 1-4-4V23a6 6 0 0 1 5-6h1z" '
-            f'fill="none" stroke="{MUTED}" stroke-width="1.5" opacity="{0.25 if ghost else 0.55}"/>'
-            f"</svg>"
+        ghost = " bt-ghost" if i == count else ""
+        bottles.append(
+            f'<div class="bt{ghost}"><div class="bt-neck"></div>'
+            f'<div class="bt-body"><div class="bt-fill" style="height:{fill * 100:.1f}%"></div></div>'
+            f"</div>"
         )
-    return f'<div style="display:flex;gap:.45rem;align-items:flex-end;flex-wrap:wrap">{"".join(parts)}</div>'
+    return WATER_CSS + f'<div class="bt-row">{"".join(bottles)}</div>'
 
 
 def load_log() -> pd.DataFrame:
@@ -145,7 +260,8 @@ def render_daily_log() -> None:
     if water_key not in st.session_state:
         st.session_state[water_key] = int(prior.get("water_ml", 0) or 0)
 
-    auto_hours, auto_start, auto_end = class_totals(load_timetable(), day, school)
+    blocks = load_timetable()
+    auto_hours, auto_start, auto_end = class_totals(blocks, day, school)
 
     st.markdown("#### From your timetable")
     if auto_hours:
@@ -154,6 +270,7 @@ def render_daily_log() -> None:
             f'<span style="color:{MUTED}"> h of class · {auto_start}–{auto_end}</span>',
             unsafe_allow_html=True,
         )
+        st.html(class_timeline(day_classes(blocks, day, school)))
     else:
         st.markdown(f'<span style="color:{MUTED}">No class scheduled.</span>', unsafe_allow_html=True)
     with st.expander("Different from the plan?"):
@@ -176,7 +293,7 @@ def render_daily_log() -> None:
     st.divider()
     st.markdown("#### Water")
     total = st.session_state[water_key]
-    st.html(bottles_svg(total))
+    st.html(water_bottles(total))
     st.markdown(
         f'<div style="margin:.35rem 0 .6rem;color:{MUTED};font-size:.85rem">'
         f'<span style="color:{INK};font-size:1.3rem;font-weight:600">{total:,}</span> ml'
@@ -196,11 +313,45 @@ def render_daily_log() -> None:
 
     st.divider()
     st.markdown("#### Movement")
-    minutes = st.slider(
-        "Minutes active", 0, 180, int(prior.get("exercise_minutes", 0) or 0), 5,
+    move_key = f"move_{day}"
+    if move_key not in st.session_state:
+        st.session_state[move_key] = parse_movement(prior.get("exercise_blocks", ""))
+
+    window = st.slider(
+        "Movement window",
+        min_value=time(5, 0),
+        max_value=time(23, 45),
+        value=(time(18, 0), time(18, 30)),
+        step=timedelta(minutes=15),
+        format="HH:mm",
         label_visibility="collapsed",
     )
-    st.caption("Walking to class counts. Leave it at zero if it was a still day.")
+    if st.button("Add this stretch", use_container_width=True):
+        if window[1] <= window[0]:
+            st.warning("Drag the handles apart to cover a real stretch of time.")
+        else:
+            pair = (window[0].strftime("%H:%M"), window[1].strftime("%H:%M"))
+            if pair not in st.session_state[move_key]:
+                st.session_state[move_key].append(pair)
+            st.rerun()
+
+    st.session_state[move_key].sort()
+    segments = st.session_state[move_key]
+    minutes = _movement_minutes(segments)
+
+    if segments:
+        st.html(movement_timeline(merge_movement(segments)))
+        chips = st.columns(min(len(segments), 4))
+        for i, (a, b) in enumerate(segments):
+            mins = round((_hours(b) - _hours(a)) * 60)
+            if chips[i % len(chips)].button(
+                f"✕  {a}–{b} · {mins}m", key=f"mv_rm_{day}_{i}", use_container_width=True
+            ):
+                st.session_state[move_key].remove((a, b))
+                st.rerun()
+        st.caption(f"{minutes} min active today.")
+    else:
+        st.caption("Walking to class counts. Add a stretch if you moved, or leave it empty.")
 
     st.divider()
     if st.button("Save today", type="primary", use_container_width=True):
@@ -210,6 +361,7 @@ def render_daily_log() -> None:
                 "sleep_hours": hours,
                 "sleep_start": bed.strftime("%H:%M"),
                 "exercise_minutes": minutes,
+                "exercise_blocks": _join_movement(segments),
                 "water_ml": st.session_state[water_key],
                 "class_hours": auto_hours,
                 "class_start": auto_start,

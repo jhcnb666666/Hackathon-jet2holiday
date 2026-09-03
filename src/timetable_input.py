@@ -55,16 +55,26 @@ def _empty() -> pd.DataFrame:
     return pd.DataFrame(columns=COLUMNS)
 
 
-def _seed() -> pd.DataFrame:
-    """A couple of rows so the grid is not blank on first open."""
-    return pd.DataFrame(
-        [
-            {"day": "Mon", "start": "09:30", "end": "12:20", "name": "E2104L LAB", "weeks": "9,12"},
-            {"day": "Mon", "start": "13:30", "end": "15:20", "name": "IE2106 LEC", "weeks": ""},
-            {"day": "Wed", "start": "10:30", "end": "12:20", "name": "CL0105 LEC", "weeks": ""},
-        ],
-        columns=COLUMNS,
-    )
+def _load_saved() -> pd.DataFrame:
+    """Reopen the timetable the student saved earlier, so the grid matches what
+    the rest of the app is already reading from disk."""
+    df = pd.read_csv(SAVE_PATH).fillna("")
+    for col in COLUMNS:
+        if col not in df.columns:
+            df[col] = ""
+    return df[COLUMNS].astype(str)
+
+
+def blocks_this_week(blocks: pd.DataFrame, ctx) -> pd.DataFrame:
+    """Only the blocks that run in the given teaching week. Empty when the
+    calendar says no classes are on (recess, exams, vacation...)."""
+    if not ctx.classes_expected:
+        return _empty()
+    keep = []
+    for _, r in blocks.iterrows():
+        weeks = parse_weeks(str(r.get("weeks", "")))
+        keep.append(weeks is None or ctx.week in weeks)
+    return blocks[pd.Series(keep, index=blocks.index)] if keep else _empty()
 
 
 def classes_on(blocks: pd.DataFrame, day: date, school: str) -> pd.DataFrame:
@@ -238,7 +248,7 @@ def render_grid(blocks: pd.DataFrame) -> None:
 
 def render_timetable() -> pd.DataFrame:
     if "blocks" not in st.session_state:
-        st.session_state.blocks = _seed()
+        st.session_state.blocks = _load_saved() if SAVE_PATH.exists() else _empty()
     if "blocks_version" not in st.session_state:
         st.session_state.blocks_version = 0
 
@@ -293,8 +303,16 @@ def render_timetable() -> pd.DataFrame:
             st.session_state.blocks_version += 1
             st.rerun()
 
-    st.markdown("#### Your week")
-    render_grid(st.session_state.blocks)
+    st.markdown("#### This week")
+    week_blocks = blocks_this_week(st.session_state.blocks, ctx)
+    if not ctx.classes_expected:
+        st.caption(f"No classes during {ctx.label.lower()}.")
+    render_grid(week_blocks)
+    hidden = len(st.session_state.blocks) - len(week_blocks)
+    if ctx.classes_expected and hidden > 0:
+        st.caption(
+            f"{hidden} class(es) don't run in week {ctx.week} — hidden here, still under Edit rows."
+        )
 
     with st.expander("Edit rows", expanded=False):
         edited = st.data_editor(
@@ -331,8 +349,11 @@ def render_timetable() -> pd.DataFrame:
     if ctx.classes_expected and skipped > 0:
         st.caption(f"{skipped} class(es) on this weekday do not run in week {ctx.week}.")
 
-    st.markdown("#### Weekly total")
-    st.dataframe(day_summary(blocks), hide_index=True, use_container_width=True)
+    total_label = f"Week {ctx.week} total" if ctx.week is not None else f"{ctx.label} total"
+    st.markdown(f"#### {total_label}")
+    st.dataframe(
+        day_summary(blocks_this_week(blocks, ctx)), hide_index=True, use_container_width=True
+    )
 
     left, right = st.columns(2)
     if left.button("Save timetable", use_container_width=True):
