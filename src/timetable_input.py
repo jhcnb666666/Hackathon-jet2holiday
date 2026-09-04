@@ -238,7 +238,7 @@ def render_grid(blocks: pd.DataFrame) -> None:
             tag = f" · Wk{weeks}" if weeks else ""
             inner += (
                 f'<div class="tt-blk" style="top:{top:.2f}%;height:{height:.2f}%">'
-                f'{r.get("name", "") or "Class"}'
+                f"{r.get('name', '') or 'Class'}"
                 f'<div class="tt-time">{r["start"]}–{r["end"]}{tag}</div></div>'
             )
         cells.append(f'<div class="tt-col">{inner}</div>')
@@ -266,7 +266,10 @@ def render_timetable() -> pd.DataFrame:
     )
     c_read, c_mode = st.columns([1, 2])
     replace = c_mode.checkbox("Replace what is already there", value=True)
-    if c_read.button("Read timetable", disabled=up is None, use_container_width=True):
+    if (
+        c_read.button("Read timetable", disabled=up is None, use_container_width=True)
+        and up is not None
+    ):
         with st.spinner("Reading the image…"):
             try:
                 found = read_timetable_image(up.getvalue(), up.type)
@@ -319,7 +322,9 @@ def render_timetable() -> pd.DataFrame:
             st.session_state.blocks,
             column_config={
                 "day": st.column_config.SelectboxColumn("Day", options=DAYS, width="small"),
-                "start": st.column_config.SelectboxColumn("From", options=TIME_OPTIONS, width="small"),
+                "start": st.column_config.SelectboxColumn(
+                    "From", options=TIME_OPTIONS, width="small"
+                ),
                 "end": st.column_config.SelectboxColumn("To", options=TIME_OPTIONS, width="small"),
                 "name": st.column_config.TextColumn("Course"),
                 "weeks": st.column_config.TextColumn("Weeks", help="Blank means every week"),
@@ -345,7 +350,11 @@ def render_timetable() -> pd.DataFrame:
             st.write(f"**{r['start']}–{r['end']}**  {r['name'] or 'Class'}")
         st.caption(f"{hours:.1f} hours in class today.")
 
-    skipped = len(blocks[blocks["day"] == DAYS[today.weekday()]]) - len(running) if today.weekday() < 6 else 0
+    skipped = (
+        len(blocks[blocks["day"] == DAYS[today.weekday()]]) - len(running)
+        if today.weekday() < 6
+        else 0
+    )
     if ctx.classes_expected and skipped > 0:
         st.caption(f"{skipped} class(es) on this weekday do not run in week {ctx.week}.")
 

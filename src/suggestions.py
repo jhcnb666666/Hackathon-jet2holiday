@@ -53,14 +53,14 @@ from __future__ import annotations
 import os
 from collections.abc import Iterator, Mapping
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 # --- contract constants -------------------------------------------------------
 
 SCHEMA_VERSION = 1
-SUGGESTIONS_KEY = "suggestions"          # key on ChatMessage.custom_data
-CONTEXT_KEY = "daily_context"            # key on agent_config
+SUGGESTIONS_KEY = "suggestions"  # key on ChatMessage.custom_data
+CONTEXT_KEY = "daily_context"  # key on agent_config
 DEFAULT_AGENT = "langgraph-supervisor-agent"
 
 TONES = ("positive", "nudge", "watch")
@@ -97,7 +97,7 @@ class SuggestionCard:
     id: str | None = None
 
     @classmethod
-    def from_dict(cls, raw: Mapping[str, Any]) -> "SuggestionCard":
+    def from_dict(cls, raw: Mapping[str, Any]) -> SuggestionCard:
         tone = str(raw.get("tone", DEFAULT_TONE)).lower()
         metrics = raw.get("metrics") or []
         if isinstance(metrics, str):
@@ -130,7 +130,7 @@ class SuggestionSet:
         return not self.is_sample and self.error is None and bool(self.cards)
 
     @classmethod
-    def from_payload(cls, payload: Mapping[str, Any]) -> "SuggestionSet":
+    def from_payload(cls, payload: Mapping[str, Any]) -> SuggestionSet:
         cards_raw = payload.get("cards") or []
         cards = [
             SuggestionCard.from_dict(c)
@@ -155,7 +155,7 @@ class SuggestionSet:
         return asdict(self)
 
     @classmethod
-    def from_dict(cls, raw: Mapping[str, Any]) -> "SuggestionSet":
+    def from_dict(cls, raw: Mapping[str, Any]) -> SuggestionSet:
         return cls(
             cards=[
                 SuggestionCard(**{k: c[k] for k in c if k in SuggestionCard.__annotations__})
@@ -178,8 +178,8 @@ class ProgressEvent:
     """A sub-agent starting / working / finishing, for the progress strip."""
 
     name: str
-    state: str            # "new" | "running" | "complete"
-    result: str | None = None   # "success" | "error"
+    state: str  # "new" | "running" | "complete"
+    result: str | None = None  # "success" | "error"
     detail: dict[str, Any] = field(default_factory=dict)
 
 
@@ -203,11 +203,13 @@ def build_context(
         ctx["phase"] = phase
 
     for key in ("sleep_hours", "class_hours"):
-        if _num(row.get(key)) is not None:
-            ctx[key] = _num(row[key])
+        value = _num(row.get(key))
+        if value is not None:
+            ctx[key] = value
     for key in ("exercise_minutes", "water_ml"):
-        if _num(row.get(key)) is not None:
-            ctx[key] = int(_num(row[key]))
+        value = _num(row.get(key))
+        if value is not None:
+            ctx[key] = int(value)
     for key in ("sleep_start", "class_start", "class_end"):
         if row.get(key):
             ctx[key] = str(row[key])
@@ -322,9 +324,7 @@ def fetch_suggestions(
     """
     try:
         final: SuggestionSet | None = None
-        for item in stream_suggestions(
-            context, agent=agent, base_url=base_url, timeout=timeout
-        ):
+        for item in stream_suggestions(context, agent=agent, base_url=base_url, timeout=timeout):
             if isinstance(item, SuggestionSet):
                 final = item
         if final is not None:
@@ -516,7 +516,7 @@ def _pairs(value: Any) -> list[list[str]]:
 
 
 def _now_iso() -> str:
-    return datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+    return datetime.now(UTC).replace(microsecond=0).isoformat()
 
 
 if __name__ == "__main__":

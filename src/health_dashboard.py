@@ -8,10 +8,10 @@ the dataframe. Nothing else needs to change.
 """
 
 from __future__ import annotations
-from pathlib import Path
 
 from dataclasses import dataclass
 from datetime import date, timedelta
+from pathlib import Path
 
 import altair as alt
 import pandas as pd
@@ -94,6 +94,7 @@ def _placeholder_data() -> pd.DataFrame:
         )
     return pd.DataFrame(rows)
 
+
 LOG_PATH = Path("data/daily_log.csv")
 
 
@@ -114,15 +115,22 @@ def _overlay_timetable(df: pd.DataFrame, logged: set) -> pd.DataFrame:
         return df
     school = _timetable_school(blocks)
     df = df.copy()
-    for i, r in df.iterrows():
+    hours_col, start_col, end_col = [], [], []
+    for _, r in df.iterrows():
         day = r["date"]
         day = day.date() if hasattr(day, "date") else day
         if day in logged:
-            continue
-        hours, start, end = class_totals(blocks, day, school)
-        df.at[i, "class_hours"] = hours
-        df.at[i, "class_start"] = start
-        df.at[i, "class_end"] = end
+            hours_col.append(r["class_hours"])
+            start_col.append(r["class_start"])
+            end_col.append(r["class_end"])
+        else:
+            hours, start, end = class_totals(blocks, day, school)
+            hours_col.append(hours)
+            start_col.append(start)
+            end_col.append(end)
+    df["class_hours"] = hours_col
+    df["class_start"] = start_col
+    df["class_end"] = end_col
     return df
 
 
@@ -131,7 +139,7 @@ def load_data() -> pd.DataFrame:
         df = pd.read_csv(LOG_PATH).fillna("")
         df["date"] = pd.to_datetime(df["date"])
         df = df.sort_values("date").reset_index(drop=True)
-        logged = set(df["date"].dt.date)
+        logged = {ts.date() for ts in pd.to_datetime(df["date"])}
     else:
         df = _placeholder_data()
         logged = set()

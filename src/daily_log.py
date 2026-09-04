@@ -70,7 +70,7 @@ def _clock(hour: float) -> str:
 
 
 def parse_movement(text: str) -> list[tuple[str, str]]:
-    """"07:00-07:30;18:00-18:45" -> [("07:00", "07:30"), ("18:00", "18:45")]."""
+    """ "07:00-07:30;18:00-18:45" -> [("07:00", "07:30"), ("18:00", "18:45")]."""
     out = []
     for part in str(text).split(";"):
         a, _, b = part.strip().partition("-")
@@ -133,9 +133,7 @@ def day_classes(blocks: pd.DataFrame, day: date, school: str) -> list[tuple[floa
     for _, r in rows.iterrows():
         weeks = parse_weeks(str(r.get("weeks", "")))
         if weeks is None or ctx.week in weeks:
-            spans.append(
-                (_hours(r["start"]), _hours(r["end"]), str(r.get("name", "") or "Class"))
-            )
+            spans.append((_hours(r["start"]), _hours(r["end"]), str(r.get("name", "") or "Class")))
     return sorted(spans)
 
 
@@ -187,9 +185,7 @@ def _timeline(spans: list[tuple[float, float, str, str]], color: str) -> str:
 
 def class_timeline(spans: list[tuple[float, float, str]]) -> str:
     """Timeline of the day's classes: (start_hour, end_hour, course_name)."""
-    return _timeline(
-        [(s, e, name, f"{_clock(s)}–{_clock(e)}") for s, e, name in spans], CLASS
-    )
+    return _timeline([(s, e, name, f"{_clock(s)}–{_clock(e)}") for s, e, name in spans], CLASS)
 
 
 def movement_timeline(spans: list[tuple[float, float]]) -> str:
@@ -199,9 +195,8 @@ def movement_timeline(spans: list[tuple[float, float]]) -> str:
 
 
 def sleep_length(bed: time, wake: time) -> float:
-    delta = (
-        datetime.combine(date.today() + timedelta(days=1), wake)
-        - datetime.combine(date.today(), bed)
+    delta = datetime.combine(date.today() + timedelta(days=1), wake) - datetime.combine(
+        date.today(), bed
     )
     hours = delta.total_seconds() / 3600
     return round(hours % 24 or 24, 1)
@@ -294,16 +289,14 @@ def _ago(iso: str) -> str:
 
 def _suggestion_card_html(card) -> str:
     color = SUGGEST_TONE.get(card.tone, MUTED)
-    agent = f'<span class="sg-agent">{escape(card.source_agent)}</span>' if card.source_agent else ""
-    why = f'<div class="sg-why">{escape(card.reasoning)}</div>' if card.reasoning else ""
-    action = (
-        f'<div class="sg-do"><b>Today</b>{escape(card.action)}</div>' if card.action else ""
+    agent = (
+        f'<span class="sg-agent">{escape(card.source_agent)}</span>' if card.source_agent else ""
     )
+    why = f'<div class="sg-why">{escape(card.reasoning)}</div>' if card.reasoning else ""
+    action = f'<div class="sg-do"><b>Today</b>{escape(card.action)}</div>' if card.action else ""
     metrics = ""
     if card.metrics:
-        chips = "".join(
-            f"<span>{escape(METRIC_LABELS.get(m, m))}</span>" for m in card.metrics
-        )
+        chips = "".join(f"<span>{escape(METRIC_LABELS.get(m, m))}</span>" for m in card.metrics)
         metrics = f'<div class="sg-metrics">{chips}</div>'
     return (
         f'<div class="sg-card" style="border-left-color:{color}">'
@@ -318,7 +311,7 @@ def _render_suggestion_set(result) -> None:
         parts.append(
             '<div class="sg-support">If you want to talk to someone, '
             f'<a href="{escape(result.support["url"])}" target="_blank" rel="noopener">'
-            f'{escape(result.support["label"])}</a> is there for students.</div>'
+            f"{escape(result.support['label'])}</a> is there for students.</div>"
         )
     if result.is_sample:
         parts.append(
@@ -454,7 +447,7 @@ def render_suggestions(day, school, ctx, prior: dict, class_spans: list) -> None
             return
         shown = list(CHECK_IN_SLOTS)  # other day: let the user pick any slot to generate
 
-    default = current if current in shown else shown[-1]
+    default = current if (current is not None and current in shown) else shown[-1]
     picked = st.radio(
         "Check-in",
         shown,
@@ -500,7 +493,7 @@ def render_daily_log() -> None:
     ctx = academic_context(day, school)
     top[2].markdown(
         f'<div style="padding-top:.45rem;color:{MUTED};font-size:.85rem">'
-        f'{day:%A %d %b} · {ctx.label}{" · " + ctx.holiday if ctx.holiday else ""}</div>',
+        f"{day:%A %d %b} · {ctx.label}{' · ' + ctx.holiday if ctx.holiday else ''}</div>",
         unsafe_allow_html=True,
     )
 
@@ -529,11 +522,11 @@ def render_daily_log() -> None:
         )
         st.html(class_timeline(day_classes(blocks, day, school)))
     else:
-        st.markdown(f'<span style="color:{MUTED}">No class scheduled.</span>', unsafe_allow_html=True)
-    with st.expander("Different from the plan?"):
-        auto_hours = st.number_input(
-            "Hours actually in class", 0.0, 14.0, float(auto_hours), 0.5
+        st.markdown(
+            f'<span style="color:{MUTED}">No class scheduled.</span>', unsafe_allow_html=True
         )
+    with st.expander("Different from the plan?"):
+        auto_hours = st.number_input("Hours actually in class", 0.0, 14.0, float(auto_hours), 0.5)
 
     st.divider()
     st.markdown("#### Last night")
@@ -543,7 +536,7 @@ def render_daily_log() -> None:
     hours = sleep_length(bed, wake)
     s3.markdown(
         f'<div style="padding-top:1.9rem;font-size:1.3rem;font-weight:600;color:{SLEEP}">'
-        f'{hours:.1f} h</div>',
+        f"{hours:.1f} h</div>",
         unsafe_allow_html=True,
     )
 
@@ -554,7 +547,7 @@ def render_daily_log() -> None:
     st.markdown(
         f'<div style="margin:.35rem 0 .6rem;color:{MUTED};font-size:.85rem">'
         f'<span style="color:{INK};font-size:1.3rem;font-weight:600">{total:,}</span> ml'
-        f' · {total / BOTTLE:.1f} bottles</div>',
+        f" · {total / BOTTLE:.1f} bottles</div>",
         unsafe_allow_html=True,
     )
     w1, w2, w3, _ = st.columns([1.1, 1, 1, 2])
