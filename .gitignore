@@ -197,5 +197,7 @@ smoke_live_app_failure.png
 # Claude Code agent worktrees (ephemeral, per-agent git checkouts)
 .claude/worktrees/
 
-# Local runtime data (per-user timetable and daily log)
-data/
+# Local runtime data written by the frontend (curated data/ subdirs stay tracked)
+data/timetable.csv
+data/daily_log.csv
+data/suggestions.json
