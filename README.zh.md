@@ -25,10 +25,6 @@ agent 服务的调用。
 | `src/health_dashboard.py` | 指标卡、10pm–10pm 的一天节奏条、趋势折线图。读 `data/daily_log.csv`，缺失时用 placeholder（只补 sleep/water/movement，class 数据只从真实课表来） |
 | `src/suggestions.py` | **前端 ↔ agent 服务的接口层 + 契约**（详见下方） |
 
-**后端（队友负责）**——specialist agents、supervisor prompt 和路由、服务端点。
-未经沟通不要改 `src/agents/`、`src/service/`、`src/core/`、`src/schema/`、
-`src/streamlit_app.py`。
-
 ---
 
 ## 怎么跑
@@ -96,8 +92,6 @@ day, start, end, name, weeks, school
 
 ## 建议卡片 & 后端接口契约
 
-前端把 `custom_data` 的字段形状定死，作为 canonical 契约，**后端跟着填**。相关常量
-都在 `src/suggestions.py` 顶部：
 
 ```python
 SUGGESTIONS_KEY = "suggestions"          # ChatMessage.custom_data 上的 key
@@ -195,21 +189,6 @@ $env:AGENT_URL="http://127.0.0.1:8899"
 
 ---
 
-## 容易踩的坑
-
-- **Session state 不是存储**。停掉 app 会清空内存里的课表。只有 Save 按钮写盘。
-- **周次限制是硬约束**。标了 `Wk9,12` 的课不能出现在第 4 周。`parse_weeks` 会剥掉
-  `Wk` / `Week` 前缀（vision model 输出不一致），这个剥离要是坏了，课会悄悄跑到
-  错误的日子上、界面看不出问题。
-- **NTU 和 NUS 的 recess week 位置不同**。22 Sep 2026 在 NTU 是第 7 教学周，在 NUS
-  是 recess。选学校不是装饰。
-- **截图导入永远不可信**。结果落到可编辑网格让用户先改再存，不要自动保存导入结果。
-- **Dashboard 的 placeholder 是编的**。存在只是为了页面不空。绝不能当成真数据展示
-  （顶部有说明文案）。存了第一条 daily_log 之后 dashboard 只显示真实记录的那些天，
-  placeholder 不按天补位。
-- **`st.html` 会删掉 `<svg>`**。SVG 都改成了 div + CSS（时间轴、节奏条、水瓶）。
-
----
 
 ## 健康内容红线
 
