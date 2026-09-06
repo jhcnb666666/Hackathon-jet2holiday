@@ -8,3 +8,8 @@ __pycache__/
 .pyrefly/
 checkpoints.db
 *.log
+
+# Local runtime data written by the frontend (curated data/ subdirs stay tracked)
+data/timetable.csv
+data/daily_log.csv
+data/suggestions.json
