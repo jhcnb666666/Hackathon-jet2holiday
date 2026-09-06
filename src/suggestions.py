@@ -448,9 +448,10 @@ def _num(value: Any) -> float | None:
     try:
         if value is None or value == "":
             return None
-        return float(value)
+        num = float(value)
     except (TypeError, ValueError):
         return None
+    return num if num == num else None  # NaN (empty CSV cell) -> None
 
 
 def _parse_time(value: Any) -> time | None:
