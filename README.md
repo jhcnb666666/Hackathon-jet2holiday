@@ -5,6 +5,30 @@
 
 A full toolkit for running an AI agent service built with LangGraph, FastAPI and Streamlit.
 
+## Student-state tutoring experiment
+
+This fork includes a research MVP for testing whether a trained student-state model improves an
+LLM tutor's intervention choices. It independently prepares the public health survey extracts,
+trains logistic, MLP and LSTM knowledge-tracing models, exposes a compact learned state to a
+two-stage tutoring agent, and evaluates four information conditions without leaking the oracle
+label into the prompt.
+
+Start with a fast end-to-end model check:
+
+```sh
+python scripts/prepare_health_data.py
+python scripts/train_student_model.py --quick
+```
+
+After configuring an LLM provider in `.env`, run the intervention ablation:
+
+```sh
+python scripts/evaluate_tutor.py --scenarios 48
+```
+
+The complete design, commands, outputs and interpretation limits are documented in
+[`docs/STUDENT_STATE_EXPERIMENT.md`](docs/STUDENT_STATE_EXPERIMENT.md).
+
 It includes a [LangGraph](https://langchain-ai.github.io/langgraph/) agent, a [FastAPI](https://fastapi.tiangolo.com/) service to serve it, a client to interact with the service, and a [Streamlit](https://streamlit.io/) app that uses the client to provide a chat interface. Data structures and settings are built with [Pydantic](https://github.com/pydantic/pydantic).
 
 This project offers a template for you to easily build and run your own agents using the LangGraph framework. It demonstrates a complete setup from agent definition to user interface, making it easier to get started with LangGraph-based projects by providing a full, robust toolkit.

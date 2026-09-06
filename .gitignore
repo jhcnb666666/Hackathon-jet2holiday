@@ -177,6 +177,10 @@ cython_debug/
 # Data
 *.docx
 *.pdf
+artifacts/
+data/processed/*.csv
+data/processed/*.json
+!data/processed/.gitkeep
 
 # Chroma db
 *.db

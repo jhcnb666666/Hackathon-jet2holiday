@@ -52,8 +52,10 @@ dependencies = [
     "pyowm ~=3.5.0",
     "python-dotenv ~=1.2.2",
     "setuptools ~=83.0.0",
+    "scikit-learn >=1.7,<2",
     "streamlit ~=1.59.1",
     "tiktoken >=0.13.0",
+    "torch >=2.7,<3",
     "uvicorn ~=0.51.0",
     "langchain-mcp-adapters>=0.3.0",
     "ddgs>=9.14.4",
@@ -98,6 +100,7 @@ extend-select = ["I", "U"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
+addopts = ["--import-mode=importlib"]
 asyncio_default_fixture_loop_scope = "function"
 
 [tool.pytest_env]
