@@ -2,7 +2,7 @@ import asyncio
 import os
 import urllib.parse
 import uuid
-from datetime import date, time
+from datetime import date, datetime, time
 from collections.abc import AsyncGenerator
 
 import streamlit as st
@@ -12,7 +12,7 @@ from pydantic import ValidationError
 from client import AgentClient, AgentClientError
 from schema import ChatHistory, ChatMessage, UserThreads
 from schema.task_data import TaskData, TaskDataStatus
-from schema.student_wellness import StudentSchedule, WellnessSignals
+from schema.student_wellness import ScheduleItem, StudentSchedule, WellnessSignals
 from voice import VoiceManager
 
 # A Streamlit app for interacting with the langgraph agent via a simple chat interface.
@@ -66,6 +66,25 @@ def fetch_user_threads_cached(
     return client.get_user_threads(user_id=user_id, agent=agent_id, limit=limit)
 
 
+def parse_schedule_text(schedule_text: str, day: date) -> list[ScheduleItem]:
+    """Parse lines such as ``09:00 Class`` into one-hour schedule items."""
+    items: list[ScheduleItem] = []
+    for line in schedule_text.splitlines():
+        parts = line.strip().split(maxsplit=1)
+        if len(parts) != 2:
+            continue
+        try:
+            start_time = time.fromisoformat(parts[0])
+        except ValueError:
+            continue
+        title = parts[1]
+        lowered = title.lower()
+        category = "exercise" if any(word in lowered for word in ("exercise", "workout", "gym")) else "study" if any(word in lowered for word in ("study", "class", "lecture")) else "other"
+        start = datetime.combine(day, start_time)
+        items.append(ScheduleItem(start=start, end=start.replace(hour=(start.hour + 1) % 24), title=title, category=category))
+    return items
+
+
 async def render_wellness_page() -> None:
     """Render the merged wellness UI; AWS is called only after Analyze is clicked."""
     st.title("Student Wellness")
@@ -91,7 +110,8 @@ async def render_wellness_page() -> None:
         from core import get_model
         from schema.models import AWSModelName
 
-        schedule = StudentSchedule(student_id=student_id, day=date.today())
+        today = date.today()
+        schedule = StudentSchedule(student_id=student_id, day=today, items=parse_schedule_text(schedule_text, today))
         signals = WellnessSignals(
             sleep_duration_hours=sleep_hours,
             active_days_per_week=active_days,
