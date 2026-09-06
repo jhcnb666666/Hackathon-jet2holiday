@@ -1,4 +1,4 @@
-"""Single entry point for the wellbeing app.
+"""Cadence — single entry point for the student check-in app.
 
 Run:  streamlit run src/app.py
 
@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import streamlit as st
 
-st.set_page_config(page_title="Wellbeing", layout="wide", menu_items={})
+st.set_page_config(page_title="Cadence", layout="wide", menu_items={})
 
 
 def today_page() -> None:
@@ -40,4 +40,6 @@ pages = [
     st.Page(trends_page, title="Trends", icon=":material/insights:"),
 ]
 
+st.sidebar.title("Cadence")
+st.sidebar.caption("Daily check-ins, keyed to your timetable")
 st.navigation(pages).run()

@@ -476,16 +476,18 @@ def render_suggestions(day, school, ctx, prior: dict, class_spans: list) -> None
             st.rerun()
         failed.add(current)
 
-    shown = [s for s in CHECK_IN_SLOTS if s in live]
-    if is_today and current and current not in shown:
-        shown.append(current)
+    # Past days: show every slot so you can browse and generate any of them.
+    # Today: show the ones already generated plus the slot that is currently due.
+    shown = [s for s in CHECK_IN_SLOTS if (not is_today) or (s in live) or (s == current)]
     if not shown:
-        if is_today:
-            st.caption(f"First check-in at {_ampm(current or CHECK_IN_SLOTS[0])}.")
-            return
-        shown = list(CHECK_IN_SLOTS)  # other day: let the user pick any slot to generate
+        st.caption(f"First check-in at {_ampm(current or CHECK_IN_SLOTS[0])}.")
+        return
 
-    default = current if (current is not None and current in shown) else shown[-1]
+    if is_today:
+        default = current if (current is not None and current in shown) else shown[-1]
+    else:
+        generated = [s for s in shown if s in live]
+        default = generated[-1] if generated else shown[0]
     picked = st.radio(
         "Check-in",
         shown,
