@@ -2,6 +2,7 @@ import asyncio
 import os
 import urllib.parse
 import uuid
+from datetime import date, time
 from collections.abc import AsyncGenerator
 
 import streamlit as st
@@ -11,6 +12,7 @@ from pydantic import ValidationError
 from client import AgentClient, AgentClientError
 from schema import ChatHistory, ChatMessage, UserThreads
 from schema.task_data import TaskData, TaskDataStatus
+from schema.student_wellness import StudentSchedule, WellnessSignals
 from voice import VoiceManager
 
 # A Streamlit app for interacting with the langgraph agent via a simple chat interface.
@@ -64,6 +66,58 @@ def fetch_user_threads_cached(
     return client.get_user_threads(user_id=user_id, agent=agent_id, limit=limit)
 
 
+async def render_wellness_page() -> None:
+    """Render the merged wellness UI; AWS is called only after Analyze is clicked."""
+    st.title("Student Wellness")
+    st.caption("Enter lifestyle data and receive one practical recommendation in English.")
+    with st.form("wellness_form"):
+        student_id = st.text_input("Student ID", value="demo")
+        col1, col2 = st.columns(2)
+        with col1:
+            sleep_hours = st.number_input("Sleep hours", 0.0, 24.0, 7.0)
+            active_days = st.number_input("Active days per week", 0.0, 7.0, 3.0)
+        with col2:
+            strength_days = st.number_input("Strength-training days per week", 0.0, 7.0, 1.0)
+            exercise_minutes = st.number_input("Exercise minutes per week", 0.0, 1000.0, 90.0)
+        schedule_text = st.text_area("Today's schedule", placeholder="09:00 Class\n14:00 Study\n18:00 Exercise")
+        analyze = st.form_submit_button("Analyze", type="primary")
+    if not analyze:
+        return
+    try:
+        from agents.aws_advice_model import AWSBedrockAdviceModel
+        from agents.physical_activity_model import PhysicalActivityModel
+        from agents.sleep_model import SleepModel
+        from agents.student_wellness import StudentWellnessPipeline
+        from core import get_model
+        from schema.models import AWSModelName
+
+        schedule = StudentSchedule(student_id=student_id, day=date.today())
+        signals = WellnessSignals(
+            sleep_duration_hours=sleep_hours,
+            active_days_per_week=active_days,
+            strength_sessions_per_week=strength_days,
+            exercise_minutes=exercise_minutes,
+        )
+        aws_model = get_model(AWSModelName.BEDROCK_HAIKU)
+        class Selector:
+            async def select(self, schedule, triggered_at):
+                return ["sleep", "physical_activity"]
+
+        pipeline = StudentWellnessPipeline(
+            models={"sleep": SleepModel(), "physical_activity": PhysicalActivityModel()},
+            selector=Selector(),
+            advice=AWSBedrockAdviceModel(aws_model),
+        )
+        report = await pipeline.run(schedule, signals, time(20))
+        st.subheader("Scores")
+        for score in report.scores:
+            st.metric(score.metric, f"{score.score:.1f} / 100", score.level)
+            st.caption("; ".join(score.evidence))
+        st.success(report.recommendation.text)
+    except Exception as exc:
+        st.error(f"Wellness analysis failed: {exc}")
+
+
 async def main() -> None:
     st.set_page_config(
         page_title=APP_TITLE,
@@ -87,6 +141,11 @@ async def main() -> None:
         st.set_option("client.toolbarMode", "minimal")
         await asyncio.sleep(0.1)
         st.rerun()
+
+    page = st.sidebar.radio("Mode", ["Chat", "Student Wellness"])
+    if page == "Student Wellness":
+        await render_wellness_page()
+        return
 
     # Get or create user ID
     user_id = get_or_create_user_id()
