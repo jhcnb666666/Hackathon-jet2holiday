@@ -87,6 +87,8 @@ class Settings(BaseSettings):
     GOOGLE_APPLICATION_CREDENTIALS: SecretStr | None = None
     GROQ_API_KEY: SecretStr | None = None
     USE_AWS_BEDROCK: bool = False
+    AWS_REGION: str = "ap-southeast-1"
+    AWS_BEDROCK_MODEL_ID: str = "global.anthropic.claude-haiku-4-5-20251001-v1:0"
     OLLAMA_MODEL: str | None = None
     OLLAMA_BASE_URL: str | None = None
     USE_FAKE_MODEL: bool = False

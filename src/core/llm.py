@@ -121,10 +121,11 @@ def get_model(model_name: AllModelEnum, /) -> ModelT:
             return ChatGroq(model=api_model_name, temperature=0.0)  # type: ignore[call-arg]
         return ChatGroq(model=api_model_name, temperature=0.5)  # type: ignore[call-arg]
     if model_name in AWSModelName:
+        bedrock_model = settings.AWS_BEDROCK_MODEL_ID or api_model_name
         if model_name == AWSModelName.BEDROCK_SONNET:
             # Sonnet 5 rejects non-default sampling params (400); omit temperature.
-            return ChatBedrock(model=api_model_name)
-        return ChatBedrock(model=api_model_name, temperature=0.5)
+            return ChatBedrock(model=bedrock_model, region_name=settings.AWS_REGION)
+        return ChatBedrock(model=bedrock_model, temperature=0.5, region_name=settings.AWS_REGION)
     if model_name in OllamaModelName:
         if not settings.OLLAMA_MODEL:
             raise ValueError("Ollama model must be configured")
