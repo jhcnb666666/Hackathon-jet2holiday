@@ -236,7 +236,7 @@ def load_log() -> pd.DataFrame:
     if not LOG_PATH.exists():
         return pd.DataFrame(columns=COLUMNS)
     df = pd.read_csv(LOG_PATH)
-    df["date"] = pd.to_datetime(df["date"]).dt.date
+    df["date"] = [pd.Timestamp(v).date() for v in df["date"]]
     return df
 
 
@@ -418,10 +418,11 @@ def render_suggestions(day, school, ctx, prior: dict, class_spans: list) -> None
 
     current = _due_slot(datetime.now().time()) if is_today else CHECK_IN_SLOTS[-1]
 
-    def _context() -> dict:
+    def _context(slot: str) -> dict:
         c = build_context(prior, school=school, teaching_week=ctx.week, phase=ctx.phase)
         if class_spans:
             c["class_blocks"] = [[_clock(s), _clock(e), n] for s, e, n in class_spans]
+        c["triggered_at"] = slot
         return c
 
     def _commit(slot: str, result) -> None:
@@ -432,7 +433,7 @@ def render_suggestions(day, school, ctx, prior: dict, class_spans: list) -> None
 
     # auto-run the current slot once, when it is due and not done yet
     if is_today and current and current not in live and current not in failed:
-        result = _run_stream(_context(), f"Preparing your {_ampm(current)} check-in…")
+        result = _run_stream(_context(current), f"Preparing your {_ampm(current)} check-in…")
         if result.cards:
             _commit(current, result)
             st.rerun()
@@ -461,7 +462,7 @@ def render_suggestions(day, school, ctx, prior: dict, class_spans: list) -> None
     chosen = live.get(picked)
     if chosen is None:
         if st.button(f"Generate {_ampm(picked)} check-in", key=f"gen_{day}_{picked}"):
-            result = _run_stream(_context(), f"Preparing your {_ampm(picked)} check-in…")
+            result = _run_stream(_context(picked), f"Preparing your {_ampm(picked)} check-in…")
             if result.cards:
                 _commit(picked, result)
             failed.discard(picked)
@@ -475,7 +476,7 @@ def render_suggestions(day, school, ctx, prior: dict, class_spans: list) -> None
     stamp = _ago(chosen.generated_at) if chosen.generated_at else "earlier"
     row[0].caption(f"{_ampm(picked)} check-in · generated {stamp}")
     if row[1].button("Refresh", key=f"refresh_{day}_{picked}", use_container_width=True):
-        result = _run_stream(_context(), "Refreshing…")
+        result = _run_stream(_context(picked), "Refreshing…")
         if result.cards:
             _commit(picked, result)
         st.rerun()
