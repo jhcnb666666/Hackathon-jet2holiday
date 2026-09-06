@@ -48,15 +48,52 @@ METRIC_LABELS = {
 
 COLUMNS = [
     "date",
-    "sleep_hours",
-    "sleep_start",
+    # -> schema.student_wellness.WellnessSignals
+    "sleep_hours",  # sleep_duration_hours
+    "sleep_start",  # sleep_onset_time
+    "wake_time",  # wake_time
     "exercise_minutes",
     "exercise_blocks",
+    "active_days_per_week",
+    "strength_sessions_per_week",
+    "eating_regularity",  # 0-10
+    "healthy_food_frequency",  # 0-10
+    "weekly_work_hours",
+    "work_frequency",  # work days per week
+    "biological_sex",
+    "year_level",
+    # -> frontend extras (not signals)
     "water_ml",
     "class_hours",
     "class_start",
     "class_end",
 ]
+
+
+def _prior_num(prior: dict, key: str, default: float) -> float:
+    value = prior.get(key)
+    if value is None:
+        return default
+    try:
+        num = float(value)
+    except (TypeError, ValueError):
+        return default
+    return num if num == num else default  # NaN -> default
+
+
+def _prior_str(prior: dict, key: str, default: str = "") -> str:
+    value = prior.get(key)
+    if value is None or (isinstance(value, float) and value != value):
+        return default
+    return str(value).strip() or default
+
+
+def _parse_hhmm(value: object) -> time | None:
+    try:
+        hh, mm = str(value).split(":")[:2]
+        return time(int(hh) % 24, int(mm) % 60)
+    except (TypeError, ValueError):
+        return None
 
 
 def _hours(hhmm: str) -> float:
@@ -532,8 +569,12 @@ def render_daily_log() -> None:
     st.divider()
     st.markdown("#### Last night")
     s1, s2, s3 = st.columns([1, 1, 1.4])
-    bed = s1.time_input("Asleep at", value=time(23, 30), step=900)
-    wake = s2.time_input("Awake at", value=time(7, 30), step=900)
+    bed = s1.time_input(
+        "Asleep at", value=_parse_hhmm(prior.get("sleep_start")) or time(23, 30), step=900
+    )
+    wake = s2.time_input(
+        "Awake at", value=_parse_hhmm(prior.get("wake_time")) or time(7, 30), step=900
+    )
     hours = sleep_length(bed, wake)
     s3.markdown(
         f'<div style="padding-top:1.9rem;font-size:1.3rem;font-weight:600;color:{SLEEP}">'
@@ -605,14 +646,63 @@ def render_daily_log() -> None:
         st.caption("Walking to class counts. Add a stretch if you moved, or leave it empty.")
 
     st.divider()
+    st.markdown("#### This week")
+    st.caption("Rough estimates — they barely change day to day; last value is pre-filled.")
+    a1, a2 = st.columns(2)
+    active_days = a1.slider(
+        "Physically active days", 0, 7, int(_prior_num(prior, "active_days_per_week", 3))
+    )
+    strength_days = a2.slider(
+        "Strength-training days", 0, 7, int(_prior_num(prior, "strength_sessions_per_week", 1))
+    )
+    w1c, w2c = st.columns(2)
+    work_hours = w1c.number_input(
+        "Paid-work hours", 0.0, 80.0, _prior_num(prior, "weekly_work_hours", 0.0), 1.0
+    )
+    work_days = w2c.number_input(
+        "Paid-work days", 0.0, 7.0, _prior_num(prior, "work_frequency", 0.0), 1.0
+    )
+
+    st.divider()
+    st.markdown("#### Eating")
+    e1, e2 = st.columns(2)
+    eating_regularity = e1.slider(
+        "Meals on a regular schedule", 0, 10, int(_prior_num(prior, "eating_regularity", 5))
+    )
+    healthy_food = e2.slider(
+        "Healthy choices", 0, 10, int(_prior_num(prior, "healthy_food_frequency", 5))
+    )
+    st.caption("0 = not at all, 10 = every meal.")
+
+    _sex_options = ["", "female", "male", "other"]
+    _sex_prior = _prior_str(prior, "biological_sex")
+    with st.expander("About you (set once)"):
+        p1, p2 = st.columns(2)
+        biological_sex = p1.selectbox(
+            "Biological sex",
+            _sex_options,
+            index=_sex_options.index(_sex_prior) if _sex_prior in _sex_options else 0,
+        )
+        year_level = p2.number_input("Year of study", 1, 8, int(_prior_num(prior, "year_level", 1)))
+
+    st.divider()
     if st.button("Save today", type="primary", use_container_width=True):
         save_entry(
             {
                 "date": day,
                 "sleep_hours": hours,
                 "sleep_start": bed.strftime("%H:%M"),
+                "wake_time": wake.strftime("%H:%M"),
                 "exercise_minutes": minutes,
                 "exercise_blocks": _join_movement(segments),
+                "active_days_per_week": active_days,
+                "strength_sessions_per_week": strength_days,
+                "eating_regularity": eating_regularity,
+                "healthy_food_frequency": healthy_food,
+                "weekly_work_hours": work_hours,
+                "work_frequency": work_days,
+                "biological_sex": biological_sex,
+                "year_level": year_level,
                 "water_ml": st.session_state[water_key],
                 "class_hours": auto_hours,
                 "class_start": auto_start,

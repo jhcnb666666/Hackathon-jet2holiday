@@ -144,15 +144,25 @@ def build_context(
     if phase:
         ctx["phase"] = phase
 
-    for key in ("sleep_hours", "class_hours"):
+    float_keys = (
+        "sleep_hours",
+        "class_hours",
+        "active_days_per_week",
+        "strength_sessions_per_week",
+        "eating_regularity",
+        "healthy_food_frequency",
+        "weekly_work_hours",
+        "work_frequency",
+    )
+    for key in float_keys:
         value = _num(row.get(key))
         if value is not None:
             ctx[key] = value
-    for key in ("exercise_minutes", "water_ml"):
+    for key in ("exercise_minutes", "water_ml", "year_level"):
         value = _num(row.get(key))
         if value is not None:
             ctx[key] = int(value)
-    for key in ("sleep_start", "class_start", "class_end"):
+    for key in ("sleep_start", "wake_time", "class_start", "class_end", "biological_sex"):
         if row.get(key):
             ctx[key] = str(row[key])
 
@@ -192,7 +202,9 @@ def _pipeline_inputs(context: Mapping[str, Any]) -> tuple[Any, Any, time]:
 
     onset = _parse_time(context.get("sleep_start"))
     duration = _num(context.get("sleep_hours"))
-    wake = _add_hours(onset, duration) if (onset is not None and duration is not None) else None
+    wake = _parse_time(context.get("wake_time"))
+    if wake is None and onset is not None and duration is not None:
+        wake = _add_hours(onset, duration)
 
     schedule = StudentSchedule(
         student_id=str(context.get("student_id", "demo")),
@@ -201,11 +213,22 @@ def _pipeline_inputs(context: Mapping[str, Any]) -> tuple[Any, Any, time]:
         sleep_time=onset,
         wake_time=wake,
     )
+    year_level = _num(context.get("year_level"))
     signals = WellnessSignals(
         sleep_duration_hours=duration,
         sleep_onset_time=onset,
         wake_time=wake,
         exercise_minutes=_num(context.get("exercise_minutes")),
+        active_days_per_week=_num(context.get("active_days_per_week")),
+        strength_sessions_per_week=_num(context.get("strength_sessions_per_week")),
+        eating_regularity=_num(context.get("eating_regularity")),
+        healthy_food_frequency=_num(context.get("healthy_food_frequency")),
+        weekly_work_hours=_num(context.get("weekly_work_hours")),
+        work_frequency=_num(context.get("work_frequency")),
+        biological_sex=(str(context["biological_sex"]) or None)
+        if context.get("biological_sex")
+        else None,
+        year_level=int(year_level) if year_level is not None else None,
     )
     triggered_at = _parse_time(context.get("triggered_at")) or datetime.now().time().replace(
         microsecond=0
