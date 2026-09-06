@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "model_type": "categorical_k_modes",
+  "features": [
+    "sleep_duration",
+    "bedtime",
+    "wake_time"
+  ],
+  "excluded_columns": [
+    "record_id",
+    "current_gpa",
+    "gpa_quality_flag"
+  ],
+  "training_rows": 614,
+  "skipped_rows": 0,
+  "clusters": [
+    {
+      "id": 0,
+      "size": 327,
+      "share": 0.532573,
+      "prototype": {
+        "sleep_duration": "7 hours",
+        "bedtime": "Between 10pm and 12am",
+        "wake_time": "Between 6am and 8am"
+      }
+    },
+    {
+      "id": 1,
+      "size": 228,
+      "share": 0.371336,
+      "prototype": {
+        "sleep_duration": "6 hours",
+        "bedtime": "Between 12am and 2am",
+        "wake_time": "Between 8am and 10am"
+      }
+    },
+    {
+      "id": 2,
+      "size": 37,
+      "share": 0.060261,
+      "prototype": {
+        "sleep_duration": "5 hours",
+        "bedtime": "After 2am",
+        "wake_time": "Between 10am and 12pm"
+      }
+    },
+    {
+      "id": 3,
+      "size": 22,
+      "share": 0.035831,
+      "prototype": {
+        "sleep_duration": "8 hours",
+        "bedtime": "Between 8pm and 10pm",
+        "wake_time": "Before 6am"
+      }
+    }
+  ],
+  "training": {
+    "algorithm": "deterministic weighted k-modes",
+    "iterations": 1
+  },
+  "scoring": {
+    "scope": "adult sleep-duration adequacy, not clinical sleep quality",
+    "adult_reference_hours": 7,
+    "reference_urls": [
+      "https://www.cdc.gov/sleep/about/index.html",
+      "https://aasm.org/resources/pdf/pressroom/adult-sleep-duration-consensus.pdf"
+    ]
+  }
+}
