@@ -1,73 +1,44 @@
-"""Frontend side of the suggestion-card interface with the agent service.
+"""Frontend adapter to the in-repo student-wellness pipeline.
 
-This module owns the *contract*: the shape of the context the frontend sends to
-the supervisor agent, and the shape of the JSON the backend must return on
-``ChatMessage.custom_data``. The backend follows these names.
+The Today page collects structured numbers (sleep / water / movement + the class
+timetable). This module turns one day's context into the pipeline's input models
+(:class:`schema.student_wellness.StudentSchedule` /
+:class:`~schema.student_wellness.WellnessSignals`), runs
+:class:`agents.student_wellness.StudentWellnessPipeline` in-process, and maps the
+returned :class:`~schema.student_wellness.WellnessReport` onto the card model the
+Today page renders.
 
 Nothing here imports Streamlit. The Today page wraps these calls with its own
-session-state cache, spinner and "refresh" button, so a 20-40 s supervisor run
-never blocks first paint.
+per-slot cache, spinner and refresh button, so the pipeline run never blocks
+first paint.
 
     ctx = build_context(daily_log_row, school="NTU", teaching_week=4)
-    result = fetch_suggestions(ctx)          # real service; error state if unreachable
+    result = fetch_suggestions(ctx)
     for card in result.cards:
         render(card)
 
-Response contract -- the backend puts this on the final message's ``custom_data``
-(or on a dedicated ``type="custom"`` message)::
-
-    {
-      "suggestions": {
-        "schema_version": 1,
-        "generated_at": "2026-09-03T14:12:00Z",     # optional, stamped here if absent
-        "summary": "One-line overall read of the day.",   # optional
-        "support": {"label": "NTU UCS", "url": "https://..."},  # optional, shown first
-        "cards": [
-          {
-            "id": "sleep-debt",                     # optional, stable key for the card
-            "headline": "Protect tonight's sleep",
-            "reasoning": "Two short nights and a 09:30 start tomorrow.",
-            "action": "Start winding down by 23:30 tonight.",
-            "metrics": ["sleep_hours", "class_start"],   # daily_log.csv column names
-            "tone": "watch",                        # positive | nudge | watch
-            "source_agent": "sleep-coach"           # optional, shown as a chip
-          }
-        ]
-      }
-    }
-
-Request contract -- the frontend sends the raw numbers under ``agent_config``::
-
-    agent_config = {"daily_context": { ...build_context() output... }}
-
-plus a human-readable ``message`` from ``build_prompt()`` for agents that would
-rather read prose.
-
-Sub-agent progress is surfaced through ``stream_suggestions()``: any
-``type="custom"`` message shaped like ``schema.task_data.TaskData`` is yielded as
-a ``ProgressEvent`` before the final ``SuggestionSet``.
+The final English recommendation comes from ``AWSBedrockAdviceModel`` when AWS is
+configured; otherwise it falls back to the pipeline's local ``LocalAdviceModel``
+(the sleep / activity scores are computed locally either way).
 """
 
 from __future__ import annotations
 
-import os
 from collections.abc import Iterator, Mapping
 from dataclasses import dataclass, field
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime, time, timedelta
 from typing import Any
 
-# --- contract constants -------------------------------------------------------
-
 SCHEMA_VERSION = 1
-SUGGESTIONS_KEY = "suggestions"  # key on ChatMessage.custom_data
-CONTEXT_KEY = "daily_context"  # key on agent_config
-DEFAULT_AGENT = "langgraph-supervisor-agent"
 
 TONES = ("positive", "nudge", "watch")
 DEFAULT_TONE = "nudge"
 
-# Metric identifiers a card may cite. These are the daily_log.csv columns plus a
-# couple of derived ones the dashboard also shows.
+_LEVEL_TONE = {"good": "positive", "attention": "nudge", "poor": "watch"}
+_PRIORITY_TONE = {"low": "positive", "medium": "nudge", "high": "watch"}
+_METRIC_LABEL = {"sleep": "Sleep", "physical_activity": "Movement"}
+
+# Metric identifiers a card may cite (daily_log.csv columns + the pipeline's).
 KNOWN_METRICS = (
     "sleep_hours",
     "sleep_start",
@@ -76,11 +47,13 @@ KNOWN_METRICS = (
     "class_hours",
     "class_start",
     "class_end",
+    "sleep",
+    "physical_activity",
 )
 
 
 class SuggestionsUnavailable(RuntimeError):
-    """The agent service could not be reached or returned an error."""
+    """The wellness pipeline could not run (import error, model failure, ...)."""
 
 
 # --- data model -------------------------------------------------------------
@@ -95,22 +68,6 @@ class SuggestionCard:
     tone: str = DEFAULT_TONE
     source_agent: str | None = None
     id: str | None = None
-
-    @classmethod
-    def from_dict(cls, raw: Mapping[str, Any]) -> SuggestionCard:
-        tone = str(raw.get("tone", DEFAULT_TONE)).lower()
-        metrics = raw.get("metrics") or []
-        if isinstance(metrics, str):
-            metrics = [metrics]
-        return cls(
-            headline=str(raw.get("headline", "")).strip(),
-            reasoning=str(raw.get("reasoning", "")).strip(),
-            action=str(raw.get("action", "")).strip(),
-            metrics=[str(m) for m in metrics],
-            tone=tone if tone in TONES else DEFAULT_TONE,
-            source_agent=(str(raw["source_agent"]) if raw.get("source_agent") else None),
-            id=(str(raw["id"]) if raw.get("id") else None),
-        )
 
 
 @dataclass
@@ -128,25 +85,6 @@ class SuggestionSet:
     @property
     def ok(self) -> bool:
         return not self.is_sample and self.error is None and bool(self.cards)
-
-    @classmethod
-    def from_payload(cls, payload: Mapping[str, Any]) -> SuggestionSet:
-        cards_raw = payload.get("cards") or []
-        cards = [
-            SuggestionCard.from_dict(c)
-            for c in cards_raw
-            if isinstance(c, Mapping) and str(c.get("headline", "")).strip()
-        ]
-        support = payload.get("support")
-        if not (isinstance(support, Mapping) and support.get("label") and support.get("url")):
-            support = None
-        return cls(
-            cards=cards,
-            summary=(str(payload["summary"]).strip() if payload.get("summary") else None),
-            support=(dict(support) if support else None),
-            generated_at=str(payload.get("generated_at") or _now_iso()),
-            schema_version=int(payload.get("schema_version", SCHEMA_VERSION)),
-        )
 
     def to_dict(self) -> dict[str, Any]:
         """Plain dict for JSON persistence (see daily_log's check-in store)."""
@@ -175,7 +113,7 @@ class SuggestionSet:
 
 @dataclass
 class ProgressEvent:
-    """A sub-agent starting / working / finishing, for the progress strip."""
+    """A pipeline step starting / finishing, for the progress strip."""
 
     name: str
     state: str  # "new" | "running" | "complete"
@@ -193,7 +131,11 @@ def build_context(
     teaching_week: int | None = None,
     phase: str | None = None,
 ) -> dict[str, Any]:
-    """Normalise a daily_log row (plus calendar info) into the daily_context dict."""
+    """Normalise a daily_log row (plus calendar info) into a context dict.
+
+    The Today page augments the result with ``class_blocks`` and ``triggered_at``
+    before handing it to :func:`stream_suggestions`.
+    """
     ctx: dict[str, Any] = {"school": school}
     if row.get("date") is not None:
         ctx["date"] = str(row["date"])
@@ -202,15 +144,25 @@ def build_context(
     if phase:
         ctx["phase"] = phase
 
-    for key in ("sleep_hours", "class_hours"):
+    float_keys = (
+        "sleep_hours",
+        "class_hours",
+        "active_days_per_week",
+        "strength_sessions_per_week",
+        "eating_regularity",
+        "healthy_food_frequency",
+        "weekly_work_hours",
+        "work_frequency",
+    )
+    for key in float_keys:
         value = _num(row.get(key))
         if value is not None:
             ctx[key] = value
-    for key in ("exercise_minutes", "water_ml"):
+    for key in ("exercise_minutes", "water_ml", "year_level"):
         value = _num(row.get(key))
         if value is not None:
             ctx[key] = int(value)
-    for key in ("sleep_start", "class_start", "class_end"):
+    for key in ("sleep_start", "wake_time", "class_start", "class_end", "biological_sex"):
         if row.get(key):
             ctx[key] = str(row[key])
 
@@ -223,113 +175,198 @@ def build_context(
     return ctx
 
 
-def build_prompt(context: Mapping[str, Any]) -> str:
-    """A short readable brief for agents that prefer prose over the raw dict."""
-    bits: list[str] = []
-    wk = context.get("teaching_week")
-    when = context.get("date", "today")
-    head = f"Wellbeing check for {when}"
-    if wk is not None:
-        head += f", teaching week {wk} at {context.get('school', '?')}"
-    bits.append(head + ".")
+# --- pipeline glue ------------------------------------------------------
 
-    if "sleep_hours" in context:
-        s = f"Slept {context['sleep_hours']:.1f} h"
-        if context.get("sleep_start"):
-            s += f" from {context['sleep_start']}"
-        bits.append(s + ".")
-    if "class_hours" in context:
-        c = f"{context['class_hours']:.1f} h of class"
-        if context.get("class_start") and context.get("class_end"):
-            c += f" ({context['class_start']}-{context['class_end']})"
-        bits.append(c + ".")
-    if "exercise_minutes" in context:
-        bits.append(f"{context['exercise_minutes']} min of movement.")
-    if "water_ml" in context:
-        bits.append(f"{context['water_ml']} ml of water logged.")
 
-    bits.append(
-        "Return suggestion cards on custom_data as per the frontend contract "
-        "(headline, reasoning, action, metrics, tone). Do not diagnose and do "
-        "not give numeric food or exercise targets."
+def _pipeline_inputs(context: Mapping[str, Any]) -> tuple[Any, Any, time]:
+    """Build (StudentSchedule, WellnessSignals, triggered_at) from a context dict."""
+    from schema.student_wellness import ScheduleItem, StudentSchedule, WellnessSignals
+
+    day = _parse_date(context.get("date")) or date.today()
+
+    items = []
+    for block in context.get("class_blocks", []):
+        start_t = _parse_time(block[0]) if len(block) > 0 else None
+        end_t = _parse_time(block[1]) if len(block) > 1 else None
+        if start_t is None or end_t is None:
+            continue
+        title = str(block[2]) if len(block) > 2 and block[2] else "Class"
+        items.append(
+            ScheduleItem(
+                start=datetime.combine(day, start_t),
+                end=datetime.combine(day, end_t),
+                title=title,
+                category="class",
+            )
+        )
+
+    onset = _parse_time(context.get("sleep_start"))
+    duration = _num(context.get("sleep_hours"))
+    wake = _parse_time(context.get("wake_time"))
+    if wake is None and onset is not None and duration is not None:
+        wake = _add_hours(onset, duration)
+
+    schedule = StudentSchedule(
+        student_id=str(context.get("student_id", "demo")),
+        day=day,
+        items=items,
+        sleep_time=onset,
+        wake_time=wake,
     )
-    return " ".join(bits)
+    year_level = _num(context.get("year_level"))
+    signals = WellnessSignals(
+        sleep_duration_hours=duration,
+        sleep_onset_time=onset,
+        wake_time=wake,
+        exercise_minutes=_num(context.get("exercise_minutes")),
+        active_days_per_week=_num(context.get("active_days_per_week")),
+        strength_sessions_per_week=_num(context.get("strength_sessions_per_week")),
+        eating_regularity=_num(context.get("eating_regularity")),
+        healthy_food_frequency=_num(context.get("healthy_food_frequency")),
+        weekly_work_hours=_num(context.get("weekly_work_hours")),
+        work_frequency=_num(context.get("work_frequency")),
+        biological_sex=(str(context["biological_sex"]) or None)
+        if context.get("biological_sex")
+        else None,
+        year_level=int(year_level) if year_level is not None else None,
+    )
+    triggered_at = _parse_time(context.get("triggered_at")) or datetime.now().time().replace(
+        microsecond=0
+    )
+    return schedule, signals, triggered_at
 
 
-# --- transport ----------------------------------------------------------
+def _build_pipeline(advice: Any) -> Any:
+    from agents.physical_activity_model import PhysicalActivityModel
+    from agents.sleep_model import SleepModel
+    from agents.student_wellness import StudentWellnessPipeline
+    from agents.wellness_components import FixedSelector
+
+    return StudentWellnessPipeline(
+        models={"sleep": SleepModel(), "physical_activity": PhysicalActivityModel()},
+        selector=FixedSelector(),
+        advice=advice,
+    )
 
 
-def service_url() -> str:
-    """Resolve the agent service base URL the same way streamlit_app.py does."""
-    url = os.getenv("AGENT_URL")
-    if url:
-        return url.rstrip("/")
-    host = os.getenv("HOST", "0.0.0.0")
-    port = os.getenv("PORT", "8080")
-    return f"http://{host}:{port}"
+def _aws_enabled() -> bool:
+    try:
+        from core.settings import settings
+
+        return bool(getattr(settings, "USE_AWS_BEDROCK", False))
+    except Exception:  # noqa: BLE001
+        return False
+
+
+def _run_pipeline(schedule: Any, signals: Any, triggered_at: time) -> tuple[Any, str]:
+    """Run the pipeline. Use the AWS advice model when it is configured; otherwise
+    (or on any AWS failure) use the pipeline's local advice model. The specialist
+    sleep / activity scores are computed locally and identical either way.
+    Returns (WellnessReport, mode) where mode is "aws" or "local"."""
+    import asyncio
+
+    if _aws_enabled():
+        try:
+            from agents.aws_advice_model import AWSBedrockAdviceModel
+            from core import get_model
+            from schema.models import AWSModelName
+
+            advice = AWSBedrockAdviceModel(get_model(AWSModelName.BEDROCK_HAIKU))
+            report = asyncio.run(_build_pipeline(advice).run(schedule, signals, triggered_at))
+            return report, "aws"
+        except Exception:  # noqa: BLE001 - AWS unreachable at runtime -> local fallback
+            pass
+
+    from agents.wellness_components import LocalAdviceModel
+
+    report = asyncio.run(_build_pipeline(LocalAdviceModel()).run(schedule, signals, triggered_at))
+    return report, "local"
+
+
+def _report_to_set(report: Any, mode: str) -> SuggestionSet:
+    rec = report.recommendation
+    cards = [
+        SuggestionCard(
+            headline="Today's focus",
+            reasoning=(
+                "Weighing " + ", ".join(_metric_label(m) for m in rec.based_on)
+                if rec.based_on
+                else ""
+            ),
+            action=str(rec.text).strip(),
+            metrics=list(rec.based_on),
+            tone=_PRIORITY_TONE.get(rec.priority, DEFAULT_TONE),
+            source_agent="advice · local" if mode == "local" else "advice",
+            id="focus",
+        )
+    ]
+    for score in report.scores:
+        cards.append(
+            SuggestionCard(
+                headline=f"{_metric_label(score.metric)} — {score.score:.0f}/100",
+                reasoning="  ·  ".join(score.evidence),
+                action="",
+                metrics=[score.metric],
+                tone=_LEVEL_TONE.get(score.level, DEFAULT_TONE),
+                source_agent=score.metric,
+                id=score.metric,
+            )
+        )
+
+    result = SuggestionSet(cards=cards, generated_at=_now_iso())
+    if mode == "local":
+        result.summary = "Recommendation written locally (AWS advice model not configured)."
+    return result
 
 
 def stream_suggestions(
     context: Mapping[str, Any],
-    *,
-    agent: str | None = None,
-    base_url: str | None = None,
-    timeout: float = 90.0,
+    **_ignored: Any,
 ) -> Iterator[ProgressEvent | SuggestionSet]:
-    """Call the agent, yielding ProgressEvents as sub-agents report in, then one
-    final SuggestionSet. Raises SuggestionsUnavailable on any transport error."""
-    try:
-        from client import AgentClient, AgentClientError
-    except Exception as exc:  # noqa: BLE001 - toolkit not importable
-        raise SuggestionsUnavailable(f"agent client unavailable: {exc}") from exc
+    """Run the wellness pipeline, yielding ProgressEvents then one SuggestionSet.
 
-    client = AgentClient(base_url=base_url or service_url(), get_info=False, timeout=timeout)
-    client.agent = agent or DEFAULT_AGENT
-
-    messages: list[Any] = []
+    Raises :class:`SuggestionsUnavailable` if the pipeline cannot run at all.
+    Extra keyword arguments are accepted and ignored for call-site compatibility.
+    """
     try:
-        for chunk in client.stream(
-            message=build_prompt(context),
-            agent_config={CONTEXT_KEY: dict(context)},
-            stream_tokens=False,
-        ):
-            if isinstance(chunk, str):
-                continue
-            messages.append(chunk)
-            event = _progress_event(chunk)
-            if event is not None:
-                yield event
-    except AgentClientError as exc:
+        schedule, signals, triggered_at = _pipeline_inputs(context)
+    except Exception as exc:  # noqa: BLE001
+        raise SuggestionsUnavailable(f"could not build pipeline inputs: {exc}") from exc
+
+    yield ProgressEvent(name="scoring sleep & movement", state="running")
+    try:
+        report, mode = _run_pipeline(schedule, signals, triggered_at)
+    except Exception as exc:  # noqa: BLE001
         raise SuggestionsUnavailable(str(exc)) from exc
 
-    result = parse_suggestions(messages)
-    if result is not None:
-        yield result
+    for score in report.scores:
+        yield ProgressEvent(name=score.metric, state="complete", result="success")
+    yield ProgressEvent(
+        name="advice · local" if mode == "local" else "advice", state="complete", result="success"
+    )
+    yield _report_to_set(report, mode)
 
 
 def fetch_suggestions(
     context: Mapping[str, Any],
     *,
-    agent: str | None = None,
-    base_url: str | None = None,
-    timeout: float = 90.0,
     on_error_sample: bool = False,
+    **_ignored: Any,
 ) -> SuggestionSet:
-    """Blocking call. Drains stream_suggestions and returns the final set.
+    """Blocking wrapper: drain :func:`stream_suggestions`, return the final set.
 
-    On a transport error (service down, etc.) returns an empty SuggestionSet with
-    ``error`` set -- the UI is expected to show an honest "couldn't reach the
-    advice service" state, not invented advice. Pass ``on_error_sample=True``
-    only for local development / demos to get sample_suggestions() instead.
+    On failure returns an empty SuggestionSet with ``error`` set (the UI shows an
+    honest "couldn't generate" state). Pass ``on_error_sample=True`` only for
+    local development to get :func:`sample_suggestions` instead.
     """
     try:
         final: SuggestionSet | None = None
-        for item in stream_suggestions(context, agent=agent, base_url=base_url, timeout=timeout):
+        for item in stream_suggestions(context):
             if isinstance(item, SuggestionSet):
                 final = item
         if final is not None:
             return final
-        reason = "agent returned no suggestions payload"
+        reason = "pipeline produced no report"
     except SuggestionsUnavailable as exc:
         reason = str(exc)
 
@@ -340,77 +377,13 @@ def fetch_suggestions(
     return SuggestionSet(generated_at=_now_iso(), error=reason)
 
 
-# --- response parsing --------------------------------------------------
-
-
-def parse_suggestions(messages: list[Any]) -> SuggestionSet | None:
-    """Scan agent messages for the suggestions payload on custom_data.
-
-    Last payload wins. If none carry structured data but an AI message has text,
-    return a SuggestionSet with only ``summary`` set so the UI can still show
-    something and flag that the backend is not on the contract yet.
-    """
-    payload: Mapping[str, Any] | None = None
-    fallback_text: str | None = None
-    thread_id: str | None = None
-    run_id: str | None = None
-
-    for m in messages:
-        cd = _attr(m, "custom_data")
-        if isinstance(cd, Mapping) and isinstance(cd.get(SUGGESTIONS_KEY), Mapping):
-            payload = cd[SUGGESTIONS_KEY]
-        if _attr(m, "type") == "ai":
-            text = _attr(m, "content")
-            if text and str(text).strip():
-                fallback_text = str(text).strip()
-        run_id = _attr(m, "run_id") or run_id
-        meta = _attr(m, "response_metadata")
-        if isinstance(meta, Mapping) and meta.get("thread_id"):
-            thread_id = str(meta["thread_id"])
-
-    if payload is None and fallback_text is None:
-        return None
-
-    if payload is None:
-        result = SuggestionSet(
-            summary=fallback_text,
-            generated_at=_now_iso(),
-            error="agent replied without a structured suggestions payload",
-        )
-    else:
-        result = SuggestionSet.from_payload(payload)
-
-    result.thread_id = thread_id
-    result.run_id = run_id
-    return result
-
-
-def _progress_event(message: Any) -> ProgressEvent | None:
-    if _attr(message, "type") != "custom":
-        return None
-    cd = _attr(message, "custom_data")
-    if not isinstance(cd, Mapping):
-        return None
-    # schema.task_data.TaskData shape, possibly nested under a "task_data" key.
-    task = cd.get("task_data") if isinstance(cd.get("task_data"), Mapping) else cd
-    if not isinstance(task, Mapping) or "state" not in task:
-        return None
-    return ProgressEvent(
-        name=str(task.get("name") or "sub-agent"),
-        state=str(task.get("state") or "running"),
-        result=(str(task["result"]) if task.get("result") else None),
-        detail=dict(task.get("data") or {}),
-    )
-
-
 # --- offline fallback -------------------------------------------------
 
 
 def sample_suggestions(context: Mapping[str, Any]) -> SuggestionSet:
-    """Plausible placeholder cards derived from the context numbers.
+    """Plausible placeholder cards from the context numbers, for local dev only.
 
-    Used when the service is unreachable so the UI is never empty. Always marked
-    ``is_sample=True`` -- never present these as a real model response.
+    Always marked ``is_sample=True`` -- never shown to a real user.
     """
     cards: list[SuggestionCard] = []
 
@@ -419,40 +392,26 @@ def sample_suggestions(context: Mapping[str, Any]) -> SuggestionSet:
         cards.append(
             SuggestionCard(
                 headline="Short night to notice",
-                reasoning="Last night landed below your usual range.",
+                reasoning="Last night landed below the 7-hour reference.",
                 action="Aim to start winding down a little earlier tonight.",
-                metrics=["sleep_hours"],
+                metrics=["sleep"],
                 tone="watch",
-                source_agent="sleep-coach",
+                source_agent="sleep",
                 id="sample-sleep",
             )
         )
 
-    water = _num(context.get("water_ml"))
-    if water is not None and water < 1000:
-        cards.append(
-            SuggestionCard(
-                headline="Water is low so far",
-                reasoning="Not much logged yet against a long teaching day.",
-                action="Fill your bottle before the next class.",
-                metrics=["water_ml", "class_hours"],
-                tone="nudge",
-                source_agent="hydration",
-                id="sample-water",
-            )
-        )
-
-    class_hours = _num(context.get("class_hours"))
     move = _num(context.get("exercise_minutes"))
+    class_hours = _num(context.get("class_hours"))
     if class_hours is not None and class_hours >= 4 and (move or 0) == 0:
         cards.append(
             SuggestionCard(
                 headline="Long sit-down day",
                 reasoning="Several hours of class and no movement logged.",
                 action="Take a short walk between two of the blocks.",
-                metrics=["class_hours", "exercise_minutes"],
+                metrics=["physical_activity"],
                 tone="nudge",
-                source_agent="movement",
+                source_agent="physical_activity",
                 id="sample-move",
             )
         )
@@ -465,14 +424,14 @@ def sample_suggestions(context: Mapping[str, Any]) -> SuggestionSet:
                 action="Keep the routine you have going.",
                 metrics=[],
                 tone="positive",
-                source_agent="supervisor",
+                source_agent="advice",
                 id="sample-ok",
             )
         )
 
     return SuggestionSet(
         cards=cards,
-        summary="Sample guidance — the agent service was not reachable.",
+        summary="Sample guidance — the wellness pipeline was not run.",
         generated_at=_now_iso(),
         is_sample=True,
     )
@@ -481,33 +440,67 @@ def sample_suggestions(context: Mapping[str, Any]) -> SuggestionSet:
 # --- helpers -----------------------------------------------------------
 
 
-def _attr(obj: Any, name: str) -> Any:
-    if isinstance(obj, Mapping):
-        return obj.get(name)
-    return getattr(obj, name, None)
+def _metric_label(metric: str) -> str:
+    return _METRIC_LABEL.get(metric, metric.replace("_", " ").title())
 
 
 def _num(value: Any) -> float | None:
     try:
         if value is None or value == "":
             return None
-        return float(value)
+        num = float(value)
+    except (TypeError, ValueError):
+        return None
+    return num if num == num else None  # NaN (empty CSV cell) -> None
+
+
+def _parse_time(value: Any) -> time | None:
+    if isinstance(value, time):
+        return value
+    if not value:
+        return None
+    try:
+        hh, mm = str(value).split(":")[:2]
+        return time(int(hh) % 24, int(mm) % 60)
     except (TypeError, ValueError):
         return None
 
 
-def _pairs(value: Any) -> list[list[str]]:
-    """Accept "07:00-07:30;18:00-18:45" or [("07:00","07:30"), ...] -> list of pairs."""
+def _parse_date(value: Any) -> date | None:
+    if isinstance(value, datetime):
+        return value.date()
+    if isinstance(value, date):
+        return value
     if not value:
-        return []
+        return None
+    try:
+        return date.fromisoformat(str(value)[:10])
+    except (TypeError, ValueError):
+        return None
+
+
+def _add_hours(onset: time, hours: float) -> time:
+    return (
+        (datetime.combine(date.today(), onset) + timedelta(hours=hours))
+        .time()
+        .replace(microsecond=0)
+    )
+
+
+def _pairs(value: Any) -> list[list[str]]:
+    """Accept "07:00-07:30;18:00-18:45" or [("07:00","07:30"), ...] -> list of pairs.
+
+    Anything else (None, NaN from an empty CSV cell, ...) yields an empty list.
+    """
+    out: list[list[str]] = []
     if isinstance(value, str):
-        out = []
         for part in value.split(";"):
             a, _, b = part.strip().partition("-")
             if a.strip() and b.strip():
                 out.append([a.strip(), b.strip()])
         return out
-    out = []
+    if not isinstance(value, (list, tuple)):
+        return out
     for item in value:
         pair = list(item)
         if len(pair) >= 2 and str(pair[0]) and str(pair[1]):
@@ -522,23 +515,23 @@ def _now_iso() -> str:
 if __name__ == "__main__":
     demo = build_context(
         {
-            "date": "2026-09-03",
+            "date": "2026-09-05",
             "sleep_hours": 6.2,
             "sleep_start": "01:10",
-            "water_ml": 500,
-            "exercise_minutes": 0,
+            "exercise_minutes": 20,
             "class_hours": 4.0,
-            "class_start": "09:30",
-            "class_end": "16:20",
-            "exercise_blocks": "",
         },
         school="NTU",
         teaching_week=4,
-        phase="teaching",
     )
+    demo["class_blocks"] = [["09:30", "10:20", "EE2103 TUT"], ["14:30", "16:20", "ML0004 TUT"]]
+    demo["triggered_at"] = "20:00"
     print("context:", demo)
-    print("prompt :", build_prompt(demo))
-    result = fetch_suggestions(demo, timeout=5.0, on_error_sample=True)
-    print(f"\nis_sample={result.is_sample}  error={result.error}")
-    for card in result.cards:
-        print(f"  [{card.tone}] {card.headline} -> {card.action}  ({', '.join(card.metrics)})")
+    out = fetch_suggestions(demo, on_error_sample=True)
+    print(f"\nis_sample={out.is_sample}  error={out.error}  summary={out.summary}")
+    for card in out.cards:
+        print(f"  [{card.tone}] {card.headline}  <-  {card.source_agent}")
+        if card.reasoning:
+            print(f"      {card.reasoning}")
+        if card.action:
+            print(f"      -> {card.action}")

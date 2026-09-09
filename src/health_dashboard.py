@@ -100,9 +100,10 @@ LOG_PATH = Path("data/daily_log.csv")
 
 def _timetable_school(blocks: pd.DataFrame) -> str:
     if "school" in blocks.columns:
-        for s in blocks["school"].astype(str):
-            if s.strip():
-                return s.strip()
+        for value in blocks["school"].tolist():
+            name = str(value).strip()
+            if name:
+                return name
     return SCHOOLS[0]
 
 
@@ -139,7 +140,7 @@ def load_data() -> pd.DataFrame:
         df = pd.read_csv(LOG_PATH).fillna("")
         df["date"] = pd.to_datetime(df["date"])
         df = df.sort_values("date").reset_index(drop=True)
-        logged = {ts.date() for ts in pd.to_datetime(df["date"])}
+        logged = {pd.Timestamp(v).date() for v in df["date"]}
     else:
         df = _placeholder_data()
         logged = set()
@@ -266,8 +267,8 @@ def render_trend(df: pd.DataFrame) -> None:
     label = st.selectbox("Metric", [m.label for m in METRICS], label_visibility="collapsed")
     m = next(x for x in METRICS if x.label == label)
 
-    data = df[["date", m.key]].rename(columns={m.key: "value"})
-    data["day"] = pd.to_datetime(data["date"]).dt.strftime("%a %d/%m")
+    data = pd.DataFrame({"date": df["date"], "value": df[m.key]})
+    data["day"] = [pd.Timestamp(v).strftime("%a %d/%m") for v in data["date"]]
 
     band = (
         alt.Chart(pd.DataFrame({"low": [m.low], "high": [m.high]}))
