@@ -6,6 +6,11 @@
     "bedtime",
     "wake_time"
   ],
+  "feature_weights": {
+    "sleep_duration": 2.0,
+    "bedtime": 1.0,
+    "wake_time": 1.0
+  },
   "excluded_columns": [
     "record_id",
     "current_gpa",
@@ -16,8 +21,8 @@
   "clusters": [
     {
       "id": 0,
-      "size": 327,
-      "share": 0.532573,
+      "size": 254,
+      "share": 0.413681,
       "prototype": {
         "sleep_duration": "7 hours",
         "bedtime": "Between 10pm and 12am",
@@ -26,8 +31,8 @@
     },
     {
       "id": 1,
-      "size": 228,
-      "share": 0.371336,
+      "size": 150,
+      "share": 0.2443,
       "prototype": {
         "sleep_duration": "6 hours",
         "bedtime": "Between 12am and 2am",
@@ -36,28 +41,28 @@
     },
     {
       "id": 2,
-      "size": 37,
-      "share": 0.060261,
+      "size": 105,
+      "share": 0.17101,
       "prototype": {
         "sleep_duration": "5 hours",
-        "bedtime": "After 2am",
-        "wake_time": "Between 10am and 12pm"
+        "bedtime": "Between 12am and 2am",
+        "wake_time": "Between 6am and 8am"
       }
     },
     {
       "id": 3,
-      "size": 22,
-      "share": 0.035831,
+      "size": 105,
+      "share": 0.17101,
       "prototype": {
         "sleep_duration": "8 hours",
-        "bedtime": "Between 8pm and 10pm",
-        "wake_time": "Before 6am"
+        "bedtime": "Between 10pm and 12am",
+        "wake_time": "Between 8am and 10am"
       }
     }
   ],
   "training": {
     "algorithm": "deterministic weighted k-modes",
-    "iterations": 1
+    "iterations": 2
   },
   "scoring": {
     "scope": "adult sleep-duration adequacy, not clinical sleep quality",

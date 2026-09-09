@@ -2,8 +2,8 @@ import asyncio
 import os
 import urllib.parse
 import uuid
-from datetime import date, datetime, time
 from collections.abc import AsyncGenerator
+from datetime import date, datetime, time
 
 import streamlit as st
 from dotenv import load_dotenv
@@ -11,8 +11,8 @@ from pydantic import ValidationError
 
 from client import AgentClient, AgentClientError
 from schema import ChatHistory, ChatMessage, UserThreads
-from schema.task_data import TaskData, TaskDataStatus
 from schema.student_wellness import ScheduleItem, StudentSchedule, WellnessSignals
+from schema.task_data import TaskData, TaskDataStatus
 from voice import VoiceManager
 
 # A Streamlit app for interacting with the langgraph agent via a simple chat interface.
@@ -107,6 +107,11 @@ async def render_wellness_page() -> None:
         from agents.physical_activity_model import PhysicalActivityModel
         from agents.sleep_model import SleepModel
         from agents.student_wellness import StudentWellnessPipeline
+        from agents.wellness_components import (
+            FallbackAdviceModel,
+            LocalAdviceModel,
+            ScheduleAwareSelector,
+        )
         from core import get_model
         from schema.models import AWSModelName
 
@@ -118,15 +123,19 @@ async def render_wellness_page() -> None:
             strength_sessions_per_week=strength_days,
             exercise_minutes=exercise_minutes,
         )
-        aws_model = get_model(AWSModelName.BEDROCK_HAIKU)
-        class Selector:
-            async def select(self, schedule, triggered_at):
-                return ["sleep", "physical_activity"]
+        local_advice = LocalAdviceModel()
+        try:
+            advice = FallbackAdviceModel(
+                AWSBedrockAdviceModel(get_model(AWSModelName.BEDROCK_HAIKU)),
+                local_advice,
+            )
+        except Exception:
+            advice = local_advice
 
         pipeline = StudentWellnessPipeline(
             models={"sleep": SleepModel(), "physical_activity": PhysicalActivityModel()},
-            selector=Selector(),
-            advice=AWSBedrockAdviceModel(aws_model),
+            selector=ScheduleAwareSelector(),
+            advice=advice,
         )
         report = await pipeline.run(schedule, signals, time(20))
         st.subheader("Scores")

@@ -1,11 +1,17 @@
+# ruff: noqa: E402
 """Run the complete pipeline locally; this script never calls AWS."""
 import asyncio
+import sys
 from datetime import date, time
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
 
 from agents.physical_activity_model import PhysicalActivityModel
 from agents.sleep_model import SleepModel
 from agents.student_wellness import StudentWellnessPipeline
-from agents.wellness_components import FixedSelector, LocalAdviceModel
+from agents.wellness_components import LocalAdviceModel, ScheduleAwareSelector
 from schema.student_wellness import StudentSchedule, WellnessSignals
 
 
@@ -14,7 +20,7 @@ async def main():
     signals = WellnessSignals(sleep_duration_hours=6, active_days_per_week=2, strength_sessions_per_week=1)
     pipeline = StudentWellnessPipeline(
         models={"sleep": SleepModel(), "physical_activity": PhysicalActivityModel()},
-        selector=FixedSelector(),
+        selector=ScheduleAwareSelector(),
         advice=LocalAdviceModel(),
     )
     print((await pipeline.run(schedule, signals, time(20))).model_dump_json(indent=2))

@@ -3,14 +3,14 @@ from datetime import date, time
 
 import pytest
 
+from agents.sleep_model import SleepModel
+from schema.student_wellness import StudentSchedule, WellnessSignals
 from sleep_clustering import (
     FEATURE_NAMES,
     bedtime_category,
     save_artifact,
     train_artifact,
 )
-from agents.sleep_model import SleepModel
-from schema.student_wellness import StudentSchedule, WellnessSignals
 
 
 def _write_survey(path, gpa_values=("2.0", "4.0", "3.5")):
@@ -39,6 +39,9 @@ def test_artifact_contains_only_sleep_features(tmp_path):
 
     assert artifact["features"] == list(FEATURE_NAMES)
     assert "current_gpa" not in json.dumps(artifact["clusters"])
+    assert artifact["model_type"] == "categorical_k_modes"
+    assert artifact["training"]["algorithm"] == "deterministic weighted k-modes"
+    assert sum(cluster["size"] for cluster in artifact["clusters"]) == artifact["training_rows"]
 
 
 def test_bedtime_categories_cross_midnight():

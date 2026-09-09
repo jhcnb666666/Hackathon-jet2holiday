@@ -1,5 +1,6 @@
 """Framework for specialist wellness models and final AWS-LLM advice."""
 
+import asyncio
 from datetime import datetime, time
 from typing import Protocol
 
@@ -56,14 +57,19 @@ class StudentWellnessPipeline:
         triggered_at: time | None = None,
     ) -> WellnessReport:
         trigger = triggered_at or datetime.now().time().replace(microsecond=0)
-        selected = await self.selector.select(schedule, trigger)
-        scores = [
-            await self.models[name].score(schedule, signals)
-            for name in selected
+        requested = await self.selector.select(schedule, trigger)
+        selected = [
+            name for name in dict.fromkeys(requested)
             if name in self.models
         ]
-        if not scores:
+        if not selected:
             raise ValueError("No specialist model was selected")
+
+        scores = list(
+            await asyncio.gather(
+                *(self.models[name].score(schedule, signals) for name in selected)
+            )
+        )
         recommendation = await self.advice.generate(schedule, scores)
         return WellnessReport(
             student_id=schedule.student_id,

@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 
 from schema.student_wellness import MetricScore, StudentSchedule, WellnessSignals
+from sleep_clustering import bedtime_category, wake_time_category
 
 
 class SleepModel:
@@ -30,7 +31,9 @@ class SleepModel:
             evidence.append(f"Sleep onset: {signals.sleep_onset_time.strftime('%H:%M')}")
         if signals.wake_time:
             evidence.append(f"Wake time: {signals.wake_time.strftime('%H:%M')}")
-        prototype = self._nearest_pattern(hours, signals.sleep_onset_time, signals.wake_time)
+        onset = signals.sleep_onset_time or schedule.sleep_time
+        wake = signals.wake_time or schedule.wake_time
+        prototype = self._nearest_pattern(hours, onset, wake)
         if prototype:
             evidence.append(
                 "Nearest survey pattern: "
@@ -40,12 +43,27 @@ class SleepModel:
         return MetricScore(metric=self.name, score=round(score, 1), level=level, evidence=evidence)
 
     def _nearest_pattern(self, hours, onset, wake):
-        duration = f"{int(hours)} hours"
+        observed = {
+            "sleep_duration": f"{int(round(hours))} hours",
+            "bedtime": bedtime_category(onset.hour, onset.minute) if onset else None,
+            "wake_time": wake_time_category(wake.hour, wake.minute) if wake else None,
+        }
         candidates = self.artifact.get("clusters", [])
         if not candidates:
             return None
+
+        weights = self.artifact.get(
+            "feature_weights",
+            {"sleep_duration": 2.0, "bedtime": 1.0, "wake_time": 1.0},
+        )
+
         def distance(cluster):
             prototype = cluster["prototype"]
-            return int(prototype.get("sleep_duration") != duration)
-        nearest = min(candidates, key=distance)
+            return sum(
+                weights.get(feature, 1.0)
+                for feature, value in observed.items()
+                if value is not None and prototype.get(feature) != value
+            )
+
+        nearest = min(candidates, key=lambda cluster: (distance(cluster), cluster["id"]))
         return {**nearest["prototype"], "share": nearest["share"]}
