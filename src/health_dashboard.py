@@ -73,20 +73,19 @@ def _placeholder_data() -> pd.DataFrame:
     entries exist. Class columns are left empty on purpose: real class times are
     filled in from the saved timetable by _overlay_timetable()."""
     today = date.today()
-    days = [today - timedelta(days=13 - i) for i in range(14)]
+    days = [today - timedelta(days=6 - i) for i in range(7)]
 
     rows = []
-    for i, d in enumerate(days):
+    for d in days:
         s_start, s_hours, ex, water = WEEKDAY_PATTERN[d.weekday()]
-        drift = 0.3 if i < 7 else -0.2
         rows.append(
             {
                 "date": d,
-                "sleep_hours": round(s_hours + drift, 1),
+                "sleep_hours": s_hours,
                 "sleep_start": s_start,
-                "exercise_minutes": max(0, ex + (10 if i >= 7 else -5)),
+                "exercise_minutes": ex,
                 "exercise_blocks": "",
-                "water_ml": water + (150 if i >= 7 else -100),
+                "water_ml": water,
                 "class_hours": 0.0,
                 "class_start": "",
                 "class_end": "",
@@ -263,11 +262,12 @@ def render_week_rhythm(df: pd.DataFrame) -> None:
 
 
 def render_trend(df: pd.DataFrame) -> None:
-    st.markdown("#### Your two weeks trend")
+    st.markdown("#### This week's trend")
     label = st.selectbox("Metric", [m.label for m in METRICS], label_visibility="collapsed")
     m = next(x for x in METRICS if x.label == label)
 
-    data = pd.DataFrame({"date": df["date"], "value": df[m.key]})
+    recent = df.tail(7)
+    data = pd.DataFrame({"date": recent["date"], "value": recent[m.key]})
     data["day"] = [pd.Timestamp(v).strftime("%a %d/%m") for v in data["date"]]
 
     band = (
@@ -298,11 +298,11 @@ def render_dashboard(df: pd.DataFrame | None = None) -> None:
     render_today(df)
     if not LOG_PATH.exists():
         st.caption(
-            "No daily entries yet — sleep, water and movement are sample values; "
+            "No daily entries yet. Sleep, water and movement are sample values; "
             "class times come from your saved timetable."
         )
     st.divider()
-    st.header("Your two weeks")
+    st.header("This week")
     render_week_rhythm(df)
     st.divider()
     render_trend(df)
